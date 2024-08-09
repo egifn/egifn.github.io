@@ -1,0 +1,379 @@
+body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            background-color: #278067;
+            color: white;
+            text-align: center;
+            justify-content: space-between;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .header img {
+            width: 18px;
+            height: auto;
+            color: white;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+        }
+
+        .search-input {
+            padding: 8px;
+        }
+
+        .search-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #278067;
+            padding: 10px;
+            z-index: 1000;
+            justify-content: center;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-button {
+            background-color: #ffd700;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+            width: 100%;
+        }
+
+        .carousel-item {
+            /* flex: 0 0 100%; */
+            width: 100%;
+            /* background-color: #089437; */
+            /* padding: 1rem; */
+            /* box-sizing: border-box; */
+            text-align: center;
+        }
+
+        .carousel-item img {
+            /* flex: 0 0 100%; */
+            width: 100%;
+            height: 100%;
+            margin-top: 10px;
+        }
+
+        .carousel-item ul {
+            text-align: left;
+        }
+
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0, 0, 0, 0.156);
+            padding: 5px;
+            text-decoration: none;
+            font-size: 12px;
+            z-index: 10;
+            width: 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .carousel-control.prev {
+            left: 0px;
+        }
+
+        .carousel-control.next {
+            right: 0px;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .carousel-indicator.active {
+            background-color: white;
+        }
+
+        .main {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+            padding: 0.5rem;
+            position: sticky;
+            bottom: 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item {
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .nav-item img {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 0.25rem;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .view-all {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        /* Container */
+        .container {
+            width: 100%;
+        }
+
+        /* ///////////////////////////////- Awal Class Product -////////////////////////////// */
+
+        /* Styles specific to sliding layout */
+        .content-slide {
+            display: -webkit-box;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            gap: 7px;
+            width: 100%;
+        }
+
+        .product-card-slide {
+            background-color: white;
+            width: 50%;
+        }
+
+        .content-product {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 7px;
+        }
+
+        .product-card {
+            background-color: white;
+            flex: 0 0 auto;
+            width: minmax(150px, 1fr);
+        }
+
+
+        .product-card img,
+        .product-card-slide img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+        }
+
+        .product-card-body,
+        .product-card-slide-body {
+            padding-right: 10px;
+            padding-left: 10px;
+            padding-bottom: 5px;
+            background-color: white;
+            text-align: left;
+        }
+
+        .product-card-body p,
+        .product-card-slide-body p {
+            text-wrap: wrap;
+            font-size: 1rem;
+            margin: 0;
+            height: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-card-body h5,
+        .product-card-slide-body h5 {
+            margin: 5px 0 0 0;
+            font-size: 1rem;
+            color: #278067;
+        }
+
+        /* .product-card:hover,
+        .product-card-slide:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        } */
+
+        .product-promo {
+            height: 20px;
+            text-align: left;
+            font-size: 0.8rem;
+            color: #ff6b6b;
+        }
+
+        @media (min-width: 576px) {
+            .product-card-slide {
+                width: 25%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .product-card-slide {
+                width: 20%;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .product-card-slide {
+                width: 16.666%;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .product-card-slide {
+                width: 14.285%;
+            }
+        }
+
+        /* ///////////////////////////////- Batas Class Product -////////////////////////////// */
+
+        /* Row */
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+
+        /* Columns */
+        .col {
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        /* Responsive column classes */
+        .col-1 {
+            flex: 0 0 8.333333%;
+            max-width: 8.333333%;
+        }
+
+        .col-2 {
+            flex: 0 0 16.666667%;
+            max-width: 16.666667%;
+        }
+
+        .col-3 {
+            flex: 0 0 25%;
+            max-width: 25%;
+        }
+
+        .col-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+        }
+
+        .col-5 {
+            flex: 0 0 41.666667%;
+            max-width: 41.666667%;
+        }
+
+        .col-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+
+        .col-7 {
+            flex: 0 0 58.333333%;
+            max-width: 58.333333%;
+        }
+
+        .col-8 {
+            flex: 0 0 66.666667%;
+            max-width: 66.666667%;
+        }
+
+        .col-9 {
+            flex: 0 0 75%;
+            max-width: 75%;
+        }
+
+        .col-10 {
+            flex: 0 0 83.333333%;
+            max-width: 83.333333%;
+        }
+
+        .col-11 {
+            flex: 0 0 91.666667%;
+            max-width: 91.666667%;
+        }
+
+        .col-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
