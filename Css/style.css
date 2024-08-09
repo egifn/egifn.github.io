@@ -215,14 +215,14 @@ body {
 
         .content-product {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 7px;
         }
 
         .product-card {
             background-color: white;
             flex: 0 0 auto;
-            width: minmax(150px, 1fr);
+            /* width: minmax(150px, 1fr); */
         }
 
 
