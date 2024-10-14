@@ -103,22 +103,38 @@
     background-image: url('/icon/star.svg');
     background-size: cover;
 }
+
 .eg-thumb {
     width: 24px;
     height: 24px;
     background-image: url('/icon/thumb.svg');
     background-size: cover;
 }
+
 .eg-truck-side {
     width: 24px;
     height: 24px;
     background-image: url('/icon/truck-side.svg');
     background-size: cover;
 }
+
 .eg-share {
     width: 24px;
     height: 24px;
     background-image: url('/icon/share.svg');
+    background-size: cover;
+}
+.eg-news {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/newspaper.svg');
+    background-size: cover;
+}
+
+.eg-news-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/newspaper-bold.svg');
     background-size: cover;
 }
 
