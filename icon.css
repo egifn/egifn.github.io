@@ -22,7 +22,7 @@
 .eg-bell-bold {
     width: 24px;
     height: 24px;
-    background-image: url('/icon/bell.svg');
+    background-image: url('/icon/bell-bold.svg');
     background-size: cover;
 }
 
