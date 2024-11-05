@@ -75,6 +75,13 @@
     background-size: cover;
 }
 
+.eg-search-light {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/search-light.svg');
+    background-size: cover;
+}
+
 .eg-search-bold {
     width: 24px;
     height: 24px;
@@ -297,5 +304,19 @@
     width: 24px;
     height: 24px;
     background-image: url('/icon/shopping-bag-bold.svg');
+    background-size: cover;
+}
+
+.eg-back {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/arrow-left.svg');
+    background-size: cover;
+}
+
+.eg-back-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/arrow-left-bold.svg');
     background-size: cover;
 }
