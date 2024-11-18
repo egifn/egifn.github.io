@@ -447,8 +447,6 @@
                 display: none;
             }
         }
-
-    
     </style>
 </head>
 
@@ -513,27 +511,27 @@
                         <li><i class="fas fa-check"></i> Ray Tracing Support</li>
                         <li><i class="fas fa-check"></i> Game Terbaru</li>
                     </ul>
-                    <a href="#" class="btn">Sewa Sekarang</a>
+                    <a href="#" class="btn" onclick="openModal('ps5')">Sewa Sekarang</a>
                 </div>
             </div>
-            <!-- PS4 Pro -->
+
             <div class="unit-card">
-                <img src="img/ps4.jpg" alt="PlayStation 4 Pro" class="unit-image">
+                <img src="/img/ps4.jpg" alt="PlayStation 4 Pro" class="unit-image">
                 <div class="unit-content">
                     <h3 class="unit-title">PlayStation 4 Pro</h3>
-                    <p class="unit-price">Rp 25.000/jam</p>
+                    <p class="unit-price">Rp 30.000/jam</p>
                     <ul class="unit-features">
-                        <li><i class="fas fa-check"></i> 4K Gaming</li>
-                        <li><i class="fas fa-check"></i> HDR Support</li>
-                        <li><i class="fas fa-check"></i> 1TB Storage</li>
-                        <li><i class="fas fa-check"></i> Game Lengkap</li>
+                        <li><i class="fas fa-check"></i> 4K HDR Gaming</li>
+                        <li><i class="fas fa-check"></i> DualShock 4</li>
+                        <li><i class="fas fa-check"></i> Ray Tracing Support</li>
+                        <li><i class="fas fa-check"></i> Game Terbaru</li>
                     </ul>
-                    <a href="#" class="btn">Sewa Sekarang</a>
+                    <a href="#" class="btn" onclick="openModal('ps4pro')">Sewa Sekarang</a>
                 </div>
             </div>
-            <!-- PS4 Slim -->
+
             <div class="unit-card">
-                <img src="img/ps4.jpg" alt="PlayStation 4 Slim" class="unit-image">
+                <img src="/img/ps4.jpg" alt="PlayStation 4 Slim" class="unit-image">
                 <div class="unit-content">
                     <h3 class="unit-title">PlayStation 4 Slim</h3>
                     <p class="unit-price">Rp 20.000/jam</p>
@@ -543,9 +541,10 @@
                         <li><i class="fas fa-check"></i> 500GB Storage</li>
                         <li><i class="fas fa-check"></i> Game Populer</li>
                     </ul>
-                    <a href="#" class="btn">Sewa Sekarang</a>
+                    <a href="#" class="btn" onclick="openModal('ps4')">Sewa Sekarang</a>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -681,47 +680,81 @@
         let selectedDate = null;
         let selectedPs = null;
 
-        // PS Unit data
+        // Data PS Unit
         const psUnits = {
             'ps5': {
                 name: 'PlayStation 5',
-                price: 170000
+                price: 35000
             },
             'ps4pro': {
                 name: 'PlayStation 4 Pro',
-                price: 150000
+                price: 30000
             },
             'ps4': {
                 name: 'PlayStation 4 Slim',
-                price: 150000
+                price: 20000
             }
         };
 
-        // Initialize booking buttons
-        document.querySelectorAll('.btn').forEach(btn => {
-            if (btn.textContent === 'Sewa Sekarang') {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const card = e.target.closest('.unit-card');
-                    const psTitle = card.querySelector('.unit-title').textContent;
-                    openModal(psTitle);
-                });
-            }
-        });
-
-        function openModal(psTitle) {
+        // Fungsi untuk membuka modal
+        function openModal(psType) {
             const modal = document.getElementById('bookingModal');
             const modalTitle = document.getElementById('modalTitle');
-            const selectedPsInput = document.getElementById('selectedPs');
             const summaryPs = document.getElementById('summaryPs');
+            const selectedPsInput = document.getElementById('selectedPs');
 
-            modalTitle.textContent = `Book ${psTitle}`;
-            selectedPs = psTitle.toLowerCase().replace(' ', '');
-            selectedPsInput.value = selectedPs;
-            summaryPs.textContent = psTitle;
+            console.log(summaryPs);
+            // Cek apakah unit PS tersedia di psUnits
+            if (psUnits[psType]) {
+                modalTitle.textContent = `Book ${psUnits[psType].name}`;
+                summaryPs.textContent = psUnits[psType].name;
+                selectedPsInput.value = psType;
+                modal.style.display = 'block';
+                // Reset dan inisialisasi  
+                resetForm();
+                updateCalendar();
+                updateBookingSummary();
+            } else {
+                console.error("PS Unit tidak ditemukan:", psType);
+            }
+        }
 
-            modal.style.display = 'block';
-            updateCalendar();
+
+
+        // Fungsi untuk mengupdate ringkasan booking
+        function updateBookingSummary() {
+            const duration = document.getElementById('duration').value;
+            const summaryDuration = document.getElementById('summaryDuration');
+            const summaryTotal = document.getElementById('summaryTotal');
+            const summaryDate = document.getElementById('summaryDate');
+            const summaryAlamat = document.getElementById('summaryAlamat');
+
+            // Update durasi
+            if (duration) {
+                summaryDuration.textContent = `${duration} hari`;
+            } else {
+                summaryDuration.textContent = '-';
+            }
+
+            // Update total harga
+            if (duration && selectedPs && psUnits[selectedPs]) {
+                const price = psUnits[selectedPs].price;
+                const total = price * parseInt(duration);
+                summaryTotal.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+            } else {
+                summaryTotal.textContent = 'Rp 0';
+            }
+
+            // Update tanggal
+            if (selectedDate) {
+                summaryDate.textContent = formatDate(selectedDate);
+            } else {
+                summaryDate.textContent = '-';
+            }
+
+            // Update alamat
+            const address = document.getElementById('address').value;
+            summaryAlamat.textContent = address || 'Alamat belum diisi';
         }
 
         function closeModal() {
@@ -730,15 +763,12 @@
         }
 
         function formatDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
-
-        function isDateBooked(dateString) {
-            // Implement your booking check logic here
-            return false;
+            if (!date) return '';
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
         }
 
         function updateCalendar() {
@@ -761,7 +791,6 @@
                 daysGrid.appendChild(emptyDay);
             }
 
-            // Get today's date at midnight for accurate comparison
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
@@ -771,36 +800,23 @@
                 dayCell.className = 'calendar-day';
                 dayCell.textContent = day;
 
-                // Create date object for the current calendar day
                 const currentDateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
                 currentDateObj.setHours(0, 0, 0, 0);
 
-                const currentDateString = formatDate(currentDateObj);
-
-                // Check if date is in the past (including today)
                 if (currentDateObj < today) {
                     dayCell.classList.add('disabled');
-                    // Remove click event for past dates
-                    dayCell.style.pointerEvents = 'none';
-                }
-                // Check if date is booked
-                else if (isDateBooked(currentDateString)) {
+                } else if (isDateBooked(formatDate(currentDateObj))) {
                     dayCell.classList.add('disabled');
-                }
-                // Check if it's today
-                else if (formatDate(currentDateObj) === formatDate(today)) {
+                } else if (currentDateObj.getTime() === today.getTime()) {
                     dayCell.classList.add('today');
                 }
 
-                // Check if this is the selected date
-                if (selectedDate && currentDateString === formatDate(selectedDate)) {
+                if (selectedDate && currentDateObj.getTime() === selectedDate.getTime()) {
                     dayCell.classList.add('selected');
                 }
 
-                // Only add click event if the date is not disabled
                 if (!dayCell.classList.contains('disabled')) {
-                    dayCell.addEventListener('click', () => selectDate(new Date(currentDate.getFullYear(), currentDate
-                        .getMonth(), day)));
+                    dayCell.addEventListener('click', () => selectDate(new Date(currentDateObj)));
                 }
 
                 daysGrid.appendChild(dayCell);
@@ -808,31 +824,8 @@
         }
 
         function selectDate(date) {
-            // Only allow selection if date is not in the past
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const selectedDateObj = new Date(date);
-            selectedDateObj.setHours(0, 0, 0, 0);
-
-            if (selectedDateObj >= today && !isDateBooked(formatDate(date))) {
-                selectedDate = date;
-                updateCalendar();
-                // Trigger any additional actions needed when a date is selected
-                if (typeof onDateSelect === 'function') {
-                    onDateSelect(formatDate(date));
-                }
-            }
-        }
-
-        function selectDate(date) {
-            if (date < new Date().setHours(0, 0, 0, 0) || isDateBooked(formatDate(date))) {
-                return;
-            }
-
             selectedDate = date;
             document.getElementById('bookingDate').value = formatDate(date);
-            document.getElementById('summaryDate').textContent = formatDate(date);
             updateCalendar();
             updateBookingSummary();
         }
@@ -847,34 +840,19 @@
             updateCalendar();
         }
 
-        function formatDate(date) {
-            return date.toLocaleDateString('id-ID', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-        }
-
         function isDateBooked(dateString) {
             return bookings.some(booking =>
-                booking.date === dateString && booking.ps === selectedPs);
-        }
-
-        function updateBookingSummary() {
-            const duration = document.getElementById('duration').value;
-            const summaryDuration = document.getElementById('summaryDuration');
-            const summaryTotal = document.getElementById('summaryTotal');
-            const summaryAlamat = document.getElementById('summaryAlamat');
-
-            if (duration && selectedPs) {
-                summaryDuration.textContent = `${duration} hari`;
-                const total = psUnits[selectedPs].price * parseInt(duration);
-                summaryTotal.textContent = `Rp ${total.toLocaleString()}`;
-            }
+                booking.date === dateString && booking.ps === selectedPs
+            );
         }
 
         function submitBooking(event) {
             event.preventDefault();
+
+            if (!selectedDate || !selectedPs) {
+                alert('Mohon pilih tanggal dan unit PS terlebih dahulu');
+                return;
+            }
 
             const booking = {
                 ps: selectedPs,
@@ -893,16 +871,31 @@
         function resetForm() {
             document.getElementById('bookingForm').reset();
             selectedDate = null;
-            selectedPs = null;
-            document.getElementById('summaryDate').textContent = '';
-            document.getElementById('summaryDuration').textContent = '';
-            document.getElementById('summaryTotal').textContent = '';
+            document.getElementById('summaryDate').textContent = '-';
+            document.getElementById('summaryDuration').textContent = '-';
+            document.getElementById('summaryTotal').textContent = 'Rp 0';
+            document.getElementById('summaryAlamat').textContent = 'Alamat belum diisi';
         }
 
-        // Event listeners
-        document.getElementById('duration').addEventListener('change', updateBookingSummary);
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('duration').addEventListener('change', updateBookingSummary);
+            document.getElementById('address').addEventListener('input', updateBookingSummary);
 
-        // Initialize calendar
+            // Initialize booking buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                if (btn.textContent.trim() === 'Sewa Sekarang') {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const card = e.target.closest('.unit-card');
+                        const psTitle = card.querySelector('.unit-title').textContent;
+                        openModal(psTitle);
+                    });
+                }
+            });
+        });
+
+        // Initialize calendar on load
         updateCalendar();
     </script>
 </body>
