@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- <link rel="stylesheet" href="componen.css"> -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"> -->
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-brand">
+                <div class="header-logo">
+                    <span class="header-logo-frame">B</span>
+                </div>
+            </div>
+            <div class="search">
+                <input type="text" placeholder="Search . . .">
+                <button class="search-btn btn-gradient-primary">Cari</button>
+            </div>
+            <div class="header-right">
+                <div class="profile">
+                    <div class="profile-img-wrapper">
+                        <div class="dropdown hover-dropdown">
+                            <img src="/images/user.png" width="20">
+                            <div class="dropdown-content">
+                                <a href="#"><img src="/icons/user.svg">Profil</a>
+                                <a href="#"><img src="/icons/settings.svg">Setting</a>
+                                <a href="#"><img src="/icons/sign-out-alt.svg">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-logo">B</span>
+                <p>Breez</p>
+                <div class="sidebar-toggle">
+                    <img class="sidebar-toggle-btn" id="toggleSidebar" src="/icons/apps.svg">
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item"><img src="/icons/home.svg" alt="Home Icon"><span class="menu-text">Home</span></div>
+                <div class="menu-item"><img src="/icons/chart-histogram.svg" alt="Dashboards Icon"><span class="menu-text">Dashboards</span></div>
+                <div class="menu-item"><img src="/icons/inbox-full.svg" alt="Inbox Icon"><span class="menu-text">Inbox</span></div>
+                <div class="menu-item"><img src="/icons/document.svg" alt="Docs Icon"><span class="menu-text">Docs</span></div>
+                <div class="menu-item"><img src="/icons/file.svg" alt="Clips Icon"><span class="menu-text">Clips</span></div>
+                <div class="menu-item"><img src="/icons/disk.svg" alt="Timesheets Icon"><span class="menu-text">Timesheets</span></div>
+                <div class="menu-item"><img src="/icons/apps.svg" alt="More Icon"><span class="menu-text">More</span>
+                </div>
+            </div>
+        </nav>
+        <div class="navbar">
+            <div class="navbar-brand">
+                <img class="navbar-toggle-btn" id="toggleNavbar" src="/icons/apps.svg" alt="More Icon">
+            </div>
+            <div class="navbar-title">
+                Home <img src="/icons/home.svg">    
+            </div>
+        </div>
+        <main class="main-content">
+            <div id="card-status" class="card-status">
+                <div class="card-stat-grid">
+                    <div class="card-status-item">
+                        <div class="card-status-content">
+                            <h2>Earnings</h2>
+                            <p class="stat-value">$40,000</p>
+                        </div>
+                        <p class="status-change positive">+9.45% Since last month</p>
+                    </div>
+                    <div class="card-status-item">
+                        <div class="card-status-content">
+                            <h2>Sales</h2>
+                            <p class="stat-value">650</p>
+                        </div>
+                        <p class="status-change positive">+12% Since last year</p>
+                    </div>
+                    <div class="card-status-item">
+                        <div class="card-status-content">
+                            <h2>New User</h2>
+                            <p class="stat-value">366</p>
+                        </div>
+                        <p class="status-change positive">+20% Since last month</p>
+                    </div>
+                    <div class="card-status-item">
+                        <div class="card-status-content">
+                            <h2>Pending Requests</h2>
+                            <p class="stat-value">18</p>
+                        </div>
+                        <p class="status-change negative">-11% Since yesterday</p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="container">
+                <h2>Good afternoon, Boss</h2>
+                <div class="content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recents</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>SOP Template • in Space</p>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Agenda</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Jul 22, Mon</p>
+                            <p>Agenda items from your calendars will show here.</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="button-card">+ Add calendar integrations</button>
+                        </div>
+                    </div>
+
+                    <div class="news-container">
+                        <div class="news-item">
+                            <img src="/images/slide-2.jpg" alt="News thumbnail" class="news-image">
+                            <div class="news-content">
+                                <div class="news-category">Video</div>
+                                <h2 class="news-title">Video: Momen Sri Mulyani Menangis Saat Rapat Terakhir Dengan DPR, Momen Sri Mulyani Menangis Saat Rapat Terakhir Dengan DPR
+                                    RI</h2>
+                                <div class="news-meta">
+                                    <span class="news-tag">NEWS</span>
+                                    11 menit yang lalu
+                                </div>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <img src="/images/slide-2.jpg" alt="News thumbnail" class="news-image">
+                            <div class="news-content">
+                                <div class="news-category">Video</div>
+                                <h2 class="news-title">Video: Momen Sri Mulyani Menangis Saat Rapat Terakhir Dengan DPR
+                                    RI</h2>
+                                <div class="news-meta">
+                                    <span class="news-tag">NEWS</span>
+                                    11 menit yang lalu
+                                </div>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <img src="/images/slide-2.jpg" alt="News thumbnail" class="news-image">
+                            <div class="news-content">
+                                <div class="news-category">Video</div>
+                                <h2 class="news-title">Video: Momen Sri Mulyani Menangis Saat Rapat Terakhir Dengan DPR
+                                    RI</h2>
+                                <div class="news-meta">
+                                    <span class="news-tag">NEWS</span>
+                                    11 menit yang lalu
+                                </div>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <img src="/images/slide-2.jpg" alt="News thumbnail" class="news-image">
+                            <div class="news-content">
+                                <div class="news-category">Video</div>
+                                <h2 class="news-title">Video: Momen Sri Mulyani Menangis Saat Rapat Terakhir Dengan DPR
+                                    RI</h2>
+                                <div class="news-meta">
+                                    <span class="news-tag">NEWS</span>
+                                    11 menit yang lalu
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Repeat the news-item structure for each news article -->
+                    </div>
+
+                    <!-- <div class="card">
+                        <div class="card-header">
+                            <h3>News</h3>
+                        </div>
+                        <h2 class="card-title">Peluang Bisnis Digital di Tahun 2024</h2>
+                        <p class="card-content">
+                            Di tahun 2024, peluang bisnis digital terus meningkat pesat seiring dengan berkembangnya
+                            teknologi dan adopsi digitalisasi oleh berbagai sektor. Banyak perusahaan beralih ke
+                            platform online untuk memperluas jangkauan pasar mereka, meningkatkan efisiensi, dan
+                            beradaptasi dengan tren konsumen yang semakin mengutamakan kemudahan dan kecepatan layanan.
+                            E-commerce, fintech, dan layanan berbasis teknologi lainnya menjadi sektor yang paling
+                            menjanjikan bagi para pelaku bisnis. Perusahaan kecil hingga menengah kini lebih mudah masuk
+                            ke pasar global berkat solusi digital yang semakin terjangkau dan praktis.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>News</h3>
+                        </div>
+                        <h2 class="card-title">Tips Mengembangkan Bisnis dengan Strategi Pemasaran Digital</h2>
+                        <p class="card-content">
+                            Pemasaran digital kini menjadi salah satu strategi paling efektif untuk mengembangkan bisnis
+                            di era modern. Dengan memanfaatkan SEO, iklan media sosial, dan pemasaran email, pelaku
+                            usaha bisa menjangkau audiens yang lebih luas secara efisien. Selain itu, penggunaan data
+                            analitik untuk memahami perilaku konsumen dapat meningkatkan konversi dan loyalitas
+                            pelanggan. Kunci sukses dalam strategi ini adalah konsistensi dalam branding dan interaksi
+                            dengan konsumen, serta terus mengikuti tren terbaru di dunia digital.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>News</h3>
+                        </div>
+                        <h2 class="card-title">Tren Bisnis Berkelanjutan: Mengapa Penting untuk Masa Depan?</h2>
+                        <p class="card-content">
+                            Bisnis berkelanjutan kini bukan hanya menjadi tren, tetapi juga kebutuhan dalam menghadapi
+                            perubahan iklim dan tekanan regulasi. Konsumen semakin memilih produk dan layanan yang ramah
+                            lingkungan, sehingga perusahaan yang berinvestasi pada solusi berkelanjutan memiliki peluang
+                            besar untuk bertahan dan berkembang di masa depan. Mengadopsi praktik ramah lingkungan dalam
+                            operasional, menggunakan bahan baku terbarukan, dan mengurangi jejak karbon adalah beberapa
+                            cara perusahaan bisa tetap relevan di tengah perubahan tuntutan pasar.
+                        </p>
+                    </div> -->
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

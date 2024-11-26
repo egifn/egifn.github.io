@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoalMaster - Booking Lapangan Mini Soccer Terbaik</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset dan style dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #991e1e 0%, #ca2020 51%, #e62828 100%);
+            color: white;
+            /* padding: 1rem 0; */
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #f94300;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Hero Section with Carousel */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .carousel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #ffd700;
+            color: #333;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #e6c200;
+        }
+
+        /* Features */
+        .features {
+            padding: 2rem 0 4rem;
+            background: #f4f4f4;
+        }
+
+        .features h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-item i {
+            font-size: 2rem;
+            color: #2989d8;
+            margin-bottom: 1rem;
+        }
+
+        /* Gallery */
+        .gallery {
+            padding: 2rem 0 4rem;
+        }
+
+        .gallery h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 5px;
+            padding: 20px;
+            overflow: hidden;
+            box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            opacity: 80%;
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 1rem;
+            height: 180px;
+        }
+
+        .card-title {
+            color: #2989d8;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-text {
+            margin-bottom: 1rem;
+        }
+
+        .btn-card {
+            display: inline-block;
+            background: #2989d8;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            border: 0;
+        }
+
+        .btn-card:hover {
+            background: #1e5799;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .form-group input[type="submit"] {
+            background: #2989d8;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background: #1e5799;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 2rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a,
+        .contact-info p {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: #ddd;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ffd700;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+
+        .modal-content-header {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        /* Booking Section */
+        .booking {
+            padding: 2rem 0 4rem;
+            background: #e9ecef;
+        }
+
+        .booking h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .booking-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .bookingtime {
+            overflow-x: auto;
+        }
+
+        .time-slots {
+            display: flex;
+            gap: 10px;
+            /* padding: 10px 0; */
+            min-width: max-content;
+            /* Ensure all slots are visible */
+        }
+
+        .time-slot {
+            flex: 0 0 auto;
+            padding: 10px 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            color: white;
+            font-weight: bold;
+            min-width: 120px;
+            /* Set a minimum width for each slot */
+        }
+
+        .available {
+            background-color: #4CAF50;
+        }
+
+        .unavailable {
+            background-color: #f44336;
+        }
+
+
+        /* #bookingModal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        } */
+
+        /* #bookingModal .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        #bookingModal .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        } */
+
+        #bookingModal .close:hover,
+        #bookingModal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #bookingModal form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #bookingModal label,
+        #bookingModal input,
+        #bookingModal button {
+            margin-bottom: 10px;
+        }
+
+        #bookingModal button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #bookingModal button:hover {
+            /* background-color: #45a049;op */
+            opacity: 80%;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #00000076;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0.5rem 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <!-- <img src="" alt="GoalMaster Logo"> -->
+                <h2>GoalMaster</h2>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#features">Fitur</a></li>
+                <li><a href="#gallery">Galeri</a></li>
+                <li><a href="#booking">Booking</a></li>
+                <li><a href="#contact">Kontak</a></li>
+            </ul>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">&#9776;</div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="carousel">
+                <div class="carousel-item active"
+                    style="background-image: url('https://images.unsplash.com/photo-1529900748604-07564a03e7a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')">
+                </div>
+                <div class="carousel-item"
+                    style="background-image: url('https://images.unsplash.com/photo-1487466365202-1afdb86c764e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1173&q=80')">
+                </div>
+                <div class="carousel-item"
+                    style="background-image: url('https://images.unsplash.com/photo-1536122985607-4fe00b283652?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80')">
+                </div>
+            </div>
+            <div class="hero-content">
+                <h1>Lapangan Mini Soccer Terbaik <br>Di Kota Anda</h1>
+                <h2>Booking Mudah, Bermain Puas, Harga Bersahabat</h2>
+                <a href="#booking" class="btn">Booking Sekarang</a>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2>Fitur Unggulan</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Booking Online 24/7</h3>
+                        <p>Pesan lapangan kapan saja dan di mana saja</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-futbol"></i>
+                        <h3>Lapangan Berkualitas</h3>
+                        <p>Rumput sintetis standar internasional</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-clock"></i>
+                        <h3>Fleksibel</h3>
+                        <p>Pilih waktu yang sesuai dengan jadwal Anda</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Aman dan Terpercaya</h3>
+                        <p>Transaksi terjamin dan data Anda terlindungi</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery">
+            <div class="container">
+                <h2>Galeri Lapangan</h2>
+                <div class="gallery-grid">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29jY2VyJTIwZmllbGR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                            class="card-img-top" alt="Lapangan Maradona">
+                        <div class="card-body">
+                            <h5 class="card-title">Lapangan Maradona</h5>
+                            <p class="card-text">Lapangan premium dengan rumput sintetis kualitas tinggi. Cocok untuk
+                                pertandingan kompetitif.</p>
+                            <button class="btn-card" onclick="openModal('modalMaradona')">Lihat Detail</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1487466365202-1afdb86c764e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c29jY2VyJTIwZmllbGR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                            class="card-img-top" alt="Lapangan Pelé">
+                        <div class="card-body">
+                            <h5 class="card-title">Lapangan Pelé</h5>
+                            <p class="card-text">Lapangan standar dengan pencahayaan sempurna untuk permainan malam
+                                hari.</p>
+                            <button class="btn-card" onclick="openModal('modalPele')">Lihat Detail</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1536122985607-4fe00b283652?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c29jY2VyJTIwZmllbGR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                            class="card-img-top" alt="Lapangan Ronaldo">
+                        <div class="card-body">
+                            <h5 class="card-title">Lapangan Ronaldo</h5>
+                            <p class="card-text">Lapangan multifungsi dengan fasilitas lengkap, ideal untuk turnamen dan
+                                acara khusus.</p>
+                            <button class="btn-card" onclick="openModal('modalRonaldo')">Lihat Detail</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="booking" class="booking">
+            <div class="container">
+                <h2>Booking Lapangan Sekarang</h2>
+                <div class="card">
+                    <div class="form-group">
+                        <label for="date">Tanggal</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div id="booking" class="bookingtime">
+                        <div class="form-group">
+                            <div class="time-slots" id="timeSlots"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div id="contact" class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tentang Kami</h3>
+                    <p>GoalMaster adalah penyedia lapangan mini soccer terbaik di kota Anda. Kami berkomitmen untuk
+                        memberikan pengalaman bermain sepak bola yang menyenangkan dan berkualitas.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Tautan Cepat</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Beranda</a></li>
+                        <li><a href="#features">Fitur</a></li>
+                        <li><a href="#gallery">Galeri</a></li>
+                        <li><a href="#booking">Booking</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Hubungi Kami</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> info@goalmaster.com</p>
+                        <p><i class="fas fa-phone"></i> (021) 1234-5678</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Jl. Sepak Bola No. 10, Jakarta</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Ikuti Kami</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 GoalMaster. Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="modalMaradona" class="modal">
+        <div class="modal-content">
+            <div class="modal-content-header">
+                <h2>Lapangan Maradona</h2>
+                <span class="close" onclick="closeModal('modalMaradona')">&times;</span>
+            </div>
+            <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29jY2VyJTIwZmllbGR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                class="modal-img" alt="Lapangan Maradona">
+            <p>Lapangan premium dengan rumput sintetis kualitas tinggi. Cocok untuk pertandingan kompetitif.</p>
+            <div class="form-group">
+                <label for="date">Tanggal</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div id="booking" class="bookingtime">
+                <div class="form-group">
+                    <div class="time-slots" id="timeSlots"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalPele" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalPele')">&times;</span>
+            <h2>Lapangan Pelé</h2>
+            <img src="https://images.unsplash.com/photo-1487466365202-1afdb86c764e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c29jY2VyJTIwZmllbGR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                class="modal-img" alt="Lapangan Pelé">
+            <p>Lapangan standar dengan pencahayaan sempurna untuk permainan malam hari.</p>
+        </div>
+    </div>
+
+    <div id="modalRonaldo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalRonaldo')">&times;</span>
+            <h2>Lapangan Ronaldo</h2>
+            <img src="https://images.unsplash.com/photo-1536122985607-4fe00b283652?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c29jY2VyJTIwZmllbGR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                class="modal-img" alt="Lapangan Ronaldo">
+            <p>Lapangan multifungsi dengan fasilitas lengkap, ideal untuk turnamen dan acara khusus.</p>
+        </div>
+    </div>
+
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('bookingModal')">&times;</span>
+            <form>
+                <h3>Booking Details</h3>
+                <div class="form-group">
+                    <label for="name">Nama</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Nomor Telepon</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="date">Tanggal</label>
+                    <input type="date" id="date" name="date" required>
+                </div> -->
+                <div class="form-group">
+                    <input type="submit" value="Booking Sekarang" class="btn">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        }
+
+        function truncateText(className, wordLimit) {
+            // Ambil semua elemen dengan className yang diberikan
+            const elements = document.querySelectorAll(`.${className}`);
+
+            elements.forEach(element => {
+                let text = element.textContent || element.innerText;
+                let words = text.split(' ');
+
+                if (words.length > wordLimit) {
+                    words = words.slice(0, wordLimit);
+                    element.textContent = words.join(' ') + ' . . .';
+                }
+            });
+        }
+        // Penggunaan fungsi
+        truncateText('card-text', 20);
+
+        // Carousel functionality
+        function carouselAnimation() {
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            let currentItem = 0;
+
+            function showNextItem() {
+                carouselItems[currentItem].classList.remove('active');
+                currentItem = (currentItem + 1) % carouselItems.length;
+                carouselItems[currentItem].classList.add('active');
+            }
+
+            setInterval(showNextItem, 5000); // Change image every 5 seconds
+        }
+
+        // Call the carousel function
+        carouselAnimation();
+    </script>
+
+    <script>
+        const timeSlots = [{
+                time: '09:00 - 10:00',
+                available: true
+            },
+            {
+                time: '10:00 - 11:00',
+                available: false
+            },
+            {
+                time: '11:00 - 12:00',
+                available: true
+            },
+            {
+                time: '12:00 - 13:00',
+                available: true
+            },
+            {
+                time: '13:00 - 14:00',
+                available: false
+            },
+            {
+                time: '14:00 - 15:00',
+                available: true
+            },
+            {
+                time: '15:00 - 16:00',
+                available: true
+            },
+            {
+                time: '16:00 - 17:00',
+                available: false
+            },
+            {
+                time: '17:00 - 18:00',
+                available: true
+            },
+            {
+                time: '18:00 - 19:00',
+                available: true
+            },
+            {
+                time: '19:00 - 20:00',
+                available: false
+            },
+            {
+                time: '20:00 - 21:00',
+                available: true
+            },
+        ];
+
+        const timeSlotsContainer = document.getElementById('timeSlots');
+        const bookingModal = document.getElementById('bookingModal');
+        const closeBtn = bookingModal.getElementsByClassName('close')[0];
+        const bookingForm = document.getElementById('bookingForm');
+        let selectedTime = '';
+
+        timeSlots.forEach(slot => {
+            const button = document.createElement('button');
+            button.className = `time-slot ${slot.available ? 'available' : 'unavailable'}`;
+            button.textContent = slot.time;
+            button.onclick = () => {
+                if (slot.available) {
+                    selectedTime = slot.time;
+                    bookingModal.style.display = 'block';
+                }
+            };
+            timeSlotsContainer.appendChild(button);
+        });
+
+        closeBtn.onclick = () => {
+            bookingModal.style.display = 'none';
+        };
+
+        window.onclick = (event) => {
+            if (event.target == bookingModal) {
+                bookingModal.style.display = 'none';
+            }
+        };
+
+        bookingForm.onsubmit = (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const payment = document.getElementById('payment').value;
+            alert(`Booking confirmed for ${selectedTime}\nName: ${name}\nPhone: ${phone}\nPayment: ${payment}`);
+            bookingModal.style.display = 'none';
+            bookingForm.reset();
+        };
+    </script>
+</body>
+
+</html>

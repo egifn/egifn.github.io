@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabel Transaksi</title>
+    <style>
+       
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        thead {
+            background-color: #36304a;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            color: #ffffff;
+            font-weight: bold;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        tbody tr:hover {
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+        .number-column {
+            text-align: right;
+        }
+      
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Pembeli</th>
+                <th>Barang</th>
+                <th>Tanggal</th>
+                <th>Harga</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Anton</td>
+                <td>Televisi</td>
+                <td>07 Juni 2016</td>
+                <td class="number-column">2.500.000</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Bryan</td>
+                <td>Mesin Cuci</td>
+                <td>10 Juli 2016</td>
+                <td class="number-column">1.500.000</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Cherly</td>
+                <td>Dispenser</td>
+                <td>11 Agustus 2016</td>
+                <td class="number-column">950.000</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Dean</td>
+                <td>Kulkas</td>
+                <td>15 September 2016</td>
+                <td class="number-column">1.750.000</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>Esryl</td>
+                <td>Wall Fan</td>
+                <td>11 Oktober 2016</td>
+                <td class="number-column">450.000</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="4" style="text-align: right;">Total</td>
+                <td class="number-column">7.150.000</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>

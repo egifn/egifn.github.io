@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE FOX NEWSPAPER</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            font-family: 'Times New Roman', Times, serif;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #000;
+        }
+
+        .logo {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .date,
+        .search,
+        .icons {
+            font-size: 0.9em;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-bottom: 1px solid #000;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        nav a:hover {
+            opacity: 75%;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        img {
+            filter: grayscale(0%);
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #000;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            width: auto;
+        }
+       
+        .section-title h2 {
+            margin-left: 55px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .article {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        
+        .article img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        
+        .article h3 {
+            margin: 0%;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 1.3em;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        .article p {
+            font-size: 0.9em;
+        }
+
+        .main-article {
+            grid-column: span 2;
+        }
+
+        .main-article img {
+            height: 300px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: x-small;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .main-article {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="search">&#128269;</div>
+        <div class="logo">THE FOX NEWSPAPER</div>
+        <div class="icons">&#9728; &#9789;</div>
+    </header>
+    <nav>
+        <a href="#">POSTS</a>
+        <a href="#">WORLD</a>
+        <a href="#">MUSIC</a>
+        <a href="#">COOKING</a>
+        <a href="#">INTERVIEW</a>
+        <a href="#">LIFESTYLE</a>
+    </nav>
+    <main>
+        <section class="section">
+            <div class="grid">
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Interview with CEO">
+                    <h3>Interview with CEO : Future of Tech</h3>
+                    <p>Leading tech CEO shares insights on industry trends and innovations...</p>
+                </article>
+                <article class="article main-article">
+                    <img src="/images/jumbo1.png" alt="Pakistan's Hunza valley">
+                    <h3>Pakistan's Hunza valley : Hidden paradise on Earth</h3>
+                    <p>Discover the breathtaking beauty and rich culture of this remote region in northern Pakistan...
+                    </p>
+                </article>
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Local coffee shop">
+                    <h3>Local Coffee Shop Wins Best Brew Award</h3>
+                    <p>Downtown's favorite caffeine spot recognized for exceptional quality...</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <h2 class="logo">WORLD NEWS</h2>
+                <p>view all</p>
+            </div>
+            <div class="grid">
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="AI and Future">
+                    <h3>AI and Future : Why It's Time to Act</h3>
+                    <p>Experts warn of the urgent need to address AI's impact on society and economy...</p>
+                </article>
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Maya's Hidden Star">
+                    <h3>Maya's Hidden Star : World's Most Elusive Cave</h3>
+                    <p>Archaeologists make groundbreaking discovery in Central American jungle...</p>
+                </article>
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Record Temperatures">
+                    <h3>Record Temperatures : Is Nature in Shock?</h3>
+                    <p>Global heatwave raises concerns about climate change acceleration...</p>
+                </article>
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Affordable Pizza">
+                    <h3>$3 and Affordable Pizza : Why? How and Location!</h3>
+                    <p>New pizzeria chain revolutionizes fast food with quality, budget-friendly options...</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <h2 class="logo">MUSIC</h2>
+                <p>view all</p>
+            </div>
+            <div class="grid">
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Rock Stylist">
+                    <h3>Rock Stylist : Icons of 1970s Celebrity Music</h3>
+                    <p>Retrospective on the fashion that defined a generation of rock stars...</p>
+                </article>
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Rock Stylist">
+                    <h3>Love Songs : The Best Collection of 1990s</h3>
+                    <p>Nostalgic playlist features romantic hits from the last decade of the 20th century...</p>
+                </article>
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Pop Hits Awards">
+                    <h3>Pop 29 Awards : 2020s Top Irish Pop Acts</h3>
+                    <p>Annual music celebration highlights emerging talent in Irish pop scene...</p>
+                </article>
+                <article class="article">
+                    <img src="/images/slide-2.jpg" alt="Classical Music">
+                    <h3>Everything About Classical Music in Asia Debate</h3>
+                    <p>Exploring the rise of Western classical music's popularity across Asian countries...</p>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE FOX NEWSPAPER</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 2px solid #000;
+        }
+        .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-align: center;
+            flex-grow: 1;
+        }
+        .date, .search, .icons {
+            font-size: 0.9em;
+        }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-bottom: 1px solid #000;
+            margin-bottom: 20px;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
+        }
+        .article {
+            margin-bottom: 20px;
+        }
+        .article img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .article h2 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .article p {
+            font-size: 0.9em;
+        }
+        .main-article {
+            grid-column: 2;
+            grid-row: span 3;
+        }
+        .main-article img {
+            height: 400px;
+        }
+        .main-article h2 {
+            font-size: 1.8em;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar .article {
+            display: flex;
+            align-items: start;
+        }
+        .sidebar .article img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+        .category {
+            font-size: 0.8em;
+            color: #666;
+            text-transform: uppercase;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .main-article {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="search">&#128269;</div>
+        <div class="logo">THE FOX NEWSPAPER</div>
+        <div class="icons">&#9728; &#9789; &#9000;</div>
+    </header>
+
+    <nav>
+        <a href="#">POSTS</a>
+        <a href="#">WORLD</a>
+        <a href="#">MUSIC</a>
+        <a href="#">COOKING</a>
+        <a href="#">INTERVIEW</a>
+        <a href="#">LIFESTYLE</a>
+    </nav>
+
+    <main class="grid">
+        <aside class="sidebar">
+            <article class="article">
+                <img src="/images/slide-1.jpg" alt="Interview with Clara">
+                <div>
+                    <span class="category">Interview</span>
+                    <h2>Interview with Clara</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </article>
+            <article class="article">
+                <img src="/images/slide-1.jpg" alt="Sarah's Life">
+                <div>
+                    <span class="category">Lifestyle</span>
+                    <h2>Sarah's Life: An Interesting Story Of Fashion Model</h2>
+                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+            </article>
+            <article class="article">
+                <img src="/images/slide-1.jpg" alt="Director Mitchell">
+                <div>
+                    <span class="category">Interview</span>
+                    <h2>Director Mitchell: A Deep Interview</h2>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                </div>
+            </article>
+            <article class="article">
+                <img src="/images/slide-1.jpg" alt="Historic Stories">
+                <div>
+                    <span class="category">History</span>
+                    <h2>Historic Stories About World War II</h2>
+                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
+                </div>
+            </article>
+        </aside>
+
+        <article class="article main-article">
+            <span class="category">Lifestyle</span>
+            <h2>Pakistan's Hunza valley: Hidden paradise on Earth</h2>
+            <img src="/images/jumbo1.png" alt="Pakistan's Hunza valley">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>By Claire Payne | July 13, 2019</p>
+        </article>
+
+        <aside class="sidebar">
+            <article class="article">
+                <img src="/images/slide-3.jpg" alt="Oil and Gasoline Prices">
+                <h2>Oil and Gasoline Price Surge: Why and Solutions</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </article>
+            <article class="article">
+                <img src="/images/jumbo3.png" alt="Choose My Own Path">
+                <h2>I Chose My Own Path To Be Successful</h2>
+                <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </article>
+        </aside>
+    </main>
+</body>
+</html> -->

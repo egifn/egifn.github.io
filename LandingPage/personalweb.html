@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egi Fajar Nurokhman - Web Developer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #5ca0eb;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --bg-color: #f0f8ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        header {
+            background: rgb(27, 62, 98);
+            padding: 15px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.sticky {
+            padding: 13px;
+            background: rgba(27, 63, 98, 1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            width: 100%;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('/api/placeholder/1920/1080') no-repeat center center/cover;
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .tagline {
+            font-size: 24px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.5s backwards;
+        }
+
+        .hire-button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 1s backwards;
+        }
+
+        .hire-button:hover {
+            background-color: #ff8787;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        section {
+            padding: 100px 20px;
+            /* max-width: 1200px; */
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .skill {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 15px 30px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill:hover {
+            transform: translateY(-5px) rotate(5deg);
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .project img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .project-content {
+            padding: 20px;
+        }
+
+        .project h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .contact-item {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .contact-item i {
+            font-size: 36px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #1b3f62;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;
+            }
+
+            .tagline {
+                font-size: 20px;
+            }
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="#home" class="logo">E</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 data-aos="fade-up">Egi Fajar Nasrulloh</h1>
+                <p class="tagline" data-aos="fade-up" data-aos-delay="200">Full Stack Web Developer and IT Professional</p>
+                <a href="#contact" class="hire-button" data-aos="fade-up" data-aos-delay="400">Hire Me</a>
+            </div>
+        </section>
+
+        <section id="about" data-aos="fade-up">
+            <h2>About Me</h2>
+            <p>Saya adalah lulusan S1 Teknik Informatika dari Stikom Poltek Cirebon dengan passion dalam menciptakan solusi digital yang inovatif dan efisien. Dengan pengalaman yang luas dalam pengembangan web dan IT, saya telah berhasil menyelesaikan berbagai proyek yang menantang untuk memenuhi kebutuhan klien.</p>
+        </section>
+
+        <section id="skills" data-aos="fade-up">
+            <h2>Skills</h2>
+            <div class="skills">
+                <span class="skill" data-aos="zoom-in" data-aos-delay="100">PHP</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="200">JavaScript</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="300">HTML/CSS</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="400">MySQL</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="500">React</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="600">Node.js</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="700">Git</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="800">RESTful API</span>
+                <span class="skill" data-aos="zoom-in" data-aos-delay="900">IT Services</span>
+            </div>
+        </section>
+
+        <section id="projects" data-aos="fade-up">
+            <h2>Projects</h2>
+            <div class="projects">
+                <div class="project" data-aos="fade-up">
+                    <img src="/api/placeholder/400/200" alt="CMS Project">
+                    <div class="project-content">
+                        <h3>Sistem Manajemen Konten (CMS)</h3>
+                        <p>Mengembangkan CMS yang dapat disesuaikan untuk memudahkan klien dalam mengelola konten website mereka secara efisien.</p>
+                    </div>
+                </div>
+                <div class="project" data-aos="fade-up" data-aos-delay="200">
+                    <img src="/api/placeholder/400/200" alt="E-commerce Project">
+                    <div class="project-content">
+                        <h3>Aplikasi E-commerce</h3>
+                        <p>Merancang dan mengimplementasikan platform online shop yang aman dan user-friendly dengan fitur pembayaran terintegrasi.</p>
+                    </div>
+                </div>
+                <div class="project" data-aos="fade-up" data-aos-delay="400">
+                    <img src="/api/placeholder/400/200" alt="Analytics Dashboard">
+                    <div class="project-content">
+                        <h3>Dashboard Analitik</h3>
+                        <p>Membuat dashboard interaktif untuk visualisasi data bisnis, membantu klien dalam pengambilan keputusan berbasis data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" data-aos="fade-up">
+            <h2>Contact Me</h2>
+            <div class="contact-info">
+                <div class="contact-item" data-aos="zoom-in">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>egifajarn@gmail.com</p>
+                </div>
+                <div class="contact-item" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone</h3>
+                    <p>08968140390</p>
+                </div>
+                <div class="contact-item" data-aos="zoom-in" data-aos-delay="400">
+                    <i class="fas fa-hashtag"></i>
+                    <h3>Social Media</h3>
+                    <p>Instagram: @egifn_</p>
+                    <p>LinkedIn: egifn_</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Egi Fajar Nurokhman. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            mirror: false,
+        });
+
+        // Sticky header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            header.classList.toggle('sticky', window.scrollY > 0);
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

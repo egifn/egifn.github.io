@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .top-header {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+        .logo {
+            font-size: 24px;
+        }
+        .search-bar {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            width: 300px;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 15px;
+        }
+        .sidebar {
+            background-color: #34495e;
+            color: #ecf0f1;
+            width: 250px;
+            height: 100vh;
+            transition: all 0.3s;
+            position: fixed;
+            left: 0;
+            top: 60px;
+            z-index: 900;
+            overflow-y: auto;
+        }
+        .sidebar.collapsed {
+            width: 60px;
+        }
+        .sidebar.hidden {
+            transform: translateX(-250px);
+        }
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .menu-item:hover {
+            background-color: #2c3e50;
+        }
+        .menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .menu-text {
+            display: inline-block;
+        }
+        .collapsed .menu-text {
+            display: none;
+        }
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 60px;
+            left: 250px;
+            right: 0;
+            height: 60px;
+            transition: all 0.3s;
+            z-index: 800;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar.expanded {
+            left: 60px;
+        }
+        .navbar.hidden {
+            left: 0;
+        }
+        .main-content {
+            margin-left: 250px;
+            margin-top: 120px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        .main-content.expanded {
+            margin-left: 60px;
+        }
+        .main-content.hidden {
+            margin-left: 0;
+        }
+        .toggle-btn, .settings-btn, .manage-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #2c3e50;
+            margin-right: 15px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card h2 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .search-bar {
+                width: 200px;
+            }
+            .sidebar {
+                width: 200px;
+            }
+            .sidebar.collapsed {
+                width: 60px;
+            }
+            .sidebar.hidden {
+                transform: translateX(-200px);
+            }
+            .navbar {
+                left: 200px;
+            }
+            .navbar.expanded {
+                left: 60px;
+            }
+            .navbar.hidden {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+            .main-content.expanded {
+                margin-left: 60px;
+            }
+            .main-content.hidden {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                flex-direction: column;
+                height: auto;
+            }
+            .search-bar {
+                width: 100%;
+                margin-top: 10px;
+            }
+            .navbar {
+                left: 0;
+                top: 120px;
+                width: 100%;
+                height: auto;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 20px;
+            }
+            .main-content {
+                margin-left: 0;
+                margin-top: 180px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .search-bar {
+                width: 100%;
+                margin-top: 10px;
+                padding: 8px 10px;
+            }
+            .sidebar {
+                width: 150px;
+            }
+            .sidebar.collapsed {
+                width: 50px;
+            }
+            .sidebar.hidden {
+                transform: translateX(-150px);
+            }
+            .navbar {
+                left: 0;
+                top: 60px;
+                width: 100%;
+                height: auto;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 20px;
+            }
+            .main-content {
+                margin-left: 0;
+                margin-top: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="top-header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+            </div>
+            <input type="text" placeholder="Search..." class="search-bar">
+            <div class="user-profile">
+                <span>Akun</span>
+                <img src="/api/placeholder/40/40" alt="User Avatar">
+            </div>
+        </header>
+        <nav class="sidebar hidden">
+            <div class="sidebar-menu">
+                <div class="menu-item"><i class="fas fa-home"></i><span class="menu-text">Home</span></div>
+                <div class="menu-item"><i class="fas fa-inbox"></i><span class="menu-text">Inbox</span></div>
+                <div class="menu-item"><i class="fas fa-file-alt"></i><span class="menu-text">Docs</span></div>
+                <div class="menu-item"><i class="fas fa-chart-bar"></i><span class="menu-text">Dashboards</span></div>
+                <div class="menu-item"><i class="fas fa-paperclip"></i><span class="menu-text">Clips</span></div>
+                <div class="menu-item"><i class="fas fa-clock"></i><span class="menu-text">Timesheets</span></div>
+                <div class="menu-item"><i class="fas fa-ellipsis-h"></i><span class="menu-text">More</span></div>
+            </div>
+        </nav>
+        <div class="navbar hidden">
+            <div>
+                <button class="toggle-btn" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <button class="settings-btn">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+            <button class="manage-btn">
+                Manage Content
+            </button>
+        </div>
+        <main class="main-content hidden">
+            <h1>Good afternoon, Akun</h1>
+            <div class="content">
+                <div class="card">
+                    <h2>Recents</h2>
+                    <p>SOP Template • in Space</p>
+                </div>
+                <div class="card">
+                    <h2>Agenda</h2>
+                    <p>Jul 22, Mon</p>
+                    <p>Agenda items from your calendars will show here.</p>
+                    <button class="button">+ Add calendar integrations</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+        const navbar = document.querySelector('.navbar');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            navbar.classList.toggle('expanded');
+        });
+
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', () => {
+                console.log('Clicked:', item.textContent.trim());
+            });
+        });
+
+        document.querySelector('.search-bar').addEventListener('input', (e) => {
+            console.log('Search query:', e.target.value);
+        });
+
+        document.querySelector('.button').addEventListener('click', () => {
+            console.log('Add calendar integrations clicked');
+        });
+
+        document.querySelector('.settings-btn').addEventListener('click', () => {
+            console.log('Settings clicked');
+        });
+
+        document.querySelector('.manage-btn').addEventListener('click', () => {
+            console.log('Manage Content clicked');
+        });
+
+        // Handle showing and hiding sidebar on smaller screens
+        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        function handleMediaQueryChange(e) {
+            if (e.matches) {
+                sidebar.classList.add('hidden');
+                navbar.classList.add('hidden');
+                mainContent.classList.add('hidden');
+            } else {
+                sidebar.classList.remove('hidden');
+                navbar.classList.remove('hidden');
+                mainContent.classList.remove('hidden');
+            }
+        }
+        mediaQuery.addListener(handleMediaQueryChange);
+        handleMediaQueryChange(mediaQuery);
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            navbar.classList.toggle('hidden');
+            mainContent.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
