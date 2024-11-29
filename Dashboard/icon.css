@@ -320,3 +320,40 @@
     background-image: url('/icon/arrow-left-bold.svg');
     background-size: cover;
 }
+
+.eg-chart {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/chart-histogram.svg');
+    background-size: cover;
+}
+
+.eg-inbox {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/inbox-full.svg');
+    background-size: cover;
+}
+
+.eg-document {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/document.svg');
+    background-size: cover;
+}
+
+.eg-file {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/file.svg');
+    background-size: cover;
+}
+
+.eg-disk {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/disk.svg');
+    background-size: cover;
+}
+
+
