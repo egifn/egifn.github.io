@@ -1,287 +1,268 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Toko Fashion - Penentuan Ukuran</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok-like Vertical Swipe Feed</title>
     <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --background-color: #f4f8f9;
-            --text-color: #333;
-            --card-background: #ffffff;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .size-finder {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .size-card {
-            flex: 1;
-            background-color: var(--card-background);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .size-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .size-card h2 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #555;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-
-        .size-button {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-        }
-
-        .size-button:hover {
-            background-color: #2980b9;
-        }
-
-        .result {
-            background-color: var(--card-background);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .catalog {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .product {
-            background-color: var(--card-background);
-            border-radius: 12px;
+        body, html {
+            height: 100%;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .tiktok-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vertical-scroll {
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .vertical-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .video-post {
+            width: 100%;
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .horizontal-carousel {
+            width: 90%;
+            /* height: 80%; */
+            position: relative;
+            overflow: hidden;
+            /* border-radius: 15px; */
+        }
+
+        .carousel-container {
+            display: flex;
             transition: transform 0.3s ease;
         }
 
-        .product:hover {
-            transform: scale(1.05);
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
 
-        .product img {
-            width: 100%;
-            height: 250px;
+        .carousel-image {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: cover;
         }
 
-        .product-info {
-            padding: 15px;
-            text-align: center;
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
         }
 
-        .product-info h3 {
-            margin-bottom: 10px;
-            color: var(--text-color);
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            margin: 0 4px;
+            transition: background-color 0.3s;
         }
 
-        .product-info p {
-            color: var(--primary-color);
-            font-weight: 600;
+        .carousel-dot.active {
+            background-color: white;
+        }
+
+        .post-details {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 style="text-align: center; margin-bottom: 30px; color: var(--primary-color);">
-            Fashion Size Finder
-        </h1>
-
-        <div class="size-finder">
-            <div class="size-card">
-                <h2>Ukuran Baju</h2>
-                <form id="bajuForm">
-                    <div class="form-group">
-                        <label for="tinggiBadan">Tinggi Badan (cm):</label>
-                        <input type="number" id="tinggiBadan" required>
+    <div class="tiktok-container">
+        <div class="vertical-scroll" id="verticalScroll">
+            <div class="video-post">
+                <div class="horizontal-carousel" id="carousel1">
+                    <div class="carousel-container">
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg" alt="Carousel Item 1" class="carousel-image">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg" alt="Carousel Item 2" class="carousel-image">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg" alt="Carousel Item 3" class="carousel-image">
+                        </div>
+                        <div class="carousel-indicators">
+                            <div class="carousel-dot active"></div>
+                            <div class="carousel-dot"></div>
+                            <div class="carousel-dot"></div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="lebarDada">Lebar Dada (cm):</label>
-                        <input type="number" id="lebarDada" required>
-                    </div>
-                    <button type="button" class="size-button" onclick="tentukanUkuranBaju()">
-                        Cari Ukuran Baju
-                    </button>
-                </form>
-                <div id="hasilUkuranBaju" class="result"></div>
+                </div>
+                <div class="post-details">
+                    <h3>Post Title 1</h3>
+                    <p>Description for first post</p>
+                </div>
             </div>
 
-            <div class="size-card">
-                <h2>Ukuran Celana</h2>
-                <form id="celanaForm">
-                    <div class="form-group">
-                        <label for="beratBadan">Berat Badan (kg):</label>
-                        <input type="number" id="beratBadan" required>
+            <div class="video-post">
+                <div class="horizontal-carousel" id="carousel2">
+                    <div class="carousel-container">
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg" alt="Carousel Item 1" class="carousel-image">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg" alt="Carousel Item 2" class="carousel-image">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="panjangKaki">Panjang Kaki (cm):</label>
-                        <input type="number" id="panjangKaki" required>
+                    <div class="carousel-indicators">
+                        <div class="carousel-dot active"></div>
+                        <div class="carousel-dot"></div>
                     </div>
-                    <button type="button" class="size-button" onclick="tentukanUkuranCelana()">
-                        Cari Ukuran Celana
-                    </button>
-                </form>
-                <div id="hasilUkuranCelana" class="result"></div>
+                </div>
+                <div class="post-details">
+                    <h3>Post Title 2</h3>
+                    <p>Description for second post</p>
+                </div>
             </div>
-        </div>
 
-        <h2 style="text-align: center; margin: 30px 0; color: var(--primary-color);">
-            Katalog Produk
-        </h2>
-        <div class="catalog" id="catalogProduk">
-            <!-- Produk akan dihasilkan oleh JavaScript -->
+            <div class="video-post">
+                <div class="horizontal-carousel" id="carousel3">
+                    <div class="carousel-container">
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg" alt="Carousel Item 1" class="carousel-image">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg" alt="Carousel Item 2" class="carousel-image">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg" alt="Carousel Item 3" class="carousel-image">
+                        </div>
+                    </div>
+                    <div class="carousel-indicators">
+                        <div class="carousel-dot active"></div>
+                        <div class="carousel-dot"></div>
+                        <div class="carousel-dot"></div>
+                    </div>
+                </div>
+                <div class="post-details">
+                    <h3>Post Title 3</h3>
+                    <p>Description for third post</p>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        function tentukanUkuranBaju() {
-            const tinggiBadan = parseFloat(document.getElementById('tinggiBadan').value);
-            const lebarDada = parseFloat(document.getElementById('lebarDada').value);
+        // Horizontal Carousel Function
+        function setupCarousel(carouselId) {
+            const carousel = document.getElementById(carouselId);
+            const container = carousel.querySelector('.carousel-container');
+            const items = carousel.querySelectorAll('.carousel-item');
+            const dots = carousel.querySelectorAll('.carousel-dot');
+            let currentIndex = 0;
 
-            let ukuranBaju = '';
-            if (tinggiBadan < 150 && lebarDada < 40) ukuranBaju = 'S';
-            else if (tinggiBadan < 165 && lebarDada >= 40 && lebarDada < 50) ukuranBaju = 'M';
-            else if (tinggiBadan < 180 && lebarDada >= 50 && lebarDada < 60) ukuranBaju = 'L';
-            else ukuranBaju = 'XL';
+            // Horizontal Swipe Detection
+            let startX = 0;
+            carousel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
 
-            const hasilUkuranBaju = document.getElementById('hasilUkuranBaju');
-            hasilUkuranBaju.innerHTML = `
-                <h3>Hasil Ukuran Baju:</h3>
-                <p>Rekomendasi Ukuran: ${ukuranBaju}</p>
-            `;
+            carousel.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].clientX;
+                const diffX = startX - endX;
 
-            tampilkanKatalog(ukuranBaju, null);
-        }
-
-        function tentukanUkuranCelana() {
-            const beratBadan = parseFloat(document.getElementById('beratBadan').value);
-            const panjangKaki = parseFloat(document.getElementById('panjangKaki').value);
-
-            let ukuranCelana = '';
-            if (beratBadan < 50 && panjangKaki < 70) ukuranCelana = '28';
-            else if (beratBadan < 60 && panjangKaki >= 70 && panjangKaki < 80) ukuranCelana = '30';
-            else if (beratBadan < 70 && panjangKaki >= 80 && panjangKaki < 90) ukuranCelana = '32';
-            else ukuranCelana = '34';
-
-            const hasilUkuranCelana = document.getElementById('hasilUkuranCelana');
-            hasilUkuranCelana.innerHTML = `
-                <h3>Hasil Ukuran Celana:</h3>
-                <p>Rekomendasi Ukuran: ${ukuranCelana}</p>
-            `;
-
-            tampilkanKatalog(null, ukuranCelana);
-        }
-
-        function tampilkanKatalog(ukuranBaju, ukuranCelana) {
-            const produk = [
-                {nama: 'Kemeja Casual', ukuran: ukuranBaju || 'Semua', gambar: '/api/placeholder/300/400', kategori: 'Baju'},
-                {nama: 'Jaket Musim Dingin', ukuran: ukuranBaju || 'Semua', gambar: '/api/placeholder/300/400', kategori: 'Baju'},
-                {nama: 'Celana Jeans', ukuran: ukuranCelana || 'Semua', gambar: '/api/placeholder/300/400', kategori: 'Celana'},
-                {nama: 'Kaos Olahraga', ukuran: ukuranBaju || 'Semua', gambar: '/api/placeholder/300/400', kategori: 'Baju'},
-                {nama: 'Chino Pants', ukuran: ukuranCelana || 'Semua', gambar: '/api/placeholder/300/400', kategori: 'Celana'},
-                {nama: 'Sweater Rajut', ukuran: ukuranBaju || 'Semua', gambar: '/api/placeholder/300/400', kategori: 'Baju'}
-            ];
-
-            const catalogProduk = document.getElementById('catalogProduk');
-            catalogProduk.innerHTML = '';
-
-            produk.forEach(item => {
-                if (ukuranBaju || ukuranCelana) {
-                    if ((ukuranBaju && item.kategori === 'Baju') || (ukuranCelana && item.kategori === 'Celana')) {
-                        const produkElement = document.createElement('div');
-                        produkElement.classList.add('product');
-                        produkElement.innerHTML = `
-                            <img src="${item.gambar}" alt="${item.nama}">
-                            <div class="product-info">
-                                <h3>${item.nama}</h3>
-                                <p>Ukuran: ${item.ukuran}</p>
-                            </div>
-                        `;
-                        catalogProduk.appendChild(produkElement);
+                if (Math.abs(diffX) > 50) {
+                    // Swipe Left
+                    if (diffX > 0 && currentIndex < items.length - 1) {
+                        currentIndex++;
+                    } 
+                    // Swipe Right
+                    else if (diffX < 0 && currentIndex > 0) {
+                        currentIndex--;
                     }
-                } else {
-                    const produkElement = document.createElement('div');
-                    produkElement.classList.add('product');
-                    produkElement.innerHTML = `
-                        <img src="${item.gambar}" alt="${item.nama}">
-                        <div class="product-info">
-                            <h3>${item.nama}</h3>
-                            <p>Ukuran: ${item.ukuran}</p>
-                        </div>
-                    `;
-                    catalogProduk.appendChild(produkElement);
+
+                    updateCarousel();
                 }
             });
+
+            function updateCarousel() {
+                // Move carousel
+                container.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+                // Update dots
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+
+            // Dot Click Navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
         }
+
+        // Setup Vertical Scroll
+        const verticalScroll = document.getElementById('verticalScroll');
+        let currentVerticalIndex = 0;
+
+        verticalScroll.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+        });
+
+        verticalScroll.addEventListener('touchend', (e) => {
+            const endY = e.changedTouches[0].clientY;
+            const diffY = startY - endY;
+
+            if (Math.abs(diffY) > 50) {
+                // Swipe Up
+                if (diffY > 0 && currentVerticalIndex < verticalScroll.children.length - 1) {
+                    currentVerticalIndex++;
+                } 
+                // Swipe Down
+                else if (diffY < 0 && currentVerticalIndex > 0) {
+                    currentVerticalIndex--;
+                }
+
+                verticalScroll.style.transform = `translateY(-${currentVerticalIndex * 100}vh)`;
+            }
+        });
+
+        // Initialize Carousels
+        setupCarousel('carousel1');
+        setupCarousel('carousel2');
+        setupCarousel('carousel3'); 
     </script>
 </body>
 </html>
