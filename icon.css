@@ -356,4 +356,18 @@
     background-size: cover;
 }
 
+.eg-ruler {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/ruler-combined.svg');
+    background-size: cover;
+}
+
+.eg-setting-slider {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/settings-sliders.svg');
+    background-size: cover;
+}
+
 

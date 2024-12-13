@@ -16,6 +16,7 @@ html {
 .top-nav {
     position: fixed;
     top: 0;
+    margin-top: -3px;
     left: 0;
     width: 100%;
     background-color: #ffffff;
@@ -44,7 +45,7 @@ html {
 
 .bottom-nav {
     position: fixed;
-    bottom: 0;
+    bottom: -3px;
     left: 0;
     width: 100%;
     background-color: #f8f9fa;
@@ -55,7 +56,7 @@ html {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.nav-item {
+.bottom-nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -66,13 +67,13 @@ html {
     width: 20%; /* Memastikan setiap item memiliki lebar yang sama */
 }
 
-.nav-item i {
+.bottom-nav-item i {
     font-size: 24px;
     margin-bottom: 4px;
 }
 
 
-.nav-item:hover {
+.bottom-nav-item:hover {
     opacity: 75%; /* Warna saat hover, sesuaikan sesuai kebutuhan */
 }
 
