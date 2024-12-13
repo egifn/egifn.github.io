@@ -291,7 +291,7 @@
         }
 
         // Close the filterCatalog when clicking outside
-        document.getElementById('overlay').addEventListener('click', () => {
+        document.getElementsByClassName('container').addEventListener('click', () => {
             document.getElementById('filterCatalog').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
         });
