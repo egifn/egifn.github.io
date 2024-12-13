@@ -276,51 +276,43 @@
 
     <script>
         // Toggle visibility of the filter catalog
-           function toggleFilterCatalog(event) {
+        function toggleFilterCatalog(event) {
             event.preventDefault(); // Prevent default link behavior
             const filterCatalog = document.getElementById('filterCatalog');
             const overlay = document.getElementById('overlay');
 
             if (filterCatalog.style.display === 'none' || filterCatalog.style.display === '') {
                 filterCatalog.style.display = 'grid';
-                overlay.style.display = 'block';
             } else {
                 filterCatalog.style.display = 'none';
-                overlay.style.display = 'none';
             }
         }
 
-        // Close the filterCatalog when clicking outside
-        document.getElementsByClassName('container').addEventListener('click', () => {
-            document.getElementById('filterCatalog').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
+        document.querySelector('.container').addEventListener('click', () => {
+            const filterCatalog = document.getElementById('filterCatalog');
+            const overlay = document.getElementById('overlay');
+            if (filterCatalog) filterCatalog.style.display = 'none';
+            if (overlay) overlay.style.display = 'none';
         });
+
 
         // Filter product functionality
         function filterProduk(category, event) {
-            // Update active button
+            event.preventDefault();
             const buttons = document.querySelectorAll('.filter-catalog button');
             buttons.forEach(button => button.classList.remove('active'));
             event.target.classList.add('active');
 
-            // Update catalog content
             const catalog = document.getElementById('catalogProduk');
-            catalog.innerHTML = `<p>Menampilkan produk kategori: ${category}</p>`;
-
-            // Simulate fetching data (replace with actual data fetching logic)
             const products = {
-                semua: ['Produk 1', 'Produk 2', 'Produk 3'],
-                baju: ['Baju A', 'Baju B'],
-                celana: ['Celana X', 'Celana Y'],
-                hoodie: ['Hoodie Q'],
-                jaket: ['Jaket M', 'Jaket N'],
-                kemeja: ['Kemeja Z']
+                
             };
 
-            const productList = products[category] || [];
-            catalog.innerHTML = productList.map(product => `<div>${product}</div>`).join('') ||
-                `<p>Tidak ada produk dalam kategori ini.</p>`;
+            catalog.innerHTML = products[category] ?
+                products[category].map(product => `<div>${product}</div>`).join('') :
+                `<p>Kategori tidak ditemukan.</p>`;
         }
+
 
         // Initialize default view
         document.addEventListener('DOMContentLoaded', () => {
