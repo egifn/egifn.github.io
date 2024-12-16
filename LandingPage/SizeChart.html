@@ -9,8 +9,11 @@
     <link rel="stylesheet" href="/mystyle.css">
     <style>
         .filtering {
-            color: #333;
+            margin-right: 50px;
+            text-align: center;
+            color: #495057;
             text-decoration: none;
+            font-size: 12px;
         }
 
         .filter-catalog {
@@ -137,14 +140,10 @@
             background-color: var(--card-background);
             border-radius: 2px;
             overflow: hidden;
+            border-top: 1px solid #dbdbdb;
+            border-bottom: 1px solid #dbdbdb;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
-        }
-
-        .product img {
-            width: 100%;
-            height: auto;
-            display: block;
         }
 
         .product:hover {
@@ -152,41 +151,55 @@
         }
 
         .product-img {
-            display: flex;
-            margin: 5px;
-            gap: 0px;
+            width: 100%;
+            margin: 0;
         }
 
         .product-img img {
-            width: 50%;
-            height: auto;
+            width: 100%;
+            height: 450px;
             object-fit: cover;
-            gap: 5px;
-            /* margin: 7px; */
+            border-radius: 2px;
+            display: block;
         }
 
         .product-info {
-            padding: 15px;
-            text-align: center;
+            padding: 5px;
         }
 
-        .product-info h3 {
-            margin-bottom: 10px;
+        .info-row {
+            display: flex;
+            margin: 5px;
+        }
+
+        .label {
+            width: 80px;
+            /* Lebar yang konsisten untuk label */
+            font-weight: bold;
+        }
+
+        .value {
+            flex: 1;
+            /* Agar teks di sebelah kanan fleksibel */
+        }
+
+        .product-info h4 {
+            margin: 10px 5px;
             color: var(--text-color);
         }
 
         .product-info p {
+            margin: 5px;
             color: var(--primary-color);
-            font-weight: 600;
+            /* font-weight: 600; */
         }
     </style>
 </head>
 
 <body>
     <nav class="top-nav">
+        <a href="#" class="search-icon"><img src="/LandingPage/img/logo.png" style="width: 40px;" alt=""></a>
         <a href="#" class="filtering eg-setting-slider" onclick="toggleFilterCatalog(event)"></a>
-        <a href="#" class="search-icon eg-search-bold">
-        </a>
     </nav>
     <!-- C:Catalog -->
     <div class="container">
@@ -259,7 +272,7 @@
         </div>
 
         <nav class="bottom-nav">
-            <a href="/profil.html" class="bottom-nav-item">
+            <a href="/SizeChart2.html" class="bottom-nav-item">
                 <i class="eg-ruler"></i>
                 <div>Fitting</div>
             </a>
@@ -270,6 +283,7 @@
             <a href="/profil.html" class="bottom-nav-item">
                 <i class="eg-user-bold"></i>
                 <div>Profil</div>
+                &nbsp;
             </a>
         </nav>
     </div>
@@ -305,7 +319,7 @@
 
             const catalog = document.getElementById('catalogProduk');
             const products = {
-                
+
             };
 
             catalog.innerHTML = products[category] ?
@@ -333,9 +347,9 @@
             event.target.classList.add('active');
 
             const produk = [{
-                    nama: 'Kemeja Casual',
+                    nama: 'Rekomendasi OOTD Casual',
                     ukuran: 'M',
-                    inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
+                    inspirasi: 'https://i.pinimg.com/736x/64/a1/48/64a148e36f10b047999de47d64bbbbaa.jpg',
                     rekomendasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
                     kategori: 'outfit'
                 },
@@ -396,198 +410,7 @@
                     kategori: 'jaket'
                 },
 
-                // Data tambahan
-                {
-                    nama: 'Kemeja Casual 2',
-                    ukuran: 'L',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'kemeja'
-                },
-                {
-                    nama: 'Jaket Musim Dingin 2',
-                    ukuran: 'M',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'jaket'
-                },
-                {
-                    nama: 'Celana Jeans 2',
-                    ukuran: '34',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'celana'
-                },
-                {
-                    nama: 'Kaos Olahraga 2',
-                    ukuran: 'M',
-                    inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'baju'
-                },
-                {
-                    nama: 'Hoodie Polos 2',
-                    ukuran: 'L',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'hoodie'
-                },
-                {
-                    nama: 'Sweater Rajut 2',
-                    ukuran: 'XL',
-                    inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'baju'
-                },
-                {
-                    nama: 'Celana Chino 2',
-                    ukuran: '32',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'celana'
-                },
-                {
-                    nama: 'Kemeja Flanel 2',
-                    ukuran: 'M',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'kemeja'
-                },
-                {
-                    nama: 'Jaket Kulit 2',
-                    ukuran: 'L',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'jaket'
-                },
 
-                {
-                    nama: 'Kemeja Casual 3',
-                    ukuran: 'S',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'kemeja'
-                },
-                {
-                    nama: 'Jaket Musim Dingin 3',
-                    ukuran: 'XL',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'jaket'
-                },
-                {
-                    nama: 'Celana Jeans 3',
-                    ukuran: '36',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'celana'
-                },
-                {
-                    nama: 'Kaos Olahraga 3',
-                    ukuran: 'L',
-                    inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'baju'
-                },
-                {
-                    nama: 'Hoodie Polos 3',
-                    ukuran: 'M',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'hoodie'
-                },
-                {
-                    nama: 'Sweater Rajut 3',
-                    ukuran: 'S',
-                    inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'baju'
-                },
-                {
-                    nama: 'Celana Chino 3',
-                    ukuran: '30',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'celana'
-                },
-                {
-                    nama: 'Kemeja Flanel 3',
-                    ukuran: 'L',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'kemeja'
-                },
-                {
-                    nama: 'Jaket Kulit 3',
-                    ukuran: 'S',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'jaket'
-                },
-
-                {
-                    nama: 'Kemeja Casual 4',
-                    ukuran: 'XL',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'kemeja'
-                },
-                {
-                    nama: 'Jaket Musim Dingin 4',
-                    ukuran: 'S',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'jaket'
-                },
-                {
-                    nama: 'Celana Jeans 4',
-                    ukuran: '38',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'celana'
-                },
-                {
-                    nama: 'Kaos Olahraga 4',
-                    ukuran: 'S',
-                    inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'baju'
-                },
-                {
-                    nama: 'Hoodie Polos 4',
-                    ukuran: 'L',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'hoodie'
-                },
-                {
-                    nama: 'Sweater Rajut 4',
-                    ukuran: 'M',
-                    inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'baju'
-                },
-                {
-                    nama: 'Celana Chino 4',
-                    ukuran: '32',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'celana'
-                },
-                {
-                    nama: 'Kemeja Flanel 4',
-                    ukuran: 'XL',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'kemeja'
-                },
-                {
-                    nama: 'Jaket Kulit 4',
-                    ukuran: 'M',
-                    inspirasi: '/api/placeholder/300/400',
-                    rekomendasi: '/api/placeholder/300/400',
-                    kategori: 'jaket'
-                },
 
                 // Tambahkan hingga mencapai total 90 item
             ];
@@ -603,10 +426,19 @@
                 const produkElement = document.createElement('div');
                 produkElement.classList.add('product');
                 produkElement.innerHTML = `
-                    <img src="${item.inspirasi}" alt="${item.nama}">
+                    <div class="product-img">
+                        <img src="${item.inspirasi}" alt="${item.nama}">
+                    </div>
                     <div class="product-info">
-                        <h3>${item.nama}</h3>
-                        <p>Ukuran: ${item.ukuran}</p>
+                            <h4 class="value">${item.nama}</h4>
+                        <div class="info-row">
+                            <span class="label">Harga</span>
+                            <span class="value">: ${item.harga}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Link</span>
+                            <span class="value">: ${item.link}</span>
+                        </div>
                     </div>
                 `;
                 catalogProduk.appendChild(produkElement);
