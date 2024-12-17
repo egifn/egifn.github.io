@@ -14,7 +14,7 @@ html {
     position: fixed;
     top: -4px;
     left: 0;
-    width: 100%;
+    width: -webkit-fill-available;
     background-color: #ffffff;
     display: flex;
     justify-content: space-between;
@@ -47,7 +47,7 @@ html {
     background-color: #f8f9fa;
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: flex-start;
     padding: 10px 0;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }

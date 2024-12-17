@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/mystyle.css">
     <style>
         .filtering {
-            margin-right: 50px;
+            margin-right: 35px;
             text-align: center;
             color: #495057;
             text-decoration: none;
@@ -134,9 +134,6 @@
         .catalog {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-            margin: 10px;
-            gap: 5px;
-            border-radius: 5px;
         }
 
         .product {
@@ -433,6 +430,140 @@
                         <img src="${item.inspirasi}" alt="${item.nama}">
                     </div>
                     <div class="product-info">
+                            <h4 class="value">${item.nama}</h4>
+                        <div class="info-row">
+                            <span class="label">Harga</span>
+                            <span class="value">: ${item.harga}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Link</span>
+                            <span class="value">: ${item.link}</span>
+                        </div>
+                    </div>
+                `;
+                catalogProduk.appendChild(produkElement);
+            });
+        }
+
+        // Initial load of all products
+        filterProduk('semua', {
+            target: document.querySelector('.filter-catalog button')
+        });
+    </script>
+    <script>
+        function tentukanUkuranBaju() {
+            const tinggiBadan = parseFloat(document.getElementById('tinggiBadan').value);
+            const lebarDada = parseFloat(document.getElementById('lebarDada').value);
+
+            let ukuranBaju = '';
+            if (tinggiBadan < 150 && lebarDada < 40) ukuranBaju = 'S';
+            else if (tinggiBadan < 165 && lebarDada >= 40 && lebarDada < 50) ukuranBaju = 'M';
+            else if (tinggiBadan < 180 && lebarDada >= 50 && lebarDada < 60) ukuranBaju = 'L';
+            else ukuranBaju = 'XL';
+
+            const hasilUkuranBaju = document.getElementById('hasilUkuranBaju');
+            hasilUkuranBaju.innerHTML = `
+                <h3>Hasil Ukuran Baju:</h3>
+                <p>Rekomendasi Ukuran: ${ukuranBaju}</p>
+            `;
+
+            tampilkanKatalog(ukuranBaju, null);
+        }
+
+        function tentukanUkuranCelana() {
+            const beratBadan = parseFloat(document.getElementById('beratBadan').value);
+            const panjangKaki = parseFloat(document.getElementById('panjangKaki').value);
+
+            let ukuranCelana = '';
+            if (beratBadan < 50 && panjangKaki < 70) ukuranCelana = '28';
+            else if (beratBadan < 60 && panjangKaki >= 70 && panjangKaki < 80) ukuranCelana = '30';
+            else if (beratBadan < 70 && panjangKaki >= 80 && panjangKaki < 90) ukuranCelana = '32';
+            else ukuranCelana = '34';
+
+            const hasilUkuranCelana = document.getElementById('hasilUkuranCelana');
+            hasilUkuranCelana.innerHTML = `
+                <h3>Hasil Ukuran Celana:</h3>
+                <p>Rekomendasi Ukuran: ${ukuranCelana}</p>
+            `;
+
+            tampilkanKatalog(null, ukuranCelana);
+        }
+
+        function tampilkanKatalog(ukuranBaju, ukuranCelana) {
+            const produk = [{
+                    nama: 'Kemeja Casual',
+                    ukuran: ukuranBaju || 'Semua',
+                    gambar: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
+                    kategori: 'Baju'
+                },
+                {
+                    nama: 'Jaket Musim Dingin',
+                    ukuran: ukuranBaju || 'Semua',
+                    gambar: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
+                    kategori: 'Baju'
+                },
+                {
+                    nama: 'Celana Jeans',
+                    ukuran: ukuranCelana || 'Semua',
+                    gambar: '/api/placeholder/300/400',
+                    kategori: 'Celana'
+                },
+                {
+                    nama: 'Kaos Olahraga',
+                    ukuran: ukuranBaju || 'Semua',
+                    gambar: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
+                    kategori: 'Baju'
+                },
+                {
+                    nama: 'Chino Pants',
+                    ukuran: ukuranCelana || 'Semua',
+                    gambar: '/api/placeholder/300/400',
+                    kategori: 'Celana'
+                },
+                {
+                    nama: 'Sweater Rajut',
+                    ukuran: ukuranBaju || 'Semua',
+                    gambar: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
+                    kategori: 'Baju'
+                }
+            ];
+
+            const produkRekomendasi = document.getElementById('produkRekomendasi');
+            produkRekomendasi.innerHTML = '';
+
+            produk.forEach(item => {
+                if (ukuranBaju || ukuranCelana) {
+                    if ((ukuranBaju && item.kategori === 'Baju') || (ukuranCelana && item.kategori ===
+                            'Celana')) {
+                        const produkElement = document.createElement('div');
+                        produkElement.classList.add('product');
+                        produkElement.innerHTML = `
+                            <img src="${item.gambar}" alt="${item.nama}">
+                            <div class="product-info">
+                                <h3>${item.nama}</h3>
+                                <p>Ukuran: ${item.ukuran}</p>
+                            </div>
+                        `;
+                        produkRekomendasi.appendChild(produkElement);
+                    }
+                } else {
+                    const produkElement = document.createElement('div');
+                    produkElement.classList.add('product');
+                    produkElement.innerHTML = `
+                        <img src="${item.gambar}" alt="${item.nama}">
+                        <div class="product-info">
+                            <h3>${item.nama}</h3>
+                            <p>Ukuran: ${item.ukuran}</p>
+                        </div>
+                    `;
+                    produkRekomendasi.appendChild(produkElement);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>                    <div class="product-info">
                             <h4 class="value">${item.nama}</h4>
                         <div class="info-row">
                             <span class="label">Harga</span>

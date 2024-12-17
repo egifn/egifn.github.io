@@ -53,6 +53,8 @@
             border-color: #007bff;
         }
 
+
+
         .size-finder {
             display: flex;
             gap: 20px;
@@ -132,6 +134,9 @@
         .catalog {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            margin: 10px;
+            gap: 5px;
+            border-radius: 5px;
         }
 
         .product {
@@ -172,11 +177,13 @@
 
         .label {
             width: 80px;
+            /* Lebar yang konsisten untuk label */
             font-weight: bold;
         }
 
         .value {
             flex: 1;
+            /* Agar teks di sebelah kanan fleksibel */
         }
 
         .product-info h4 {
@@ -187,6 +194,7 @@
         .product-info p {
             margin: 5px;
             color: var(--primary-color);
+            /* font-weight: 600; */
         }
     </style>
 </head>
@@ -196,7 +204,7 @@
         <a href="#" class="search-icon"><img src="/LandingPage/img/logo.png" style="width: 40px;" alt=""></a>
         <a href="#" class="filtering eg-setting-slider" onclick="toggleFilterCatalog(event)"></a>
     </nav>
-
+    <!-- C:Catalog -->
     <div class="container">
         <div class="main-content">
             <div class="filter-catalog" id="filterCatalog" style="display: none;">
@@ -213,7 +221,10 @@
         </div>
     </div>
 
+    <!-- C: Size Finder -->
     <div class="container">
+
+        <!--  -->
         <h1 style="text-align: center; margin-bottom: 30px; color: var(--primary-color);">
             Fashion Size Finder
         </h1>
@@ -264,11 +275,11 @@
         </div>
 
         <nav class="bottom-nav">
-            <a href="/SizeChart2.html" class="bottom-nav-item">
+            <a href="LandingPage/SizeChart2.html" class="bottom-nav-item">
                 <i class="eg-ruler"></i>
                 <div>Fitting</div>
             </a>
-            <a href="/moeral.html" class="bottom-nav-item">
+            <a href="LandingPage/SizeChart.html" class="bottom-nav-item">
                 <i class="eg-globe-bold"></i>
                 <div>Explore</div>
             </a>
@@ -338,66 +349,66 @@
             event.target.classList.add('active');
 
             const produk = [{
-                    nama: 'Rekomendasi Outfit Casual',
+                    nama: 'Rekomendasi OOTD Casual',
                     ukuran: 'M',
                     inspirasi: 'https://i.pinimg.com/736x/64/a1/48/64a148e36f10b047999de47d64bbbbaa.jpg',
                     rekomendasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
                     kategori: 'outfit'
                 },
                 {
-                    nama: 'Rekomendasi Celana Double Knee',
+                    nama: 'Celana Double Knee',
                     ukuran: 'L',
                     inspirasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'celana'
                 },
                 {
                     nama: 'Celana Jeans',
                     ukuran: '32',
-                    inspirasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    inspirasi: '/api/placeholder/300/400',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'celana'
                 },
                 {
                     nama: 'Kaos Olahraga',
                     ukuran: 'S',
                     inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'baju'
                 },
                 {
                     nama: 'Hoodie Polos',
                     ukuran: 'XL',
-                    inspirasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    inspirasi: '/api/placeholder/300/400',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'hoodie'
                 },
                 {
                     nama: 'Sweater Rajut',
                     ukuran: 'M',
                     inspirasi: 'https://i.pinimg.com/736x/6b/b9/e4/6bb9e4f7a9683ef4ff8ba0c5d206e6eb.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'baju'
                 },
                 {
                     nama: 'Celana Chino',
                     ukuran: '30',
-                    inspirasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    inspirasi: '/api/placeholder/300/400',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'celana'
                 },
                 {
                     nama: 'Kemeja Flanel',
                     ukuran: 'L',
-                    inspirasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    inspirasi: '/api/placeholder/300/400',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'kemeja'
                 },
                 {
                     nama: 'Jaket Kulit',
                     ukuran: 'M',
-                    inspirasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
-                    rekomendasi: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    inspirasi: '/api/placeholder/300/400',
+                    rekomendasi: '/api/placeholder/300/400',
                     kategori: 'jaket'
                 },
 
@@ -496,7 +507,7 @@
                 {
                     nama: 'Celana Jeans',
                     ukuran: ukuranCelana || 'Semua',
-                    gambar: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    gambar: '/api/placeholder/300/400',
                     kategori: 'Celana'
                 },
                 {
@@ -508,7 +519,7 @@
                 {
                     nama: 'Chino Pants',
                     ukuran: ukuranCelana || 'Semua',
-                    gambar: 'https://i.pinimg.com/736x/91/57/f3/9157f3466026f500b148ef5e34d2857b.jpg',
+                    gambar: '/api/placeholder/300/400',
                     kategori: 'Celana'
                 },
                 {
