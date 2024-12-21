@@ -7,7 +7,7 @@
     <title>SZF</title>
     <link rel="stylesheet" href="/icon.css">
     <link rel="stylesheet" href="/mystyle.css">
-    <link rel="manifest" href="/manifest.json">
+    <!-- <link rel="manifest" href="/manifest.json"> -->
     <style>
         .filtering {
             margin-right: 35px;
@@ -198,44 +198,15 @@
         }
 
         /* Add this to your existing CSS */
-        @media (max-width: 768px) {
-            .size-finder {
-                flex-direction: column;
-            }
-
-            .size-card {
-                margin-bottom: 20px;
-            }
-
-            .catalog {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-                margin: 5px;
-                gap: 5px;
-            }
-
-            .product-img img {
-                height: 450px;
-                /* Adjust height for smaller screens */
-            }
-
-            .filter-catalog {
-                width: 90%;
-                /* Make filter catalog wider on small screens */
-                left: 5%;
-                /* Center it */
-            }
-
-            .filtering {
-                font-size: 14px;
-                /* Increase font size for better readability */
-            }
-        }
+       
     </style>
 </head>
 
 <body>
     <nav class="top-nav">
-        <a href="#" class="search-icon"><img src="/LandingPage/img/logo.png" style="width: 40px; margin-left: -5px;" alt=""></a>
+        <a href="#" class="search-icon"><h3><b>OsOTD</b></h3>
+            <!-- <img src="/LandingPage/img/logo.png" style="width: 40px; margin-left: -5px;" alt=""> -->
+        </a>
         <a href="#" class="eg-setting-slider" onclick="toggleFilterCatalog(event)"></a>
     </nav>
     <!-- C:Catalog -->
@@ -733,7 +704,7 @@ target: document.querySelector('.filter-catalog button')
         });
     }
 </script>
-<script>
+<!-- <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
@@ -745,7 +716,7 @@ target: document.querySelector('.filter-catalog button')
                 });
         });
     }
-</script>
+</script> -->
 </body>
 
 </html>

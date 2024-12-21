@@ -7,6 +7,8 @@ self.addEventListener('install', (event) => {
                 '/icon.css',
                 '/mystyle.css',
                 '/LandingPage/img/logo.png',
+                '/LandingPage/SizeChart.html', // Ensure this page is cached for full-screen experience
+                '/LandingPage/SizeChart2.html', // Cache additional pages if necessary
                 // Add other assets you want to cache
             ]);
         })
