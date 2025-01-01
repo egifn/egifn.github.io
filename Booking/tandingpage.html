@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookingNow - Sports Field Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #c01a1a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .carousel {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.9s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+        }
+
+        .hero {
+            background-color: #dfdfdf;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 2rem 2rem;
+            position: sticky;
+            margin-top: -100px;
+            width: 90%;
+            align-self: center;
+            border-radius: 50px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero button {
+            background-color: #FF5733;
+            border: none;
+            /* padding: 0.75rem 1.5rem; */
+            color: white;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+        }
+
+        .filter-form {
+            margin: 1rem auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .filter-form input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            /* border-radius: 5px; */
+        }
+
+        .filter-form button {
+            background-color: #ffffff;
+            width: 210px;
+            border: none;
+            color: rgb(0, 0, 0);
+            border-radius: 0;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .filter-form button:hover {
+            opacity: 75%;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background-color: #4CAF50;
+            /* Warna hijau */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .dropdown-button:hover {
+            background-color: #45a049;
+            /* Warna hijau lebih gelap */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 10px 0;
+            z-index: 1;
+            min-width: 150px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .container {
+            padding: 1rem 2rem;
+            flex: 1;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-content h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .card-content p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .card-content button {
+            background-color: #c01a1a;
+            border: none;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            position: relative;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .carousel-slide img {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header nav {
+                margin-top: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero p {
+                font-size: 0.8rem;
+            }
+
+            .hero button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .cards {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">BookingNow</div>
+        <button class="nav-toggle">☰</button>
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Sewa Lapang</a>
+            <a href="#">Tanding</a>
+            <a href="#">Komunitas</a>
+            <a href="#">SSB</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Lawan Tanding</h2>
+        <div class="cards" id="cardsContainer">
+            <div class="card">
+                <img src="https://asset-2.tstatic.net/jogja/foto/bank/images/Lapangan-Karitas-dari-Semak-Belukar-Disulap-Jadi-Lapangan-Mini-Soccer-Berstandar-Internasional.jpg"
+                    alt="Soccer Field">
+                <div class="card-content">
+                    <h3>Tim Erik</h3>
+                    <p>Ready in Jumat s.d Minggu</p>
+                    <p>Jam 10.00 - 16.00</p>
+                    <button>Tanding</button>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200" alt="Tim Egi">
+                <div class="card-content">
+                    <h3>Tim Egi</h3>
+                    <p>Ready in Minggu</p>
+                    <p>Jam 18.00 - 21.00/p>
+                    <button>Tanding</button>
+                </div>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x200" alt="Tenis Court">
+                <div class="card-content">
+                    <h3>Tenis Court</h3>
+                    <p>Reserve your court for tournaments and practices.</p>
+                    <button>Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 BookingNow. All rights reserved.</p>
+    </footer>
+    <script>
+        const dropdownLinks = document.querySelectorAll('.dropdown-content a');
+
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const category = link.dataset.category || 'All';
+                const type = link.dataset.type || 'All';
+
+                // Filter berdasarkan kategori atau tipe
+                console.log(`Selected Category: ${category}, Type: ${type}`);
+                filterCards(category); // Menggunakan fungsi filterCards yang ada
+            });
+        });
+    </script>
+    <script>
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        let currentIndex = 0;
+
+        function moveCarousel() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            moveCarousel();
+        }, 3000);
+
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const searchField = document.getElementById('searchField');
+        const cardsContainer = document.getElementById('cardsContainer');
+
+        const fields = [{
+                id: 1,
+                name: "Soccer Field",
+                category: "Mini Soccer",
+                description: "Perfect for your football matches and events.",
+                image: "https://via.placeholder.com/300x200"
+            },
+            {
+                id: 2,
+                name: "Basketball Court",
+                category: "Basket",
+                description: "Indoor and outdoor courts for your games.",
+                image: "https://via.placeholder.com/300x200"
+            },
+            {
+                id: 3,
+                name: "Tenis Court",
+                category: "Tenis",
+                description: "Reserve your court for tournaments and practices.",
+                image: "https://via.placeholder.com/300x200"
+            },
+            {
+                id: 4,
+                name: "Badminton Arena",
+                category: "Badminton",
+                description: "Spacious courts for badminton lovers.",
+                image: "https://via.placeholder.com/300x200"
+            },
+            {
+                id: 5,
+                name: "Golf Course",
+                category: "Golf",
+                description: "Beautiful courses for your golf games.",
+                image: "https://via.placeholder.com/300x200"
+            },
+            {
+                id: 6,
+                name: "Futsal Court",
+                category: "Futsal",
+                description: "Indoor futsal courts for fast-paced games.",
+                image: "https://via.placeholder.com/300x200"
+            }
+        ];
+
+        function renderCards(filteredFields) {
+            cardsContainer.innerHTML = '';
+            filteredFields.forEach(field => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <img src="${field.image}" alt="${field.name}">
+                    <div class="card-content">
+                        <h3>${field.name}</h3>
+                        <p>${field.description}</p>
+                        <button>Book Now</button>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        function filterCards(category) {
+            const query = searchField.value.toLowerCase();
+            let filteredFields = fields;
+
+            if (category !== "All") {
+                filteredFields = filteredFields.filter(field => field.category === category);
+            }
+
+            if (query) {
+                filteredFields = filteredFields.filter(field =>
+                    field.name.toLowerCase().includes(query) ||
+                    field.description.toLowerCase().includes(query)
+                );
+            }
+
+            renderCards(filteredFields);
+        }
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+                filterCards(category);
+            });
+        });
+
+        searchField.addEventListener('input', () => {
+            filterCards("All");
+        });
+
+        renderCards(fields);
+    </script>
+</body>
+
+</html>

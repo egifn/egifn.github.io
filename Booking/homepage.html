@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Sports Venue Booking</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav ul {
+            padding: 0;
+            list-style-type: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: grid;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 5px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Sports Venue Booking</h1>
+        <nav>
+            <ul>
+                <li><a href="#booking">Book a Venue</a></li>
+                <li><a href="#my-bookings">My Bookings</a></li>
+                <li><a href="#match-making">Find a Match</a></li>
+                <li><a href="#community">Community Events</a></li>
+                <li><a href="#ssb">Soccer School</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="booking">
+            <h2>Book a Venue</h2>
+            <form id="booking-form">
+                <label for="venue">Select Venue:</label>
+                <select id="venue" name="venue" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <!-- Venues will be populated dynamically -->
+                </select>
+
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="time">Time:</label>
+                <input type="time" id="time" name="time" required>
+
+                <label for="duration">Duration (hours):</label>
+                <input type="number" id="duration" name="duration" min="1" max="5" required>
+
+                <button type="submit">Book Now</button>
+            </form>
+        </section>
+
+        <section id="my-bookings">
+            <h2>My Bookings</h2>
+            <table id="bookings-table">
+                <thead>
+                    <tr>
+                        <th>Venue</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Duration</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Bookings will be populated dynamically -->
+                </tbody>
+            </table>
+        </section>
+
+        <section id="match-making">
+            <h2>Find a Match</h2>
+            <form id="match-making-form">
+                <label for="team-name">Team Name:</label>
+                <input type="text" id="team-name" name="team-name" required>
+
+                <label for="team-level">Team Level:</label>
+                <select id="team-level" name="team-level" required>
+                    <option value="">Select level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+
+                <label for="preferred-date">Preferred Date:</label>
+                <input type="date" id="preferred-date" name="preferred-date" required>
+
+                <button type="submit">Find Match</button>
+            </form>
+            <div id="matched-team"></div>
+        </section>
+
+        <section id="community">
+            <h2>Community Events</h2>
+            <div id="community-events">
+                <!-- Community events will be populated dynamically -->
+            </div>
+        </section>
+
+        <section id="ssb">
+            <h2>Soccer School Registration</h2>
+            <form id="ssb-form">
+                <label for="child-name">Child's Name:</label>
+                <input type="text" id="child-name" name="child-name" required>
+
+                <label for="child-age">Child's Age:</label>
+                <input type="number" id="child-age" name="child-age" min="5" max="18" required>
+
+                <label for="ssb-level">Skill Level:</label>
+                <select id="ssb-level" name="ssb-level" required>
+                    <option value="">Select level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+
+                <button type="submit">Register for Soccer School</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Sports Venue Booking. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch and populate venues
+            fetchVenues();
+
+            // Add event listeners
+            document.getElementById('booking-form').addEventListener('submit', handleBooking);
+            document.getElementById('match-making-form').addEventListener('submit', handleMatchMaking);
+            document.getElementById('ssb-form').addEventListener('submit', handleSSBRegistration);
+
+            // Fetch and display user's bookings
+            fetchUserBookings();
+
+            // Fetch and display community events
+            fetchCommunityEvents();
+        });
+
+        function fetchVenues() {
+            // Simulating API call to fetch venues
+            fetch('api/venues.php')
+                .then(response => response.json())
+                .then(venues => {
+                    const venueSelect = document.getElementById('venue');
+                    venues.forEach(venue => {
+                        const option = document.createElement('option');
+                        option.value = venue.id;
+                        option.textContent = venue.name;
+                        venueSelect.appendChild(option);
+                    });
+                });
+        }
+
+        function handleBooking(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            // Simulating API call to book venue
+            fetch('api/book.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Booking successful!');
+                        fetchUserBookings(); // Refresh bookings list
+                    } else {
+                        alert('Booking failed: ' + result.message);
+                    }
+                });
+        }
+
+        function fetchUserBookings() {
+            // Simulating API call to fetch user's bookings
+            fetch('api/user-bookings.php')
+                .then(response => response.json())
+                .then(bookings => {
+                    const tbody = document.querySelector('#bookings-table tbody');
+                    tbody.innerHTML = '';
+                    bookings.forEach(booking => {
+                        const row = tbody.insertRow();
+                        row.insertCell(0).textContent = booking.venue;
+                        row.insertCell(1).textContent = booking.date;
+                        row.insertCell(2).textContent = booking.time;
+                        row.insertCell(3).textContent = booking.duration;
+                        const actionsCell = row.insertCell(4);
+                        const cancelButton = document.createElement('button');
+                        cancelButton.textContent = 'Cancel';
+                        cancelButton.onclick = () => cancelBooking(booking.id);
+                        actionsCell.appendChild(cancelButton);
+                    });
+                });
+        }
+
+        function cancelBooking(bookingId) {
+            // Simulating API call to cancel booking
+            fetch(`api/cancel-booking.php?id=${bookingId}`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Booking cancelled successfully!');
+                        fetchUserBookings(); // Refresh bookings list
+                    } else {
+                        alert('Failed to cancel booking: ' + result.message);
+                    }
+                });
+        }
+
+        function handleMatchMaking(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            // Simulating API call for match-making
+            fetch('api/match-making.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    const matchedTeamDiv = document.getElementById('matched-team');
+                    if (result.success) {
+                        matchedTeamDiv.innerHTML = `
+                <h3>Matched Team:</h3>
+                <p>Team Name: ${result.team.name}</p>
+                <p>Level: ${result.team.level}</p>
+                <button onclick="requestMatch(${result.team.id})">Request Match</button>
+            `;
+                    } else {
+                        matchedTeamDiv.innerHTML = '<p>No matching team found. Try again later.</p>';
+                    }
+                });
+        }
+
+        function requestMatch(teamId) {
+            // Simulating API call to request a match
+            fetch(`api/request-match.php?team_id=${teamId}`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Match request sent successfully!');
+                    } else {
+                        alert('Failed to send match request: ' + result.message);
+                    }
+                });
+        }
+
+        function fetchCommunityEvents() {
+            // Simulating API call to fetch community events
+            fetch('api/community-events.php')
+                .then(response => response.json())
+                .then(events => {
+                    const eventsDiv = document.getElementById('community-events');
+                    eventsDiv.innerHTML = '';
+                    events.forEach(event => {
+                        eventsDiv.innerHTML += `
+                    <div class="event">
+                        <h3>${event.name}</h3>
+                        <p>Date: ${event.date}</p>
+                        <p>Time: ${event.time}</p>
+                        <p>Venue: ${event.venue}</p>
+                        <button onclick="joinEvent(${event.id})">Join Event</button>
+                    </div>
+                `;
+                    });
+                });
+        }
+
+        function joinEvent(eventId) {
+            // Simulating API call to join a community event
+            fetch(`api/join-event.php?event_id=${eventId}`, {
+                    method: 'POST'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('You have successfully joined the event!');
+                    } else {
+                        alert('Failed to join the event: ' + result.message);
+                    }
+                });
+        }
+
+        function handleSSBRegistration(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            // Simulating API call for SSB registration
+            fetch('api/ssb-registration.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('Successfully registered for Soccer School!');
+                    } else {
+                        alert('Registration failed: ' + result.message);
+                    }
+                });
+        }
+    </script>
+</body>
+
+</html>

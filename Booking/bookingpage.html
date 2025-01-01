@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookingNow - Sports Field Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #c01a1a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        header nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .carousel {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.9s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+        }
+
+        .hero {
+            background-color: #dfdfdf;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 2rem 2rem;
+            position: sticky;
+            margin-top: -125px;
+            align-self: center;
+            border-radius: 50px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero button {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100px;
+        }
+
+        .filter-form {
+            /* margin: 1rem auto; */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .filter-form input {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .filter-form button {
+            background-color: #ffffff;
+            width: 210px;
+            border: none;
+            color: rgb(0, 0, 0);
+            border-radius: 0;
+            cursor: pointer;
+            border-radius: 0;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .filter-form button:hover {
+            opacity: 75%;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid #dee2e6;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            color: #212529;
+            background-color: #fff;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            min-width: 210px;
+            position: relative;
+        }
+
+        .dropdown-button:after {
+            display: inline-block;
+            margin-left: 0.255em;
+            vertical-align: 0.255em;
+            content: "";
+            border-top: 0.3em solid;
+            border-right: 0.3em solid transparent;
+            border-bottom: 0;
+            border-left: 0.3em solid transparent;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .dropdown-button:hover {
+            background-color: #f8f9fa;
+            border-color: #ddd;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 210px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            border-radius: 0.25rem;
+            border: 1px solid rgba(0, 0, 0, .15);
+            padding: 0.5rem 0;
+            margin: 0.125rem 0 0;
+        }
+
+        .dropdown-content a {
+            color: #212529;
+            padding: 0.25rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .dropdown-content a:hover {
+            color: #16181b;
+            text-decoration: none;
+            background-color: #f8f9fa;
+        }
+
+        .dropdown.show .dropdown-content {
+            display: block;
+            text-align: left;
+        }
+
+        /* Add this for dropdown animation */
+        .dropdown-content {
+            transform-origin: top;
+            animation: dropdownAnimation 0.2s ease;
+        }
+
+        @keyframes dropdownAnimation {
+            from {
+                opacity: 0;
+                transform: scaleY(0);
+            }
+
+            to {
+                opacity: 1;
+                transform: scaleY(1);
+            }
+        }
+
+        .container {
+            padding: 1rem 2rem;
+            flex: 1;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-content h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .card-content p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .card-content button {
+            background-color: #c01a1a;
+            border: none;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            position: relative;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .carousel-slide img {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            header nav {
+                margin-top: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero p {
+                font-size: 0.8rem;
+            }
+
+            .hero button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .cards {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <header>
+            <div>
+                <div class="logo">BookingNow</div>
+                <button class="nav-toggle">☰</button>
+            </div>
+            <nav class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Sewa Lapang</a>
+                <a href="#">Tanding</a>
+                <a href="#">Komunitas</a>
+                <a href="#">SSB</a>
+            </nav>
+        </header>
+        <div class="carousel">
+            <div class="carousel-track">
+                <div class="carousel-slide">
+                    <img src="https://via.placeholder.com/1920x600" alt="Slide 1">
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://via.placeholder.com/1920x600" alt="Slide 2">
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://via.placeholder.com/1920x600" alt="Slide 3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="hero">
+                <h1>Book Your Sports Field Now</h1>
+                <div class="filter-form">
+                    <input style="width: 400px;" type="maps" placeholder="Lokasi" id="lokasi">
+                    <div class="dropdown">
+                        <button class="dropdown-button">Pilih Cabor</button>
+                        <div class="dropdown-content">
+                            <a href="#" data-category="All" S>All</a>
+                            <a href="#" data-category="Futsal">Futsal</a>
+                            <a href="#" data-category="Badminton">Badminton</a>
+                            <a href="#" data-category="Tenis">Tenis</a>
+                            <a href="#" data-category="Golf">Golf</a>
+                            <a href="#" data-category="Mini Soccer">Mini Soccer</a>
+                            <a href="#" data-category="Basket">Basket</a>
+                        </div>
+                    </div>
+                    <!-- <div class="dropdown">
+                        <button class="dropdown-button">Type</button>
+                        <div class="dropdown-content">
+                            <a href="#" data-type="Tanding">Tanding</a>
+                            <a href="#" data-type="Komunitas">Komunitas</a>
+                            <a href="#" data-type="Sewa">Sewa</a>
+                        </div>
+                    </div> -->
+                    <input type="text" placeholder="Search fields..." id="searchField">
+                    <input style="width: 400px;" type="maps" placeholder="Lokasi" id="short_by_location">
+                    <input type="text" placeholder="Search fields..." id="short_by_search">
+                </div>
+            </div>
+
+            <h2>Available Fields</h2>
+            <div class="cards" id="cardsContainer">
+                <div class="card">
+                    <img src="https://asset-2.tstatic.net/jogja/foto/bank/images/Lapangan-Karitas-dari-Semak-Belukar-Disulap-Jadi-Lapangan-Mini-Soccer-Berstandar-Internasional.jpg"
+                        alt="Soccer Field">
+                    <div class="card-content">
+                        <h3>Soccer Field</h3>
+                        <p>Perfect for your football matches and events.</p>
+                        <button>Book Now</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200" alt="Basketball Court">
+                    <div class="card-content">
+                        <h3>Basketball Court</h3>
+                        <p>Indoor and outdoor courts for your games.</p>
+                        <button>Book Now</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200" alt="Tenis Court">
+                    <div class="card-content">
+                        <h3>Tenis Court</h3>
+                        <p>Reserve your court for tournaments and practices.</p>
+                        <button>Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 BookingNow. All rights reserved.</p>
+    </footer>
+
+    <!-- Variabel -->
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const searchField = document.getElementById('searchField');
+        const cardsContainer = document.getElementById('cardsContainer');
+
+        // Variabel untuk filter/search
+        const shortBySearch = document.getElementById('short_by_search');
+        const shortByLocation = document.getElementById('short_by_location');
+        // const shortByType = document.getElementById('short_by_type');
+        // const syLimit = document.getElementById('short_by_limit');
+        // const syStatus = document.getElementById('short_by_status');
+        // const syRoles = document.getElementById('short_by_roles');
+    </script>
+
+    <!-- Dropdown -->
+    <script>
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdowns = document.querySelectorAll('.dropdown');
+
+            // Close all dropdowns when clicking outside
+            document.addEventListener('click', function (e) {
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(e.target)) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            });
+
+            // Toggle dropdown on button click
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('.dropdown-button');
+                button.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropdowns.forEach(d => {
+                        if (d !== dropdown) { 
+                            d.classList.remove('show');
+                        }
+                    });
+                    dropdown.classList.toggle('show');
+                });
+            });
+
+            // Handle dropdown item selection
+            const dropdownLinks = document.querySelectorAll('.dropdown-content a');
+            dropdownLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const text = this.textContent;
+                    const dropdown = this.closest('.dropdown');
+                    const button = dropdown.querySelector('.dropdown-button');
+                    button.textContent = text;
+                    dropdown.classList.remove('show');
+
+                    const category = this.dataset.category || 'All';
+                    const type = this.dataset.type || 'All';
+                    filterCards(category);
+                });
+            });
+        });
+    </script>
+
+    <!-- Carousel Track -->
+    <script>
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        let currentIndex = 0;
+
+        function moveCarousel() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            moveCarousel();
+        }, 3000);
+    </script>
+
+    <!-- Get Data -->
+    <script>
+        const fields = [{
+                id: 1,
+                name: "Soccer Field",
+                category: "Mini Soccer",
+                description: "Perfect for your football matches and events.",
+                image: "https://via.placeholder.com/300x200",
+                city: "Jakarta Selatan",
+                district: "Cilandak",
+                address: "Jl. Cilandak Raya No. 1"
+            },
+            {
+                id: 2,
+                name: "Basketball Court",
+                category: "Basket",
+                description: "Indoor and outdoor courts for your games.",
+                image: "https://via.placeholder.com/300x200",
+                city: "Jakarta Selatan",
+                district: "Kebayoran Baru",
+                address: "Jl. Kebayoran Baru No. 10"
+            },
+            {
+                id: 3,
+                name: "Tenis Court",
+                category: "Tenis",
+                description: "Reserve your court for tournaments and practices.",
+                image: "https://via.placeholder.com/300x200",
+                city: "Jakarta Pusat",
+                district: "Menteng",
+                address: "Jl. Menteng Raya No. 15"
+            },
+            {
+                id: 4,
+                name: "Badminton Arena",
+                category: "Badminton",
+                description: "Spacious courts for badminton lovers.",
+                image: "https://via.placeholder.com/300x200",
+                city: "Jakarta Utara",
+                district: "Kelapa Gading",
+                address: "Jl. Kelapa Gading Raya No. 20"
+            },
+            {
+                id: 5,
+                name: "Golf Course",
+                category: "Golf",
+                description: "Beautiful courses for your golf games.",
+                image: "https://via.placeholder.com/300x200",
+                city: "Jakarta Timur",
+                district: "Cipayung",
+                address: "Jl. Cipayung Raya No. 25"
+            },
+            {
+                id: 6,
+                name: "Futsal Court",
+                category: "Futsal",
+                description: "Indoor futsal courts for fast-paced games.",
+                image: "https://via.placeholder.com/300x200",
+                city: "Jakarta Barat",
+                district: "Kebon Jeruk",
+                address: "Jl. Kebon Jeruk Raya No. 30"
+            }
+        ];
+
+        function populateLocationDatalist() {
+            const cities = new Set();
+            const districts = new Set();
+
+            fields.forEach(field => {
+                cities.add(field.city);
+                districts.add(field.district);
+            });
+
+            return {
+                cities: Array.from(cities),
+                districts: Array.from(districts)
+            };
+        }
+
+        // Updated filter function to include location search
+        function filterCards(category = "All") {
+            const searchQuery = document.getElementById('searchField').value.toLowerCase();
+            const locationQuery = document.getElementById('lokasi').value.toLowerCase();
+            let filteredFields = fields;
+
+            // Filter by category if specified
+            if (category !== "All") {
+                filteredFields = filteredFields.filter(field => field.category === category);
+            }
+
+            // Filter by search query (name or description)
+            if (searchQuery) {
+                filteredFields = filteredFields.filter(field =>
+                    field.name.toLowerCase().includes(searchQuery) ||
+                    field.description.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            // Filter by location
+            if (locationQuery) {
+                filteredFields = filteredFields.filter(field =>
+                    field.city.toLowerCase().includes(locationQuery) ||
+                    field.district.toLowerCase().includes(locationQuery) ||
+                    field.address.toLowerCase().includes(locationQuery)
+                );
+            }
+
+            renderCards(filteredFields);
+        }
+
+        // Updated render function to include location information
+        function renderCards(filteredFields) {
+            const cardsContainer = document.getElementById('cardsContainer');
+            cardsContainer.innerHTML = '';
+
+            filteredFields.forEach(field => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+            <img src="${field.image}" alt="${field.name}">
+            <div class="card-content">
+                <h3>${field.name}</h3>
+                <p>${field.description}</p>
+                <p class="location"><strong>Location:</strong> ${field.address}, ${field.district}, ${field.city}</p>
+                <button>Book Now</button>
+            </div>
+        `;
+                cardsContainer.appendChild(card);
+            });
+        }
+
+        // Initialize location datalists when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            const {
+                cities,
+                districts
+            } = populateLocationDatalist();
+
+            // Create datalist for locations
+            const locationDatalist = document.createElement('datalist');
+            locationDatalist.id = 'locationSuggestions';
+
+            // Add cities and districts to datalist
+            [...cities, ...districts].forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                locationDatalist.appendChild(option);
+            });
+
+            // Add datalist to document
+            document.body.appendChild(locationDatalist);
+
+            // Connect input to datalist
+            const locationInput = document.getElementById('lokasi');
+            locationInput.setAttribute('list', 'locationSuggestions');
+
+            // Add event listeners for search
+            locationInput.addEventListener('input', () => filterCards("All"));
+            document.getElementById('searchField').addEventListener('input', () => filterCards("All"));
+        });
+
+        searchField.addEventListener('input', () => {
+            filterCards("All");
+        });
+
+        renderCards(fields);
+    </script>
+    <!-- Action JS -->
+    <script>
+        async function fetchData(DataShortSearch, DataShortLocation) {
+            try {
+                let filteredData = fields;
+                let params = new URLSearchParams();
+
+                if (DataShortSearch && DataShortSearch.trim() !== '') {
+                    params.append('search', DataShortSearch.trim());
+                }
+                if (DataShortLocation != undefined && DataShortLocation != null && DataShortLocation != '') {
+                    params.append('limit', DataShortLocation.trim());
+                }
+                // Hanya tambahkan parameter ke URL jika ada parameter
+                if (params.toString()) {
+                    url += '?' + params.toString();
+                }
+
+                const response = await axios.get(filteredData);
+                console
+                const data = response.data.data;
+                const cardsContainer = document.getElementById('cardsContainer');
+
+                cardsContainer.innerHTML = '';
+                data.forEach(item => {
+                    cardsContainer.innerHTML += `
+                    <img src="${field.image}" alt="${field.name}">
+                    <div class="card-content">
+                        <h3>${field.name}</h3>
+                        <p>${field.description}</p>
+                        <p class="location"><strong>Location:</strong> ${field.address}, ${field.district}, ${field.city}</p>
+                        <button>Book Now</button>
+                    </div>
+        `;
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const DataShortSearch = shortByLocation.value;
+            const DataShortLocation = shortBySearch.value;
+            fetchData(DataShortSearch, DataShortLocation);
+        });
+        // GETDATA BY LOCATION
+        shortByLocation.addEventListener('keyup', (event) => {
+            const DataShortLocation = event.target.value.trim();
+            const DataShortSearch = shortBySearch.value;
+            fetchData(DataShortSearch, DataShortLocation);
+        });
+        // GETDATA BY SEARCH
+        shortBySearch.addEventListener('keyup', (event) => {
+            const DataShortLocation = shortByLocation.value;
+            const DataShortSearch = event.target.value.trim();
+            fetchData(DataShortSearch, DataShortLocation);
+        });
+    </script>
+</body>
+
+</html>
