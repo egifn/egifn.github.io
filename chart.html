@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Asset Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div class="container-fluid p-4">
+        <h2 class="mb-4">Dashboard Asset Management</h2>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Asset</h5>
+                        <h2 class="card-text">1,030</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Kondisi Baik</h5>
+                        <h2 class="card-text">833</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="card bg-danger text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Perlu Diganti</h5>
+                        <h2 class="card-text">41</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="card bg-warning text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Perlu Perbaikan</h5>
+                        <h2 class="card-text">42</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Dalam Perbaikan</h5>
+                        <h2 class="card-text">4</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="container-fluid mb-4">
+        <!-- Pie Charts for Main Offices -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Distribusi Asset TA</h5>
+                        <canvas id="taChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Distribusi Asset TUA</h5>
+                        <canvas id="tuaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Distribusi Asset TU</h5>
+                        <canvas id="tuChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bar Chart for Branch Offices -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Asset per Kantor Cabang</h5>
+                <div style="height: 400px; overflow-y: auto;">
+                    <canvas id="branchOfficeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Chart.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+    <!-- Initialize charts after Chart.js is loaded -->
+    <script>
+        window.onload = function () {
+            // Data untuk pie charts
+            const pieData = {
+                labels: ['Kondisi Baik', 'Perlu Diganti', 'Perlu Perbaikan', 'Dalam Perbaikan'],
+                datasets: [
+                    {
+                        data: [280, 15, 15, 2], // TA
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.8)',  // Hijau untuk Baik
+                            'rgba(220, 53, 69, 0.8)',  // Merah untuk Perlu Diganti
+                            'rgba(255, 193, 7, 0.8)',  // Kuning untuk Perlu Perbaikan
+                            'rgba(23, 162, 184, 0.8)'  // Biru untuk Dalam Perbaikan
+                        ]
+                    },
+                    {
+                        data: [283, 14, 14, 1], // TUA
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.8)',
+                            'rgba(220, 53, 69, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(23, 162, 184, 0.8)'
+                        ]
+                    },
+                    {
+                        data: [270, 12, 13, 1], // TU
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.8)',
+                            'rgba(220, 53, 69, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(23, 162, 184, 0.8)'
+                        ]
+                    }
+                ]
+            };
+
+            // Konfigurasi umum untuk pie chart
+            const pieConfig = {
+                type: 'pie',
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((value / total) * 100).toFixed(1);
+                                    return `${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Membuat pie chart untuk setiap kantor pusat
+            new Chart(document.getElementById('taChart').getContext('2d'), {
+                ...pieConfig,
+                data: {
+                    labels: pieData.labels,
+                    datasets: [pieData.datasets[0]]
+                }
+            });
+
+            new Chart(document.getElementById('tuaChart').getContext('2d'), {
+                ...pieConfig,
+                data: {
+                    labels: pieData.labels,
+                    datasets: [pieData.datasets[1]]
+                }
+            });
+
+            new Chart(document.getElementById('tuChart').getContext('2d'), {
+                ...pieConfig,
+                data: {
+                    labels: pieData.labels,
+                    datasets: [pieData.datasets[2]]
+                }
+            });
+
+            // Data untuk chart kantor cabang
+            const branchData = {
+                labels: Array.from({
+                    length: 30
+                }, (_, i) => `Cabang ${i + 1}`),
+                datasets: [{
+                    label: 'Total Asset',
+                    data: [
+                        45, 38, 32, 28, 35, 42, 30, 25, 33, 36,
+                        29, 31, 34, 37, 40, 27, 35, 38, 32, 29,
+                        33, 36, 39, 34, 31, 28, 35, 37, 30, 33
+                    ],
+                    backgroundColor: 'rgba(54, 162, 235, 0.8)'
+                }]
+            };
+
+            const branchOfficeCtx = document.getElementById('branchOfficeChart').getContext('2d');
+            new Chart(branchOfficeCtx, {
+                type: 'bar',
+                data: branchData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Jumlah Asset'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>

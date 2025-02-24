@@ -1,0 +1,373 @@
+.eg-home {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/home.svg');
+    background-size: cover;
+}
+
+.eg-home-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/home-bold.svg');
+    background-size: cover;
+}
+
+.eg-bell {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/bell.svg');
+    background-size: cover;
+}
+
+.eg-bell-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/bell-bold.svg');
+    background-size: cover;
+}
+
+.eg-apps {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/apps.svg');
+    background-size: cover;
+}
+
+.eg-apps-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/apps.svg');
+    background-size: cover;
+}
+
+.eg-user {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/user.svg');
+    background-size: cover;
+}
+
+.eg-user-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/user-bold.svg');
+    background-size: cover;
+}
+
+.eg-globe {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/globe.svg');
+    background-size: cover;
+}
+
+.eg-globe-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/globe-bold.svg');
+    background-size: cover;
+}
+
+.eg-search {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/search.svg');
+    background-size: cover;
+}
+
+.eg-search-light {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/search-light.svg');
+    background-size: cover;
+}
+
+.eg-search-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/search-bold.svg');
+    background-size: cover;
+}
+
+.eg-menu-burger {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/menu-burger.svg');
+    background-size: cover;
+}
+
+.eg-menu-burger-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/menu-burger.svg');
+    background-size: cover;
+}
+
+.eg-community {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/users.svg');
+    background-size: cover;
+}
+
+.eg-community-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/users.svg');
+    background-size: cover;
+}
+
+.eg-potrait {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/portrait.svg');
+    background-size: cover;
+}
+
+.eg-potrait-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/portrait.svg');
+    background-size: cover;
+}
+
+.eg-education {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/book-open-cover.svg');
+    background-size: cover;
+}
+
+.eg-education-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/book-open-cover-bold.svg');
+    background-size: cover;
+}
+
+.eg-bookmark {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/bookmark.svg');
+    background-size: cover;
+}
+
+.eg-bookmark-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/bookmark.svg');
+    background-size: cover;
+}
+
+.eg-comment {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/comment.svg');
+    background-size: cover;
+}
+
+.eg-comment-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/comment-bold.svg');
+    background-size: cover;
+}
+
+.eg-heart {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/heart.svg');
+    background-size: cover;
+}
+
+.eg-heart-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/heart.svg');
+    background-size: cover;
+}
+
+.eg-create {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/multiple.svg');
+    background-size: cover;
+}
+
+.eg-create-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/multiple.svg');
+    background-size: cover;
+}
+
+.eg-save {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/save.svg');
+    background-size: cover;
+}
+
+.eg-save-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/save.svg');
+    background-size: cover;
+}
+
+.eg-star {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/star.svg');
+    background-size: cover;
+}
+
+.eg-star-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/star.svg');
+    background-size: cover;
+}
+
+.eg-thumb {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/thumb.svg');
+    background-size: cover;
+}
+
+.eg-thumb-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/thumb.svg');
+    background-size: cover;
+}
+
+.eg-truck-side {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/truck-side.svg');
+    background-size: cover;
+}
+
+.eg-truck-side-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/truck-side.svg');
+    background-size: cover;
+}
+
+.eg-share {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/share.svg');
+    background-size: cover;
+}
+
+.eg-news {
+    color: #c3c3c3;
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/newspaper.svg');
+    background-size: cover;
+}
+
+.eg-news-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/newspaper-bold.svg');
+    background-size: cover;
+}
+
+.eg-calendar {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/calendar.svg');
+    background-size: cover;
+}
+
+.eg-calendar-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/calendar-bold.svg');
+    background-size: cover;
+}
+
+.eg-shopping-bag {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/shopping-bag.svg');
+    background-size: cover;
+}
+
+.eg-shopping-bag-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/shopping-bag-bold.svg');
+    background-size: cover;
+}
+
+.eg-back {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/arrow-left.svg');
+    background-size: cover;
+}
+
+.eg-back-bold {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/arrow-left-bold.svg');
+    background-size: cover;
+}
+
+.eg-chart {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/chart-histogram.svg');
+    background-size: cover;
+}
+
+.eg-inbox {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/inbox-full.svg');
+    background-size: cover;
+}
+
+.eg-document {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/document.svg');
+    background-size: cover;
+}
+
+.eg-file {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/file.svg');
+    background-size: cover;
+}
+
+.eg-disk {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/disk.svg');
+    background-size: cover;
+}
+
+.eg-ruler {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/ruler-combined.svg');
+    background-size: cover;
+}
+
+.eg-setting-slider {
+    width: 24px;
+    height: 24px;
+    background-image: url('/icon/settings-sliders.svg');
+    background-size: cover;
+}
+
+
