@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppKU</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #0070f3;
+            --dark: #1a1a1a;
+            --light: #ffffff;
+            --gray: #f3f4f6;
+            --text-dark: #374151;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--light);
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 10px 2rem;
+            background: linear-gradient(135deg, #0070f3 0%, #00a6ff 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 1rem;
+            background: var(--gray);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Units Section */
+        .units {
+            padding: 4rem 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .units-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .unit-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .unit-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .unit-content {
+            padding: 1.5rem;
+        }
+
+        .unit-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .unit-price {
+            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .unit-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .unit-features li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .unit-features i {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 4%;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #0051b3;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 4rem 1rem;
+            background: var(--gray);
+        }
+
+        .steps-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 1rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-column ul li a {
+            color: #f3f4f6;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            opacity: 1;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1rem;
+            border-radius: 12px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Calendar Styles */
+        .calendar-container {
+            margin-bottom: 2rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            /* 7 kolom untuk 7 hari */
+            gap: 4px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .weekday-header {
+            text-align: center;
+            font-weight: bold;
+            padding: 13%;
+            background-color: #f0f0f0;
+        }
+
+        #calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            grid-column: 1 / -1;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13%;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .calendar-day:hover {
+            background-color: #f5f5f5;
+        }
+
+        .calendar-day:hover:not(.disabled) {
+            background-color: #f5f5f5;
+        }
+
+        .calendar-day.disabled {
+            background-color: #f0f0f0;
+            /* Warna latar belakang abu-abu */
+            color: #999;
+            /* Warna teks abu-abu lebih gelap */
+            cursor: not-allowed;
+            border: 1px solid #ddd;
+        }
+
+        .calendar-day.today {
+            background-color: #c4e1fc;
+            font-weight: bold;
+        }
+
+        .calendar-day.selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+        }
+
+        .booking-summary {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+            .features-container,
+            .steps-container,
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">AppKU</a>
+            <div class="nav-links">
+                <a href="#features">Fitur</a>
+                <a href="#units">Unit PS</a>
+                <a href="#how-it-works">Cara Sewa</a>
+                <a href="#contact">Kontak</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Aplikasi KeUangan</h1>
+            <p>Permudah Pencatat Uang Kas </p>
+            <a href="#units" class="btn">Lihat Unit Tersedia</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="feature-card">
+                <i class="fas fa-clock feature-icon"></i>
+                <h3>Fleksibel</h3>
+                <p>Sewa per jam, harian, atau mingguan sesuai kebutuhan Anda</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-gamepad feature-icon"></i>
+                <h3>Unit Premium</h3>
+                <p>PS4 dan PS5 dengan kondisi prima dan terawat</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-headset feature-icon"></i>
+                <h3>Support 24/7</h3>
+                <p>Bantuan teknis tersedia setiap saat</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Units Section -->
+    <section class="units" id="units">
+        <h2 class="section-title">Unit PlayStation Tersedia</h2>
+        <div class="units-container">
+            <!-- PS5 -->
+            <div class="unit-card">
+                <img src="/img/ps5.jpeg" alt="PlayStation 5" class="unit-image">
+                <div class="unit-content">
+                    <h3 class="unit-title">PlayStation 5</h3>
+                    <p class="unit-price">Rp 35.000/jam</p>
+                    <ul class="unit-features">
+                        <li><i class="fas fa-check"></i> 4K Ultra HD Gaming</li>
+                        <li><i class="fas fa-check"></i> DualSense Controller</li>
+                        <li><i class="fas fa-check"></i> Ray Tracing Support</li>
+                        <li><i class="fas fa-check"></i> Game Terbaru</li>
+                    </ul>
+                    <a href="#" class="btn" onclick="openModal('ps5')">Sewa Sekarang</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <img src="/img/ps4.jpg" alt="PlayStation 4 Pro" class="unit-image">
+                <div class="unit-content">
+                    <h3 class="unit-title">PlayStation 4 Pro</h3>
+                    <p class="unit-price">Rp 30.000/jam</p>
+                    <ul class="unit-features">
+                        <li><i class="fas fa-check"></i> 4K HDR Gaming</li>
+                        <li><i class="fas fa-check"></i> DualShock 4</li>
+                        <li><i class="fas fa-check"></i> Ray Tracing Support</li>
+                        <li><i class="fas fa-check"></i> Game Terbaru</li>
+                    </ul>
+                    <a href="#" class="btn" onclick="openModal('ps4pro')">Sewa Sekarang</a>
+                </div>
+            </div>
+
+            <div class="unit-card">
+                <img src="/img/ps4.jpg" alt="PlayStation 4 Slim" class="unit-image">
+                <div class="unit-content">
+                    <h3 class="unit-title">PlayStation 4 Slim</h3>
+                    <p class="unit-price">Rp 20.000/jam</p>
+                    <ul class="unit-features">
+                        <li><i class="fas fa-check"></i> Full HD Gaming</li>
+                        <li><i class="fas fa-check"></i> Desain Compact</li>
+                        <li><i class="fas fa-check"></i> 500GB Storage</li>
+                        <li><i class="fas fa-check"></i> Game Populer</li>
+                    </ul>
+                    <a href="#" class="btn" onclick="openModal('ps4')">Sewa Sekarang</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <h2 class="section-title">Cara Rental PS</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Pilih Unit</h3>
+                <p>Pilih PS4 atau PS5 sesuai kebutuhan Anda</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Booking</h3>
+                <p>Tentukan waktu dan durasi penyewaan</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Main</h3>
+                <p>Nikmati gaming dengan unit PS pilihan Anda</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 1.5rem;">Book PlayStation</h2>
+
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="btn" onclick="previousMonth()">&lt;</button>
+                    <h3 id="currentMonth"></h3>
+                    <button class="btn" onclick="nextMonth()">&gt;</button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="weekday-header">Min</div>
+                    <div class="weekday-header">Sen</div>
+                    <div class="weekday-header">Sel</div>
+                    <div class="weekday-header">Rab</div>
+                    <div class="weekday-header">Kam</div>
+                    <div class="weekday-header">Jum</div>
+                    <div class="weekday-header">Sab</div>
+                    <div id="calendar-days"></div>
+                </div>
+            </div>
+
+            <form id="bookingForm" onsubmit="submitBooking(event)">
+                <input type="hidden" id="selectedPs" name="selectedPs">
+                <div class="form-group">
+                    <label for="bookingDate">Tanggal Booking</label>
+                    <input type="text" id="bookingDate" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="duration">Durasi Sewa</label>
+                    <select id="duration" required>
+                        <option value="">Pilih durasi</option>
+                        <option value="1">1 Hari</option>
+                        <option value="2">2 Hari</option>
+                        <option value="3">3 Hari</option>
+                        <option value="7">1 Minggu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Nama Lengkap</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Nomor Telepon</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Alamat Lengkap</label>
+                    <textarea id="address" rows="3" required></textarea>
+                </div>
+
+                <div class="booking-summary">
+                    <h4>Ringkasan Booking</h4>
+                    <p>Unit: <span id="summaryPs"></span></p>
+                    <p>Tanggal: <span id="summaryDate"></span></p>
+                    <p>Durasi: <span id="summaryDuration"></span></p>
+                    <p>Total: <span id="summaryTotal"></span></p>
+                    <p>Alamat: <span id="summaryAlamat"></span></p>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Konfirmasi Booking</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>GameStation</h3>
+                <p>Rental PlayStation premium dengan pelayanan terbaik</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Unit PS</h3>
+                <ul>
+                    <li><a href="#">PlayStation 5</a></li>
+                    <li><a href="#">PlayStation 4 Pro</a></li>
+                    <li><a href="#">PlayStation 4 Slim</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Jam Operasional</h3>
+                <ul>
+                    <li>Senin - Jum'at : 09:00 - 22:00</li>
+                    <li>Sabtu - Minggu: 09:00 - 00:00</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Jam Operasional</h3>
+                <ul>
+                    <li>Senin - Jum'at : 09:00 - 22:00</li>
+                    <li>Sabtu - Minggu: 09:00 - 00:00</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Store bookings data
+        let bookings = [];
+        let currentDate = new Date();
+        let selectedDate = null;
+        let selectedPs = null;
+
+        // Data PS Unit
+        const psUnits = {
+            'ps5': {
+                name: 'PlayStation 5',
+                price: 35000
+            },
+            'ps4pro': {
+                name: 'PlayStation 4 Pro',
+                price: 30000
+            },
+            'ps4': {
+                name: 'PlayStation 4 Slim',
+                price: 20000
+            }
+        };
+
+        // Fungsi untuk membuka modal
+        function openModal(psType) {
+            const modal = document.getElementById('bookingModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const summaryPs = document.getElementById('summaryPs');
+            const selectedPsInput = document.getElementById('selectedPs');
+
+            console.log(summaryPs);
+            // Cek apakah unit PS tersedia di psUnits
+            if (psUnits[psType]) {
+                modalTitle.textContent = `Book ${psUnits[psType].name}`;
+                summaryPs.textContent = psUnits[psType].name;
+                selectedPsInput.value = psType;
+                modal.style.display = 'block';
+                // Reset dan inisialisasi  
+                resetForm();
+                updateCalendar();
+                updateBookingSummary();
+            } else {
+                console.error("PS Unit tidak ditemukan:", psType);
+            }
+        }
+
+
+
+        // Fungsi untuk mengupdate ringkasan booking
+        function updateBookingSummary() {
+            const duration = document.getElementById('duration').value;
+            const summaryDuration = document.getElementById('summaryDuration');
+            const summaryTotal = document.getElementById('summaryTotal');
+            const summaryDate = document.getElementById('summaryDate');
+            const summaryAlamat = document.getElementById('summaryAlamat');
+
+            // Update durasi
+            if (duration) {
+                summaryDuration.textContent = `${duration} hari`;
+            } else {
+                summaryDuration.textContent = '-';
+            }
+
+            // Update total harga
+            if (duration && selectedPs && psUnits[selectedPs]) {
+                const price = psUnits[selectedPs].price;
+                const total = price * parseInt(duration);
+                summaryTotal.textContent = `Rp ${total.toLocaleString('id-ID')}`;
+            } else {
+                summaryTotal.textContent = 'Rp 0';
+            }
+
+            // Update tanggal
+            if (selectedDate) {
+                summaryDate.textContent = formatDate(selectedDate);
+            } else {
+                summaryDate.textContent = '-';
+            }
+
+            // Update alamat
+            const address = document.getElementById('address').value;
+            summaryAlamat.textContent = address || 'Alamat belum diisi';
+        }
+
+        function closeModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            resetForm();
+        }
+
+        function formatDate(date) {
+            if (!date) return '';
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        function updateCalendar() {
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+
+            document.getElementById('currentMonth').textContent =
+                `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const daysGrid = document.getElementById('calendar-days');
+            daysGrid.innerHTML = '';
+
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                daysGrid.appendChild(emptyDay);
+            }
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Add days of the month
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                dayCell.textContent = day;
+
+                const currentDateObj = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+                currentDateObj.setHours(0, 0, 0, 0);
+
+                if (currentDateObj < today) {
+                    dayCell.classList.add('disabled');
+                } else if (isDateBooked(formatDate(currentDateObj))) {
+                    dayCell.classList.add('disabled');
+                } else if (currentDateObj.getTime() === today.getTime()) {
+                    dayCell.classList.add('today');
+                }
+
+                if (selectedDate && currentDateObj.getTime() === selectedDate.getTime()) {
+                    dayCell.classList.add('selected');
+                }
+
+                if (!dayCell.classList.contains('disabled')) {
+                    dayCell.addEventListener('click', () => selectDate(new Date(currentDateObj)));
+                }
+
+                daysGrid.appendChild(dayCell);
+            }
+        }
+
+        function selectDate(date) {
+            selectedDate = date;
+            document.getElementById('bookingDate').value = formatDate(date);
+            updateCalendar();
+            updateBookingSummary();
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateCalendar();
+        }
+
+        function isDateBooked(dateString) {
+            return bookings.some(booking =>
+                booking.date === dateString && booking.ps === selectedPs
+            );
+        }
+
+        function submitBooking(event) {
+            event.preventDefault();
+
+            if (!selectedDate || !selectedPs) {
+                alert('Mohon pilih tanggal dan unit PS terlebih dahulu');
+                return;
+            }
+
+            const booking = {
+                ps: selectedPs,
+                date: formatDate(selectedDate),
+                duration: document.getElementById('duration').value,
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value
+            };
+
+            bookings.push(booking);
+            alert('Booking berhasil! Kami akan menghubungi Anda untuk konfirmasi.');
+            closeModal();
+        }
+
+        function resetForm() {
+            document.getElementById('bookingForm').reset();
+            selectedDate = null;
+            document.getElementById('summaryDate').textContent = '-';
+            document.getElementById('summaryDuration').textContent = '-';
+            document.getElementById('summaryTotal').textContent = 'Rp 0';
+            document.getElementById('summaryAlamat').textContent = 'Alamat belum diisi';
+        }
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('duration').addEventListener('change', updateBookingSummary);
+            document.getElementById('address').addEventListener('input', updateBookingSummary);
+
+            // Initialize booking buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                if (btn.textContent.trim() === 'Sewa Sekarang') {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const card = e.target.closest('.unit-card');
+                        const psTitle = card.querySelector('.unit-title').textContent;
+                        openModal(psTitle);
+                    });
+                }
+            });
+        });
+
+        // Initialize calendar on load
+        updateCalendar();
+    </script>
+</body>
+
+</html>
