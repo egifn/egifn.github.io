@@ -93,7 +93,6 @@
             color: black;
             border-radius: 5px;
             padding: 10px 20px;
-            border: 1px solid #b8b8b8;
         }
 
         #start-session:hover {
@@ -159,15 +158,11 @@
             margin: 20px 0;
         }
 
-        .template-section {
-            text-align: center;
-        }
-
         .template-option {
-            width: 200px;
-            height: 250px;
-            border: 1px solid #b8b8b8;
-            border-radius: 5px; 
+            width: 120px;
+            height: 180px;
+            border: 3px solid #ddd;
+            border-radius: 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -176,7 +171,6 @@
             transition: all 0.3s;
             background-color: white;
             padding: 10px;
-            margin-bottom: 15px;
         }
 
         .template-option:hover {
@@ -191,17 +185,22 @@
 
         .template-option img {
             max-width: 100%;
-            max-height: 100%;
+            max-height: 70%;
             margin-bottom: 10px;
         }
 
-        .design-upload {
-            margin-bottom: 15px;
+        .template-option span {
+            font-size: 14px;
+            text-align: center;
+        }
+
+         .design-upload {
+            margin: 20px 0;
             padding: 15px;
-            background-color: #ffffff;
+            background-color: #f8f8f8;
             border-radius: 5px;
-            width: 65%;
-            border: 1px solid #b8b8b8;
+            width: 100%;
+            max-width: 400px;
         }
         
         .design-upload h3 {
@@ -426,23 +425,17 @@
         <div class="template-selection" id="template-selection" style="display: none;">
             <h2>Pilih Template</h2>
             <div class="template-options">
-                <div class="template-section">
-                    <div class="template-option" data-type="strip-3">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSIxNTAiIHZpZXdCb3g9IjAgMCA1MCAxNTAiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iMi41IiB5PSI1IiB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8cmVjdCB4PSIyLjUiIHk9IjUyLjUiIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSIgZmlsbD0iI2UwZTBlMCIgc3Ryb2tlPSIjYmRiZGJkIiAvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTAwIiB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8dGV4dCB4PSIyNSIgeT0iMTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCI+NSB4IDE1IGNtPC90ZXh0Pgo8L3N2Zz4=" alt="3 Photo Strip">
-                    </div>
-                    <span style="margin-top: 15px;">3 Foto Strip (5×15cm)</span>
+                <div class="template-option" data-type="strip-3">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSIxNTAiIHZpZXdCb3g9IjAgMCA1MCAxNTAiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iMi41IiB5PSI1IiB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8cmVjdCB4PSIyLjUiIHk9IjUyLjUiIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSIgZmlsbD0iI2UwZTBlMCIgc3Ryb2tlPSIjYmRiZGJkIiAvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTAwIiB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8dGV4dCB4PSIyNSIgeT0iMTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCI+NSB4IDE1IGNtPC90ZXh0Pgo8L3N2Zz4=" alt="3 Photo Strip">
+                    <span>3 Foto Strip (5×15cm)</span>
                 </div>
-                <div class="template-section">
-                    <div class="template-option" data-type="strip-2">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIHZpZXdCb3g9IjAgMCA1MCAxMDAiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iMi41IiB5PSI1IiB3aWR0aD0iNDUiIGhlaWdodD0iNDAiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8cmVjdCB4PSIyLjUiIHk9IjUwIiB3aWR0aD0iNDUiIGhlaWdodD0iNDAiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8dGV4dCB4PSIyNSIgeT0iOTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4Ij41IHggMTAgY208L3RleHQ+Cjwvc3ZnPg==" alt="2 Photo Strip">
-                    </div>
-                    <span style="margin-top: 15px;">2 Foto Strip (5×10cm)</span>
+                <div class="template-option" data-type="strip-2">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIHZpZXdCb3g9IjAgMCA1MCAxMDAiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iMi41IiB5PSI1IiB3aWR0aD0iNDUiIGhlaWdodD0iNDAiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8cmVjdCB4PSIyLjUiIHk9IjUwIiB3aWR0aD0iNDUiIGhlaWdodD0iNDAiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8dGV4dCB4PSIyNSIgeT0iOTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4Ij41IHggMTAgY208L3RleHQ+Cjwvc3ZnPg==" alt="2 Photo Strip">
+                    <span>2 Foto Strip (5×10cm)</span>
                 </div>
-                <div class="template-section">
-                    <div class="template-option" data-type="polaroid-1">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSIxMDciIHZpZXdCb3g9IjAgMCA4OCAxMDciPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4OCIgaGVpZ2h0PSIxMDciIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iNC41IiB5PSI0LjUiIHdpZHRoPSI3OSIgaGVpZ2h0PSI3OSIgZmlsbD0iI2UwZTBlMCIgc3Ryb2tlPSIjYmRiZGJkIiAvPgogIDx0ZXh0IHg9IjQ0IiB5PSI5OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiPjguOCB4IDEwLjcgY208L3RleHQ+Cjwvc3ZnPg==" alt="1 Polaroid">
-                    </div>
-                    <span style="margin-top: 15px;">1 Polaroid (8.8×10.7cm)</span>
+                <div class="template-option" data-type="polaroid-1">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSIxMDciIHZpZXdCb3g9IjAgMCA4OCAxMDciPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4OCIgaGVpZ2h0PSIxMDciIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iNC41IiB5PSI0LjUiIHdpZHRoPSI3OSIgaGVpZ2h0PSI3OSIgZmlsbD0iI2UwZTBlMCIgc3Ryb2tlPSIjYmRiZGJkIiAvPgogIDx0ZXh0IHg9IjQ0IiB5PSI5OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiPjguOCB4IDEwLjcgY208L3RleHQ+Cjwvc3ZnPg==" alt="1 Polaroid">
+                    <span>1 Polaroid (8.8×10.7cm)</span>
                 </div>
             </div>
               <!-- Design Upload Input -->

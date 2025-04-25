@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            position: absolute;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .globe-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: #ffd700;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-icons span {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=3270&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .location-tag {
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .hero-content p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 450px;
+            opacity: 0.9;
+        }
+
+        .explore-btn {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .explore-btn:hover {
+            background-color: #fff;
+        }
+
+        /* Destinations Slider */
+        .destinations {
+            position: absolute;
+            bottom: 80px;
+            width: 100%;
+            padding: 0 50px;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 20px;
+            touch-action: pan-x;
+        }
+
+        .slide {
+            min-width: 250px;
+            height: 350px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+            cursor: grab;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .slide:hover img {
+            transform: scale(1.05);
+        }
+
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        }
+
+        .slide-content h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .slide-content p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .slider-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .slider-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .slider-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .pagination {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            h1 {
+                font-size: 60px;
+            }
+
+            .slide {
+                min-width: 220px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                padding: 0 20px;
+            }
+
+            h1 {
+                font-size: 50px;
+            }
+
+            .destinations {
+                padding: 0 20px;
+                bottom: 50px;
+            }
+
+            .slide {
+                min-width: 180px;
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .hero-content p {
+                font-size: 12px;
+            }
+
+            .slide {
+                min-width: 150px;
+                height: 200px;
+            }
+
+            .slide-content h3 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <span class="globe-icon">🌎</span>
+            <span>TRAVEL EXPLORER</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">HOME</a></li>
+                <li><a href="#">HOLIDAYS</a></li>
+                <li><a href="#">DESTINATIONS</a></li>
+                <li><a href="#">EVENTS</a></li>
+                <li><a href="#">OFFERS</a></li>
+                <li><a href="#">CONTACT US</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <span class="search-icon">🔍</span>
+            <span class="user-icon">👤</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <span class="location-tag">Switzerland Alps</span>
+                <h1>SAINT<br>ANTÖNIEN</h1>
+                <p>Natural landscapes to explore, enjoy outdoor adventures in the mountains. Experience freedom with
+                    breathtaking views, and make memories that will last forever.</p>
+                <button class="explore-btn">EXPLORE NOW</button>
+            </div>
+        </section>
+
+        <section class="destinations">
+            <div class="slider-container">
+                <div class="slider" id="slider">
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1578001356991-159e54ec17ac?q=80&w=3174&auto=format&fit=crop"
+                            alt="Hokkaido Prefecture">
+                        <div class="slide-content">
+                            <h3>HOKKAIDO</h3>
+                            <p>PREFECTURE</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1548786811-dd6e453ccca7?q=80&w=3270&auto=format&fit=crop"
+                            alt="Marrakech Merzouga">
+                        <div class="slide-content">
+                            <h3>MARRAKECH</h3>
+                            <p>MERZOUGA</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1609924211018-5526c55bad5b?q=80&w=3387&auto=format&fit=crop"
+                            alt="Yosemite National Park">
+                        <div class="slide-content">
+                            <h3>YOSEMITE</h3>
+                            <p>NATIONAL PARK</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=3173&auto=format&fit=crop"
+                            alt="Los Lances Beach">
+                        <div class="slide-content">
+                            <h3>LOS LANCES</h3>
+                            <p>BEACH</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=3270&auto=format&fit=crop"
+                            alt="Swiss Alps">
+                        <div class="slide-content">
+                            <h3>SWISS ALPS</h3>
+                            <p>MOUNTAINS</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button id="prev-btn" class="slider-btn">&#10094;</button>
+                    <div class="pagination">
+                        <span class="current-page">01</span>
+                    </div>
+                    <button id="next-btn" class="slider-btn">&#10095;</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('slider');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const slides = document.querySelectorAll('.slide');
+            const currentPageEl = document.querySelector('.current-page');
+
+            let currentIndex = 0;
+            let startX;
+            let isDragging = false;
+            let startScrollLeft;
+
+            // Update pagination display
+            function updatePagination() {
+                const pageNumber = (currentIndex + 1).toString().padStart(2, '0');
+                currentPageEl.textContent = pageNumber;
+            }
+
+            // Slide to a specific index
+            function slideTo(index) {
+                if (index < 0) {
+                    index = 0;
+                } else if (index > slides.length - 1) {
+                    index = slides.length - 1;
+                }
+
+                currentIndex = index;
+                const slideWidth = slides[0].offsetWidth + 20; // 20px is the gap
+                slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                updatePagination();
+            }
+
+            // Next slide
+            function nextSlide() {
+                slideTo(currentIndex + 1);
+            }
+
+            // Previous slide
+            function prevSlide() {
+                slideTo(currentIndex - 1);
+            }
+
+            // Event listeners for buttons
+            nextBtn.addEventListener('click', nextSlide);
+            prevBtn.addEventListener('click', prevSlide);
+
+            // Touch and mouse events for dragging
+            slider.addEventListener('mousedown', dragStart);
+            slider.addEventListener('touchstart', dragStart);
+
+            slider.addEventListener('mousemove', dragging);
+            slider.addEventListener('touchmove', dragging);
+
+            slider.addEventListener('mouseup', dragEnd);
+            slider.addEventListener('touchend', dragEnd);
+            slider.addEventListener('mouseleave', dragEnd);
+
+            // Drag start handler
+            function dragStart(e) {
+                isDragging = true;
+                slider.classList.add('dragging');
+                startX = e.pageX || e.touches[0].pageX;
+                startScrollLeft = slider.scrollLeft;
+            }
+
+            // Dragging handler
+            function dragging(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX || e.touches[0].pageX;
+                const walk = (x - startX) * 2; // Multiply by 2 for faster movement
+                slider.scrollLeft = startScrollLeft - walk;
+            }
+
+            // Drag end handler
+            function dragEnd() {
+                if (!isDragging) return;
+                isDragging = false;
+                slider.classList.remove('dragging');
+
+                // Calculate which slide to snap to based on current scroll position
+                const slideWidth = slides[0].offsetWidth + 20;
+                const scrollPosition = slider.scrollLeft;
+                const newIndex = Math.round(scrollPosition / slideWidth);
+
+                slideTo(newIndex);
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                }
+            });
+
+            // Initialize pagination
+            updatePagination();
+
+            // Auto slide every 5 seconds
+            setInterval(nextSlide, 5000);
+
+            // Resize handler to maintain correct slide positions
+            window.addEventListener('resize', function() {
+                slideTo(currentIndex);
+            });
+        });
+    </script>
+</body>
+
+</html>

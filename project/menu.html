@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Red Hen - Artisan Bakery</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111;
+            color: #fff;
+            background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            padding: 20px 0;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text {
+            margin-left: 10px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .logo-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .main-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            opacity: 1;
+        }
+
+        .contact-info {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .user-actions a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #e67e22;
+            color: #fff;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            padding: 50px 0;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 50px;
+        }
+
+        .featured-product {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .featured-product h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .featured-product p {
+            font-size: 18px;
+            color: #e67e22;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-description {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .shop-now-btn {
+            background-color: #e67e22;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .shop-now-btn:hover {
+            background-color: #d35400;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+            object-fit: contain;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .location-icon {
+            margin-right: 10px;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 50px 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-by {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .filter-option {
+            font-size: 14px;
+            color: #e67e22;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .filter-option:hover,
+        .filter-option.active {
+            opacity: 1;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: #e67e22;
+        }
+
+        .delivery-info {
+            font-size: 12px;
+            opacity: 0.7;
+            text-align: right;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card.active {
+            background-color: #e67e22;
+        }
+
+        .product-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff00;
+            position: relative;
+        }
+
+        .product-image img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+        .info-icon {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 24px;
+            height: 24px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .product-details {
+            padding: 15px;
+        }
+
+        .product-weight {
+            font-size: 12px;
+            opacity: 0.7;
+            text-align: right;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart {
+            background-color: #e67e22;
+            color: #fff;
+            border: none;
+            padding: 5px 15px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            float: right;
+        }
+
+        .product-card.active .add-to-cart {
+            background-color: #fff;
+            color: #e67e22;
+        }
+
+        .ingredients-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(230, 126, 34, 0.9);
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            max-width: 200px;
+            z-index: 10;
+            display: none;
+        }
+
+        .ingredients-popup.show {
+            display: block;
+        }
+
+        .view-all-btn {
+            display: block;
+            background-color: #e67e22;
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0 auto;
+            transition: background-color 0.3s;
+        }
+
+        .view-all-btn:hover {
+            background-color: #d35400;
+        }
+
+        .selected-icon {
+            color: #fff;
+            font-size: 16px;
+            margin-left: 5px;
+        }
+
+        /* Footer Cart */
+        .footer-cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #1a1a1a;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .footer-cart-icon {
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .footer-cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #e67e22;
+            color: #fff;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animation for hero section */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+            }
+
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="top-nav">
+                <div class="logo-container">
+                    <img src="https://i.ibb.co/Jt8MbQx/hen-logo.png" alt="Little Red Hen Logo" class="logo">
+                    <div class="logo-text">
+                        <h2>LITTLE RED HEN</h2>
+                        <p>ARTISAN BAKERY</p>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    +1 250 803 2733
+                </div>
+                <div class="user-actions">
+                    <a href="#" class="search-icon">🔍</a>
+                    <a href="#" class="cart-icon">🛒 <span class="cart-count">1</span></a>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="#" class="active">Main page</a>
+                <a href="#">About us</a>
+                <a href="#">Delivery</a>
+                <a href="#">Locations</a>
+                <a href="#">Contacts</a>
+            </nav>
+        </header>
+
+        <section class="hero" id="hero-section">
+            <div class="hero-content">
+                <div class="featured-product">
+                    <h3 id="hero-product-name">Mt. Ida Multigrain</h3>
+                    <p id="hero-product-price">$6.50</p>
+                </div>
+                <h1 class="hero-title">Traditional Artisan Bakery</h1>
+                <p class="hero-description" id="hero-description">
+                    Little Red Hen is dedicated to producing breads using traditional baking techniques — handmade
+                    breads, artisan loaves and more.
+                    Our products are made with the finest locally-milled, naturally-leavened flour.
+                </p>
+                <button class="shop-now-btn">Shop Now</button>
+                <div class="location">
+                    <span class="location-icon">📍</span>
+                    <div>
+                        <p>Salmon Arm,</p>
+                        <p>British Columbia</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img id="hero-image" src="/placeholder.svg?height=500&width=500" alt="Featured Bread">
+            </div>
+        </section>
+
+        <section class="products-section">
+            <div class="section-header">
+                <div>
+                    <div class="filter-by">Filter by</div>
+                    <div class="filter-options">
+                        <span class="filter-option active">Daily items</span>
+                        <span class="filter-option">Pastry</span>
+                    </div>
+                </div>
+                <h2 class="section-title">CUSTOMER FAVOURITES</h2>
+                <div class="delivery-info">
+                    <p>All orders for Tuesday</p>
+                    <p>to be made by Sunday</p>
+                    <p>at 8pm PST</p>
+                </div>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card" data-id="1" data-name="Whole Grain Spelt" data-price="$6.00"
+                    data-weight="390g"
+                    data-description="Our Whole Grain Spelt is made with 100% organic spelt flour, creating a nutty flavor and light texture. Perfect for those seeking ancient grain alternatives.">
+                    <div class="product-image">
+                        <img src="/project/img/berger.png" alt="Whole Grain Spelt">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">390g</div>
+                        <div class="product-price">$6.00</div>
+                        <div class="product-name">Whole Grain Spelt</div>
+                        <button class="add-to-cart">Add</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: organic spelt flour, water, salt, yeast
+                    </div>
+                </div>
+
+                <!-- Product 2 (Active) -->
+                <div class="product-card active" data-id="2" data-name="Mt. Ida Multigrain" data-price="$6.50"
+                    data-weight="350g"
+                    data-description="Our signature Mt. Ida Multigrain features a blend of organic grains and seeds, creating a hearty, nutritious loaf with exceptional flavor and texture.">
+                    <div class="product-image">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Mt. Ida Multigrain">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">350g</div>
+                        <div class="product-price">$6.50</div>
+                        <div class="product-name">Mt. Ida Multigrain</div>
+                        <button class="add-to-cart">✓</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: organic whole grain flour, flaxseed, oats, sunflower seeds, pumpkin seeds, honey,
+                        filtered water, yeast, salt
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card" data-id="3" data-name="Four Seed Whole Wheat" data-price="$5.00"
+                    data-weight="420g"
+                    data-description="Our Four Seed Whole Wheat combines organic whole wheat flour with a quartet of nutritious seeds for a protein-rich bread that's both healthy and delicious.">
+                    <div class="product-image">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Four Seed Whole Wheat">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">420g</div>
+                        <div class="product-price">$5.00</div>
+                        <div class="product-name">Four Seed Whole Wheat</div>
+                        <button class="add-to-cart">Add</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: whole wheat flour, flax seeds, sunflower seeds, pumpkin seeds, sesame seeds, water,
+                        salt, yeast
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card" data-id="4" data-name="Bagel Multigrain" data-price="$3.00"
+                    data-weight="100g"
+                    data-description="Our Multigrain Bagels offer the perfect chewy texture with the added nutrition and flavor of multiple grains. Delicious toasted with cream cheese or as a sandwich base.">
+                    <div class="product-image">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Bagel Multigrain">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">100g</div>
+                        <div class="product-price">$3.00</div>
+                        <div class="product-name">Bagel Multigrain</div>
+                        <button class="add-to-cart">Add</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: multigrain flour, water, salt, malt, yeast
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card" data-id="5" data-name="Bagel Sesame" data-price="$3.00"
+                    data-weight="100g"
+                    data-description="Our Sesame Bagels feature a generous coating of toasted sesame seeds that add a nutty flavor to our perfectly chewy traditional bagels.">
+                    <div class="product-image">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Bagel Sesame">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">100g</div>
+                        <div class="product-price">$3.00</div>
+                        <div class="product-name">Bagel Sesame</div>
+                        <button class="add-to-cart">Add</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: flour, water, sesame seeds, salt, malt, yeast
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card" data-id="6" data-name="Strawberry Puff Pastry" data-price="$5.00"
+                    data-weight="130g"
+                    data-description="Our Strawberry Puff Pastry features layers of buttery, flaky pastry topped with fresh strawberries and a light glaze. A perfect sweet treat any time of day.">
+                    <div class="product-image">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Strawberry Puff Pastry">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">130g</div>
+                        <div class="product-price">$5.00</div>
+                        <div class="product-name">Strawberry Puff Pastry</div>
+                        <button class="add-to-cart">Add</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: flour, butter, strawberries, sugar, water, salt
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card" data-id="7" data-name="French Baguette" data-price="$6.00"
+                    data-weight="280g"
+                    data-description="Our authentic French Baguette features a crisp, golden crust and a light, airy interior. Made with traditional techniques for that perfect chew and flavor.">
+                    <div class="product-image">
+                        <img src="/placeholder.svg?height=200&width=200" alt="French Baguette">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">280g</div>
+                        <div class="product-price">$6.00</div>
+                        <div class="product-name">French Baguette</div>
+                        <button class="add-to-cart">Add</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: flour, water, salt, yeast
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card" data-id="8" data-name="Raspberry Cream Pastry" data-price="$6.00"
+                    data-weight="130g"
+                    data-description="Our Raspberry Cream Pastry combines buttery puff pastry with sweet-tart raspberries and smooth cream cheese for an indulgent treat that's not too sweet.">
+                    <div class="product-image">
+                        <img src="/placeholder.svg?height=200&width=200" alt="Raspberry Cream Pastry">
+                        <div class="info-icon">ℹ</div>
+                    </div>
+                    <div class="product-details">
+                        <div class="product-weight">130g</div>
+                        <div class="product-price">$6.00</div>
+                        <div class="product-name">Raspberry Cream Pastry</div>
+                        <button class="add-to-cart">Add</button>
+                    </div>
+                    <div class="ingredients-popup">
+                        Ingredients: flour, butter, raspberries, cream cheese, sugar, salt
+                    </div>
+                </div>
+            </div>
+
+            <button class="view-all-btn">View All</button>
+        </section>
+    </div>
+
+    <div class="footer-cart">
+        <span class="footer-cart-icon">🛒</span>
+        <span class="footer-cart-count">1</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Product data - in a real application, this would come from a database
+            const productData = [{
+                    id: 1,
+                    name: "Whole Grain Spelt",
+                    price: "$6.00",
+                    weight: "390g",
+                    description: "Our Whole Grain Spelt is made with 100% organic spelt flour, creating a nutty flavor and light texture. Perfect for those seeking ancient grain alternatives.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "organic spelt flour, water, salt, yeast"
+                },
+                {
+                    id: 2,
+                    name: "Mt. Ida Multigrain",
+                    price: "$6.50",
+                    weight: "350g",
+                    description: "Our signature Mt. Ida Multigrain features a blend of organic grains and seeds, creating a hearty, nutritious loaf with exceptional flavor and texture.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "organic whole grain flour, flaxseed, oats, sunflower seeds, pumpkin seeds, honey, filtered water, yeast, salt"
+                },
+                {
+                    id: 3,
+                    name: "Four Seed Whole Wheat",
+                    price: "$5.00",
+                    weight: "420g",
+                    description: "Our Four Seed Whole Wheat combines organic whole wheat flour with a quartet of nutritious seeds for a protein-rich bread that's both healthy and delicious.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "whole wheat flour, flax seeds, sunflower seeds, pumpkin seeds, sesame seeds, water, salt, yeast"
+                },
+                {
+                    id: 4,
+                    name: "Bagel Multigrain",
+                    price: "$3.00",
+                    weight: "100g",
+                    description: "Our Multigrain Bagels offer the perfect chewy texture with the added nutrition and flavor of multiple grains. Delicious toasted with cream cheese or as a sandwich base.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "multigrain flour, water, salt, malt, yeast"
+                },
+                {
+                    id: 5,
+                    name: "Bagel Sesame",
+                    price: "$3.00",
+                    weight: "100g",
+                    description: "Our Sesame Bagels feature a generous coating of toasted sesame seeds that add a nutty flavor to our perfectly chewy traditional bagels.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "flour, water, sesame seeds, salt, malt, yeast"
+                },
+                {
+                    id: 6,
+                    name: "Strawberry Puff Pastry",
+                    price: "$5.00",
+                    weight: "130g",
+                    description: "Our Strawberry Puff Pastry features layers of buttery, flaky pastry topped with fresh strawberries and a light glaze. A perfect sweet treat any time of day.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "flour, butter, strawberries, sugar, water, salt"
+                },
+                {
+                    id: 7,
+                    name: "French Baguette",
+                    price: "$6.00",
+                    weight: "280g",
+                    description: "Our authentic French Baguette features a crisp, golden crust and a light, airy interior. Made with traditional techniques for that perfect chew and flavor.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "flour, water, salt, yeast"
+                },
+                {
+                    id: 8,
+                    name: "Raspberry Cream Pastry",
+                    price: "$6.00",
+                    weight: "130g",
+                    description: "Our Raspberry Cream Pastry combines buttery puff pastry with sweet-tart raspberries and smooth cream cheese for an indulgent treat that's not too sweet.",
+                    image: "/placeholder.svg?height=500&width=500",
+                    ingredients: "flour, butter, raspberries, cream cheese, sugar, salt"
+                }
+            ];
+
+            const productCards = document.querySelectorAll('.product-card');
+            const addButtons = document.querySelectorAll('.add-to-cart');
+            const infoIcons = document.querySelectorAll('.info-icon');
+            const ingredientsPopups = document.querySelectorAll('.ingredients-popup');
+            const filterOptions = document.querySelectorAll('.filter-option');
+
+            // Hero section elements
+            const heroProductName = document.getElementById('hero-product-name');
+            const heroProductPrice = document.getElementById('hero-product-price');
+            const heroDescription = document.getElementById('hero-description');
+            const heroImage = document.getElementById('hero-image');
+            const heroSection = document.getElementById('hero-section');
+
+            // Initialize hero with the active product (Mt. Ida Multigrain)
+            updateHeroSection(2);
+
+            // Handle product card selection
+            productCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't trigger if clicking on info icon or add button
+                    if (e.target.closest('.info-icon') || e.target.closest('.add-to-cart')) {
+                        return;
+                    }
+
+                    // Get the product ID
+                    const productId = parseInt(this.dataset.id);
+
+                    // Remove active class from all cards
+                    productCards.forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked card
+                    this.classList.add('active');
+
+                    // Update add button text
+                    updateAddButtons();
+
+                    // Update hero section with the selected product
+                    updateHeroSection(productId);
+
+                    // Update cart count
+                    updateCartCount();
+                });
+            });
+
+            // Handle add to cart button
+            addButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.closest('.product-card');
+                    const productId = parseInt(card.dataset.id);
+
+                    // Toggle active state
+                    if (card.classList.contains('active')) {
+                        card.classList.remove('active');
+                        this.textContent = 'Add';
+                    } else {
+                        // Remove active class from all cards
+                        productCards.forEach(c => c.classList.remove('active'));
+
+                        // Add active class to this card
+                        card.classList.add('active');
+                        this.textContent = '✓';
+
+                        // Update hero section with the selected product
+                        updateHeroSection(productId);
+
+                        // Update other buttons
+                        updateAddButtons();
+                    }
+
+                    // Update cart count
+                    updateCartCount();
+                });
+            });
+
+            // Handle info icon click
+            infoIcons.forEach((icon, index) => {
+                icon.addEventListener('click', function(e) {
+                    e.stopPropagation();
+
+                    // Hide all popups first
+                    ingredientsPopups.forEach(popup => popup.classList.remove('show'));
+
+                    // Show this popup
+                    ingredientsPopups[index].classList.toggle('show');
+
+                    // Hide popup after 3 seconds
+                    setTimeout(() => {
+                        ingredientsPopups[index].classList.remove('show');
+                    }, 3000);
+                });
+            });
+
+            // Handle filter options
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from all options
+                    filterOptions.forEach(o => o.classList.remove('active'));
+
+                    // Add active class to clicked option
+                    this.classList.add('active');
+
+                    // Here you would typically filter the products
+                    // For this demo, we'll just log the filter
+                    console.log('Filtering by:', this.textContent);
+                });
+            });
+
+            // Close popups when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.info-icon')) {
+                    ingredientsPopups.forEach(popup => popup.classList.remove('show'));
+                }
+            });
+
+            // Function to update the hero section with product data
+            function updateHeroSection(productId) {
+                // Find the product data
+                const product = productData.find(p => p.id === productId);
+
+                if (!product) return;
+
+                // Add fade-out effect
+                heroSection.style.opacity = '0';
+
+                // Update hero content after a short delay
+                setTimeout(() => {
+                    // Update product name, price, and description
+                    heroProductName.textContent = product.name;
+                    heroProductPrice.textContent = product.price;
+                    heroDescription.textContent = product.description;
+
+                    // Update hero image
+                    heroImage.src = product.image;
+                    heroImage.alt = product.name;
+
+                    // Fade back in
+                    heroSection.style.opacity = '1';
+                }, 300);
+            }
+
+            // Helper function to update add buttons
+            function updateAddButtons() {
+                addButtons.forEach(btn => {
+                    const card = btn.closest('.product-card');
+                    btn.textContent = card.classList.contains('active') ? '✓' : 'Add';
+                });
+            }
+
+            // Helper function to update cart counts
+            function updateCartCount() {
+                const activeCards = document.querySelectorAll('.product-card.active');
+                const cartCountElements = document.querySelectorAll('.cart-count');
+
+                cartCountElements.forEach(element => {
+                    element.textContent = activeCards.length;
+                });
+            }
+
+            // Initialize
+            updateAddButtons();
+            updateCartCount();
+        });
+    </script>
+</body>
+
+</html>
