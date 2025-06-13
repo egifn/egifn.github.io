@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Data Booking</title>
+    <style>
+        /* Style dasar */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        /* Style tombol tambah */
+        .btn-tambah {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-tambah:hover {
+            background-color: #45a049;
+        }
+        
+        /* Style modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Style form */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        /* Style tombol form */
+        .form-actions {
+            text-align: right;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+        
+        .btn-cancel {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #d32f2f;
+        }
+        
+        /* Style header modal */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <!-- Tombol untuk membuka modal -->
+    <button class="btn-tambah" id="btnTambahBooking">+ Tambah Booking</button>
+    
+    <!-- Modal untuk form tambah booking -->
+    <div id="modalTambahBooking" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Tambah Data Booking</h2>
+                <span class="close">&times;</span>
+            </div>
+            
+            <form id="formTambahBooking">
+                <div class="form-group">
+                    <label for="nama">Nama Pelanggan:</label>
+                    <input type="text" id="nama" name="nama" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telepon">Nomor Telepon:</label>
+                    <input type="tel" id="telepon" name="telepon" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tanggal">Tanggal Booking:</label>
+                    <input type="date" id="tanggal" name="tanggal" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="waktu">Waktu Booking:</label>
+                    <input type="time" id="waktu" name="waktu" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="jenis">Jenis Layanan:</label>
+                    <select id="jenis" name="jenis" required>
+                        <option value="">Pilih Jenis Layanan</option>
+                        <option value="Meeting Room">Meeting Room</option>
+                        <option value="Coworking Space">Coworking Space</option>
+                        <option value="Private Office">Private Office</option>
+                        <option value="Event Space">Event Space</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="jumlah">Jumlah Orang:</label>
+                    <input type="number" id="jumlah" name="jumlah" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="catatan">Catatan Tambahan:</label>
+                    <textarea id="catatan" name="catatan" rows="3"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" id="btnBatal">Batal</button>
+                    <button type="submit" class="btn btn-submit">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Ambil elemen-elemen yang dibutuhkan
+        const modal = document.getElementById("modalTambahBooking");
+        const btnTambah = document.getElementById("btnTambahBooking");
+        const btnBatal = document.getElementById("btnBatal");
+        const spanClose = document.getElementsByClassName("close")[0];
+        const form = document.getElementById("formTambahBooking");
+        
+        // Ketika tombol tambah diklik, tampilkan modal
+        btnTambah.onclick = function() {
+            modal.style.display = "block";
+        }
+        
+        // Ketika tombol close (x) diklik, sembunyikan modal
+        spanClose.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // Ketika tombol batal diklik, sembunyikan modal
+        btnBatal.onclick = function() {
+            modal.style.display = "none";
+        }
+        
+        // Ketika user mengklik di luar modal, sembunyikan modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        
+        // Handle submit form
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const formData = {
+                nama: document.getElementById("nama").value,
+                email: document.getElementById("email").value,
+                telepon: document.getElementById("telepon").value,
+                tanggal: document.getElementById("tanggal").value,
+                waktu: document.getElementById("waktu").value,
+                jenis: document.getElementById("jenis").value,
+                jumlah: document.getElementById("jumlah").value,
+                catatan: document.getElementById("catatan").value
+            };
+            
+            // Di sini Anda bisa menambahkan kode untuk mengirim data ke server
+            console.log("Data booking yang akan dikirim:", formData);
+            
+            // Tampilkan pesan sukses
+            alert("Data booking berhasil disimpan!");
+            
+            // Reset form
+            form.reset();
+            
+            // Sembunyikan modal
+            modal.style.display = "none";
+            
+            // Di aplikasi nyata, Anda mungkin ingin:
+            // 1. Mengirim data ke server via AJAX/fetch
+            // 2. Menambahkan data baru ke tabel/list bookings
+            // 3. Menangani error jika ada
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Table with Frozen Columns</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .eg-table-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .eg-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .eg-table-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .eg-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .eg-freeze-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .eg-freeze-control label {
+            font-size: 0.875rem;
+            color: #555;
+        }
+
+        .eg-freeze-control select {
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .eg-table-wrapper {
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .eg-data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .eg-data-table th, 
+        .eg-data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+
+        .eg-data-table th {
+            font-weight: 600;
+            color: #555;
+            background-color: #f9f9f9;
+            position: sticky;
+            top: 0;
+        }
+
+        .eg-data-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Selected row styling */
+        .eg-data-table tr.eg-selected {
+            background-color: #e9ecef !important;
+        }
+
+        /* Frozen columns styling */
+        .eg-data-table th.eg-frozen, 
+        .eg-data-table td.eg-frozen {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+            background-color: white;
+            box-shadow: 1px 0 0 0 #eee;
+        }
+
+        .eg-data-table th.eg-frozen {
+            z-index: 2;
+            background-color: #f9f9f9;
+        }
+
+        .eg-data-table tr:hover td.eg-frozen {
+            background-color: #f5f5f5;
+        }
+
+        /* Ensure selected frozen cells maintain color */
+        .eg-data-table tr.eg-selected td.eg-frozen {
+            background-color: #e9ecef !important;
+        }
+
+        .eg-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .eg-status-active {
+            background-color: #e6f7ee;
+            color: #28a745;
+        }
+
+        .eg-status-inactive {
+            background-color: #f8e8e8;
+            color: #dc3545;
+        }
+
+        .eg-status-pending {
+            background-color: #fff3cd;
+            color: #ffc107;
+        }
+
+        .eg-table-footer {
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            color: #6c757d;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .eg-table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .eg-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .eg-data-table th, 
+            .eg-data-table td {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="eg-table-container">
+        <div class="eg-table-header">
+            <h2>Data Table with Frozen Columns</h2>
+            <div class="eg-controls">
+                <div class="eg-freeze-control">
+                    <label for="eg-freezeColumns">Freeze Columns:</label>
+                    <select id="eg-freezeColumns">
+                        <option value="0">None</option>
+                        <option value="1">1 Column</option>
+                        <option value="2">2 Columns</option>
+                        <option value="3">3 Columns</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="eg-table-wrapper">
+            <table class="eg-data-table" id="eg-dataTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Position</th>
+                        <th>Salary</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td>Marketing</td>
+                        <td>Manager</td>
+                        <td>$75,000</td>
+                        <td><span class="eg-status eg-status-active">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>Development</td>
+                        <td>Senior Developer</td>
+                        <td>$90,000</td>
+                        <td><span class="eg-status eg-status-active">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Robert Johnson</td>
+                        <td>robert@example.com</td>
+                        <td>HR</td>
+                        <td>HR Specialist</td>
+                        <td>$65,000</td>
+                        <td><span class="eg-status eg-status-inactive">Inactive</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Emily Davis</td>
+                        <td>emily@example.com</td>
+                        <td>Finance</td>
+                        <td>Accountant</td>
+                        <td>$70,000</td>
+                        <td><span class="eg-status eg-status-active">Active</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Michael Wilson</td>
+                        <td>michael@example.com</td>
+                        <td>Development</td>
+                        <td>Junior Developer</td>
+                        <td>$55,000</td>
+                        <td><span class="eg-status eg-status-pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="eg-table-footer">
+            <div class="eg-rows-count">Showing 5 entries</div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const freezeSelect = document.getElementById('eg-freezeColumns');
+            const table = document.getElementById('eg-dataTable');
+            
+            // Frozen columns functionality
+            freezeSelect.addEventListener('change', function() {
+                const freezeCount = parseInt(this.value);
+                
+                // Remove all frozen classes first
+                const allThs = table.querySelectorAll('th');
+                const allTds = table.querySelectorAll('td');
+                
+                allThs.forEach(th => {
+                    th.classList.remove('eg-frozen');
+                    th.style.left = '';
+                });
+                allTds.forEach(td => {
+                    td.classList.remove('eg-frozen');
+                    td.style.left = '';
+                });
+                
+                // Apply frozen classes to selected columns
+                if (freezeCount > 0) {
+                    const rows = table.querySelectorAll('tr');
+                    
+                    rows.forEach(row => {
+                        const cells = row.querySelectorAll('th, td');
+                        
+                        for (let i = 0; i < freezeCount && i < cells.length; i++) {
+                            cells[i].classList.add('eg-frozen');
+                            
+                            // Calculate left position for stacked frozen columns
+                            if (i > 0) {
+                                const prevCell = cells[i - 1];
+                                const prevWidth = prevCell.offsetWidth;
+                                const currentLeft = parseInt(prevCell.style.left || '0');
+                                cells[i].style.left = (currentLeft + prevWidth) + 'px';
+                            } else {
+                                cells[i].style.left = '0';
+                            }
+                        }
+                    });
+                }
+            });
+            
+            // Row selection functionality
+            table.addEventListener('click', function(e) {
+                const clickedRow = e.target.closest('tbody tr');
+                
+                if (clickedRow) {
+                    // Remove selection from all rows
+                    table.querySelectorAll('tbody tr').forEach(row => {
+                        row.classList.remove('eg-selected');
+                    });
+                    
+                    // Add selection to clicked row
+                    clickedRow.classList.add('eg-selected');
+                }
+            });
+            
+            // Initialize with no frozen columns
+            freezeSelect.value = '0';
+        });
+    </script>
+</body>
+</html>

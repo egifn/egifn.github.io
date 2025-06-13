@@ -278,6 +278,10 @@
      background-color: #dddddd;
  }
 
+ .menu-item:active {
+     background-color: #9f1b1b;
+ }
+
  .menu-text {
      display: inline-block;
  }
