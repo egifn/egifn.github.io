@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pencatatan Skor Game</title>
+    <title>KingRemi!</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            /* max-width: 800px; */
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -122,13 +122,14 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-        .players-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        .players-list {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
             margin-bottom: 30px;
         }
 
+        /* Warna card untuk player berbeda-beda */
         .player-card {
             background: white;
             border-radius: 15px;
@@ -140,6 +141,30 @@
             overflow: hidden;
         }
 
+        .player-card:nth-child(1) {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+
+        .player-card:nth-child(2) {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        }
+
+        .player-card:nth-child(3) {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+        }
+
+        .player-card:nth-child(4) {
+            background: linear-gradient(135deg, #ffc3a0 0%, #ffafbd 100%);
+        }
+
+        .player-card:nth-child(5) {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
+        .player-card:nth-child(6) {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+        }
+
         .player-card::before {
             content: '';
             position: absolute;
@@ -147,7 +172,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            /* background: linear-gradient(45deg, #667eea, #764ba2); */
         }
 
         .player-card:hover {
@@ -157,7 +182,7 @@
 
         .player-card.loser {
             border-color: #e74c3c;
-            background: linear-gradient(135deg, #ffebee, #ffffff);
+            /* background: linear-gradient(135deg, #ffebee, #ffffff); */
             animation: pulse-red 1.5s infinite;
         }
 
@@ -195,9 +220,8 @@
             left: 5px;
             background: linear-gradient(45deg, #34495e, #2c3e50);
             color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+            border-radius: 5px;
+            padding: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -222,21 +246,22 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            /* margin-bottom: 20px; */
         }
 
         .player-name {
+            display: flex;
             font-size: 1.3rem;
             font-weight: 700;
+            color: #2c3e50;
         }
 
         .delete-btn {
             background: #e74c3c;
+            padding: 5px;
+            margin-left: 10px;
             color: white;
             border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
             cursor: pointer;
             font-size: 16px;
             display: flex;
@@ -260,6 +285,7 @@
             font-weight: 900;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 10px;
+            color: #2c3e50;
         }
 
         .negative-score {
@@ -269,7 +295,7 @@
         .progress-bar {
             width: 100%;
             height: 8px;
-            background: #ecf0f1;
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 4px;
             overflow: hidden;
             margin-bottom: 15px;
@@ -293,18 +319,19 @@
             display: flex;
             gap: 10px;
             align-items: center;
-            width: 100%;
+            /* width: 100%; */
             justify-content: center;
         }
 
         .score-input {
             width: 80px;
             padding: 8px 12px;
-            border: 2px solid #ddd;
+            border: 2px solid rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             text-align: center;
             font-size: 16px;
             font-weight: 600;
+            background: rgba(255, 255, 255, 0.8);
         }
 
         .score-input:focus {
@@ -354,13 +381,13 @@
             font-size: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            border: 1px solid rgba(102, 126, 234, 0.3);
+            background: rgba(255, 255, 255, 0.3);
+            color: #2c3e50;
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .quick-btn:hover {
-            background: rgba(102, 126, 234, 0.2);
+            background: rgba(255, 255, 255, 0.5);
             transform: scale(1.05);
         }
 
@@ -390,7 +417,6 @@
             color: #7f8c8d;
             font-size: 1.2rem;
             margin: 50px 0;
-            grid-column: 1 / -1;
         }
 
         .kadodet-notification {
@@ -430,12 +456,20 @@
                 font-size: 2rem;
             }
             
-            .players-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .score-number {
                 font-size: 2.5rem;
+            }
+    
+            /* Hilangkan spinner di Chrome, Safari, Edge */
+            .no-spinner::-webkit-outer-spin-button,
+            .no-spinner::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            /* Hilangkan spinner di Firefox */
+            .no-spinner {
+                -moz-appearance: textfield;
             }
         }
     </style>
@@ -443,7 +477,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏆 Pencatatan Skor Game</h1>
+            <h1>RemiKing! Skor Game</h1>
+            <p>By:Begot</p>
         </div>
 
         <div class="controls">
@@ -451,29 +486,22 @@
                 <label for="playerName">Nama Player:</label>
                 <input type="text" id="playerName" placeholder="Masukkan nama player">
             </div>
-            <div class="input-group">
-                <label for="nul"  style="margin-top: 20px"></label>
-                <button class="btn btn-primary" onclick="addPlayer()">Tambah Player</button>
-            </div>
+            <button class="btn btn-primary" style="margin-top: 25px;" onclick="addPlayer()">Tambah Player</button>
+            
             <div class="input-group">
                 <label for="targetScore">Target Skor:</label>
-                <input type="number" id="targetScore" value="100" min="1">
+                <input type="number" id="targetScore" value="1000" min="1">
             </div>
-            <div class="input-group">
-                <label for="nul"  style="margin-top: 20px"></label>
-                <button class="btn btn-primary" onclick="setTarget()">Set Target</button>
-            </div>
-            <div class="input-group">
-                <label for="nul" style="margin-top: 20px"></label>
-                 <button class="btn btn-reset" onclick="resetGame()">Reset Game</button>
-            </div>
+            <button class="btn btn-primary" style="margin-top: 25px;" onclick="setTarget()">Set Target</button>
+            
+            <button class="btn btn-reset" style="margin-top: 25px;" onclick="resetGame()">Reset Game</button>
         </div>
 
         <div class="target-display" id="targetDisplay">
-            🎯 Target Skor: 100
+            Klasemen
         </div>
 
-        <div class="players-grid" id="playersGrid">
+        <div class="players-list" id="playersList">
             <div class="no-players">
                 Belum ada player. Tambahkan player untuk memulai game!
             </div>
@@ -486,9 +514,17 @@
 
     <script>
         let players = [];
-        let targetScore = 100;
+        let targetScore = 1000;
         let gameFinished = false;
         let previousRankings = [];
+        const cardColors = [
+            'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)',
+            'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
+            'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)',
+            'linear-gradient(135deg, #ffc3a0 0%, #ffafbd 100%)',
+            'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)',
+            'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
+        ];
 
         // Tambah player baru
         function addPlayer() {
@@ -505,10 +541,13 @@
                 return;
             }
             
+            const colorIndex = players.length % cardColors.length;
+            
             players.push({
                 id: Date.now(),
                 name: name,
-                score: 0
+                score: 0,
+                color: cardColors[colorIndex]
             });
             
             nameInput.value = '';
@@ -636,10 +675,10 @@
 
         // Render daftar player
         function renderPlayers() {
-            const grid = document.getElementById('playersGrid');
+            const list = document.getElementById('playersList');
             
             if (players.length === 0) {
-                grid.innerHTML = '<div class="no-players">Belum ada player. Tambahkan player untuk memulai game!</div>';
+                list.innerHTML = '<div class="no-players">Belum ada player. Tambahkan player untuk memulai game!</div>';
                 return;
             }
             
@@ -650,7 +689,7 @@
             const minScore = Math.min(...players.map(p => p.score));
             const hasLoser = players.length > 1 && players.filter(p => p.score === minScore).length === 1;
             
-            grid.innerHTML = sortedPlayers.map((player, index) => {
+            list.innerHTML = sortedPlayers.map((player, index) => {
                 const isWinner = player.score >= targetScore;
                 const isLoser = hasLoser && player.score === minScore && !isWinner;
                 const progress = player.score > 0 ? Math.min((player.score / targetScore) * 100, 100) : 0;
@@ -662,29 +701,28 @@
                 else if (index === 2) rankClass = 'third';
                 
                 return `
-                    <div class="player-card ${isWinner ? 'winner' : ''} ${isLoser ? 'loser' : ''}">
-                        ${rankClass ? `<div class="ranking-number ${rankClass}">${index + 1}</div>` : ''}
+                    <div class="player-card ${isWinner ? 'winner' : ''} ${isLoser ? 'loser' : ''}" style="background: ${player.color}">
+                        ${rankClass ? `<div class="ranking-number ${rankClass}">Posisi #${index + 1}</div>` : ''}
                         ${isWinner ? '<div class="winner-badge">🏆 Pemenang!</div>' : ''}
                         ${isLoser ? '<div class="loser-badge">💀 Tukang Ngoclok!</div>' : ''}
                         
                         <div class="player-header">
-                            <div class="player-name">${player.name}</div>
-                            <button class="delete-btn" onclick="deletePlayer(${player.id})">×</button>
+                            <div class="player-name">${player.name}  <button class="delete-btn" onclick="deletePlayer(${player.id})">Hapus</button></div>
+                            <div class="score-number ${player.score < 0 ? 'negative-score' : ''}">${player.score}</div>
+                            <div class="score-input-group">
+                                <button class="score-btn minus" onclick="updateScoreByInput(${player.id}, 'minus')">Minus</button>
+                                <input type="number" class="score-input no-spinner" id="scoreInput_${player.id}" value="">
+                                <button class="score-btn plus" onclick="updateScoreByInput(${player.id}, 'plus')">Plus</button>
+                            </div>
                         </div>
                         
                         <div class="score-display">
-                            <div class="score-number ${player.score < 0 ? 'negative-score' : ''}">${player.score}</div>
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: ${progress}%"></div>
                             </div>
                         </div>
                         
                         <div class="score-controls">
-                            <div class="score-input-group">
-                                <button class="score-btn minus" onclick="updateScoreByInput(${player.id}, 'minus')">Kurang</button>
-                                <input type="number" class="score-input" id="scoreInput_${player.id}" value="1" min="1">
-                                <button class="score-btn plus" onclick="updateScoreByInput(${player.id}, 'plus')">Tambah</button>
-                            </div>
                         </div>
                     </div>
                 `;
