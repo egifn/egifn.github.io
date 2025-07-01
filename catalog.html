@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Makanan Enak</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header Styles */
+header {
+    background-color: #e74c3c;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #333;
+    padding: 15px 0;
+    margin-bottom: 30px;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    background-color: #e74c3c;
+}
+
+/* Search and Sort Styles */
+.search-container {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+}
+
+.search-container button {
+    padding: 10px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.sort-container {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.sort-container label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.sort-container select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Product Grid Styles */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.product-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-info h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.product-info p {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+.product-info .category {
+    display: inline-block;
+    background-color: #f1f1f1;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+}
+
+.product-info .price {
+    font-weight: bold;
+    color: #e74c3c;
+    font-size: 1.2rem;
+}
+
+.product-info .rating {
+    color: #f39c12;
+    margin-bottom: 15px;
+}
+
+.product-info .btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.product-info .btn:hover {
+    background-color: #c0392b;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+}
+
+.social-media {
+    margin-top: 15px;
+}
+
+.social-media a {
+    color: white;
+    margin: 0 10px;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+}
+
+.social-media a:hover {
+    color: #e74c3c;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 700px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-body img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.modal-info h2 {
+    margin-bottom: 10px;
+    color: #e74c3c;
+}
+
+.modal-info p {
+    margin-bottom: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .modal-body {
+        flex-direction: column;
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    nav ul li {
+        margin-bottom: 5px;
+    }
+}
+
+/* Category Colors */
+.category-makanan-berat {
+    background-color: #f1c40f !important;
+    color: #333 !important;
+}
+
+.category-makanan-ringan {
+    background-color: #2ecc71 !important;
+    color: white !important;
+}
+
+.category-minuman {
+    background-color: #3498db !important;
+    color: white !important;
+}
+
+.category-penutup {
+    background-color: #9b59b6 !important;
+    color: white !important;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Katalog Makanan Enak</h1>
+            <p>Berbagai pilihan makanan lezat untuk setiap kesempatan</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#" class="active" data-category="all">Semua</a></li>
+                <li><a href="#" data-category="makanan-berat">Makanan Berat</a></li>
+                <li><a href="#" data-category="makanan-ringan">Makanan Ringan</a></li>
+                <li><a href="#" data-category="minuman">Minuman</a></li>
+                <li><a href="#" data-category="penutup">Penutup</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Cari makanan...">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="sort-container">
+            <label for="sort-select">Urutkan:</label>
+            <select id="sort-select">
+                <option value="name-asc">Nama (A-Z)</option>
+                <option value="name-desc">Nama (Z-A)</option>
+                <option value="price-asc">Harga (Murah-Mahal)</option>
+                <option value="price-desc">Harga (Mahal-Murah)</option>
+            </select>
+        </div>
+
+        <div id="product-container" class="product-grid">
+            <!-- Produk akan dimuat di sini melalui JavaScript -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Katalog Makanan Enak. All rights reserved.</p>
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <img id="modal-image" src="" alt="">
+                <div class="modal-info">
+                    <h2 id="modal-title"></h2>
+                    <p id="modal-category"></p>
+                    <p id="modal-description"></p>
+                    <p id="modal-price"></p>
+                    <div class="rating">
+                        <span id="modal-rating"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Produk Makanan
+const products = [
+    {
+        id: 1,
+        name: "Nasi Goreng Spesial",
+        category: "makanan-berat",
+        price: 25000,
+        description: "Nasi goreng dengan campuran daging ayam, udang, telur, dan sayuran segar. Disajikan dengan acar dan kerupuk.",
+        image: "https://images.unsplash.com/photo-1630918236414-15a2a1a1b3f3",
+        rating: 4.5
+    },
+    {
+        id: 2,
+        name: "Mie Ayam Jamur",
+        category: "makanan-berat",
+        price: 20000,
+        description: "Mie ayam dengan potongan daging ayam dan jamur kancing, disajikan dengan kuah kaldu ayam yang gurih.",
+        image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841",
+        rating: 4.2
+    },
+    {
+        id: 3,
+        name: "Sate Ayam",
+        category: "makanan-berat",
+        price: 30000,
+        description: "Sate ayam dengan bumbu kacang khas, disajikan dengan lontong dan acar timun.",
+        image: "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b",
+        rating: 4.7
+    },
+    {
+        id: 4,
+        name: "Rendang Daging",
+        category: "makanan-berat",
+        price: 35000,
+        description: "Rendang daging sapi dengan bumbu rempah yang kaya rasa, dimasak hingga empuk dan meresap.",
+        image: "https://images.unsplash.com/photo-1633945274415-a3c5399021b5",
+        rating: 4.9
+    },
+    {
+        id: 5,
+        name: "Gado-Gado",
+        category: "makanan-berat",
+        price: 22000,
+        description: "Campuran sayuran segar dengan bumbu kacang, disajikan dengan lontong dan kerupuk.",
+        image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+        rating: 4.3
+    },
+    {
+        id: 6,
+        name: "Lumpia Goreng",
+        category: "makanan-ringan",
+        price: 15000,
+        description: "Lumpia isi sayuran dan daging ayam yang digoreng hingga renyah, disajikan dengan saus sambal.",
+        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950",
+        rating: 4.0
+    },
+    {
+        id: 7,
+        name: "Pastel",
+        category: "makanan-ringan",
+        price: 10000,
+        description: "Pastel dengan isian sayuran dan daging cincang, kulitnya renyah dan gurih.",
+        image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8",
+        rating: 3.8
+    },
+    {
+        id: 8,
+        name: "Risoles",
+        category: "makanan-ringan",
+        price: 12000,
+        description: "Risoles dengan isian ragout ayam dan sayuran, dibalut kulit yang renyah.",
+        image: "https://images.unsplash.com/photo-1603105037880-880cd4edfb0d",
+        rating: 4.1
+    },
+    {
+        id: 9,
+        name: "Es Teh Manis",
+        category: "minuman",
+        price: 8000,
+        description: "Es teh dengan gula yang pas, menyegarkan di hari yang panas.",
+        image: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9",
+        rating: 3.9
+    },
+    {
+        id: 10,
+        name: "Jus Alpukat",
+        category: "minuman",
+        price: 15000,
+        description: "Jus alpukat segar dengan susu kental manis, kaya akan nutrisi dan lezat.",
+        image: "https://images.unsplash.com/photo-1603569283847-aa295f0d016a",
+        rating: 4.4
+    },
+    {
+        id: 11,
+        name: "Es Jeruk",
+        category: "minuman",
+        price: 10000,
+        description: "Es jeruk segar dengan kandungan vitamin C yang tinggi, sangat menyegarkan.",
+        image: "https://images.unsplash.com/photo-1603569283847-aa295f0d016a",
+        rating: 4.2
+    },
+    {
+        id: 12,
+        name: "Kopi Tubruk",
+        category: "minuman",
+        price: 12000,
+        description: "Kopi tradisional Indonesia yang diseduh langsung dengan bubuk kopi pilihan.",
+        image: "https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5",
+        rating: 4.6
+    },
+    {
+        id: 13,
+        name: "Es Cendol",
+        category: "penutup",
+        price: 12000,
+        description: "Minuman penutup tradisional dengan cendol, santan, dan gula merah cair.",
+        image: "https://images.unsplash.com/photo-1603105037880-880cd4edfb0d",
+        rating: 4.5
+    },
+    {
+        id: 14,
+        name: "Pisang Goreng",
+        category: "penutup",
+        price: 10000,
+        description: "Pisang raja yang digoreng dengan tepung krispi, disajikan hangat dengan taburan gula.",
+        image: "https://images.unsplash.com/photo-1603569283847-aa295f0d016a",
+        rating: 4.3
+    },
+    {
+        id: 15,
+        name: "Klepon",
+        category: "penutup",
+        price: 8000,
+        description: "Kue tradisional dari beras ketan dengan isi gula merah, dibalut parutan kelapa.",
+        image: "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9",
+        rating: 4.7
+    }
+];
+
+// Fungsi untuk menampilkan produk
+function displayProducts(productsToDisplay) {
+    const productContainer = document.getElementById('product-container');
+    productContainer.innerHTML = '';
+
+    if (productsToDisplay.length === 0) {
+        productContainer.innerHTML = '<p class="no-products">Tidak ada produk yang ditemukan.</p>';
+        return;
+    }
+
+    productsToDisplay.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+        
+        // Format harga ke Rupiah
+        const formattedPrice = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(product.price);
+
+        // Buat elemen rating dengan bintang
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= Math.floor(product.rating)) {
+                stars += '<i class="fas fa-star"></i>';
+            } else if (i === Math.ceil(product.rating) && product.rating % 1 >= 0.5) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            } else {
+                stars += '<i class="far fa-star"></i>';
+            }
+        }
+
+        productCard.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='https://via.placeholder.com/300x200?text=Produk+Makanan'">
+            <div class="product-info">
+                <span class="category category-${product.category}">${getCategoryName(product.category)}</span>
+                <h3>${product.name}</h3>
+                <p class="price">${formattedPrice}</p>
+                <div class="rating">${stars} (${product.rating})</div>
+                <button class="btn view-detail" data-id="${product.id}">Lihat Detail</button>
+            </div>
+        `;
+
+        productContainer.appendChild(productCard);
+    });
+
+    // Tambahkan event listener untuk tombol detail
+    document.querySelectorAll('.view-detail').forEach(button => {
+        button.addEventListener('click', function() {
+            const productId = parseInt(this.getAttribute('data-id'));
+            showProductDetail(productId);
+        });
+    });
+}
+
+// Fungsi untuk mendapatkan nama kategori yang lebih baik
+function getCategoryName(category) {
+    const categories = {
+        'makanan-berat': 'Makanan Berat',
+        'makanan-ringan': 'Makanan Ringan',
+        'minuman': 'Minuman',
+        'penutup': 'Penutup'
+    };
+    return categories[category] || category;
+}
+
+// Fungsi untuk menampilkan detail produk
+function showProductDetail(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const modal = document.getElementById('product-modal');
+    const formattedPrice = new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+    }).format(product.price);
+
+    // Buat elemen rating dengan bintang
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(product.rating)) {
+            stars += '<i class="fas fa-star"></i>';
+        } else if (i === Math.ceil(product.rating) && product.rating % 1 >= 0.5) {
+            stars += '<i class="fas fa-star-half-alt"></i>';
+        } else {
+            stars += '<i class="far fa-star"></i>';
+        }
+    }
+
+    document.getElementById('modal-image').src = product.image;
+    document.getElementById('modal-image').alt = product.name;
+    document.getElementById('modal-title').textContent = product.name;
+    document.getElementById('modal-category').textContent = `Kategori: ${getCategoryName(product.category)}`;
+    document.getElementById('modal-description').textContent = product.description;
+    document.getElementById('modal-price').textContent = `Harga: ${formattedPrice}`;
+    document.getElementById('modal-rating').innerHTML = `Rating: ${stars} (${product.rating})`;
+
+    modal.style.display = 'block';
+}
+
+// Fungsi untuk memfilter produk berdasarkan kategori
+function filterProducts(category) {
+    if (category === 'all') {
+        return products;
+    }
+    return products.filter(product => product.category === category);
+}
+
+// Fungsi untuk mencari produk berdasarkan nama
+function searchProducts(query) {
+    const lowerCaseQuery = query.toLowerCase();
+    return products.filter(product => 
+        product.name.toLowerCase().includes(lowerCaseQuery) || 
+        product.description.toLowerCase().includes(lowerCaseQuery)
+    );
+}
+
+// Fungsi untuk mengurutkan produk
+function sortProducts(productsToSort, sortBy) {
+    const sortedProducts = [...productsToSort];
+    
+    switch (sortBy) {
+        case 'name-asc':
+            sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'name-desc':
+            sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        case 'price-asc':
+            sortedProducts.sort((a, b) => a.price - b.price);
+            break;
+        case 'price-desc':
+            sortedProducts.sort((a, b) => b.price - a.price);
+            break;
+        default:
+            break;
+    }
+    
+    return sortedProducts;
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Tampilkan semua produk saat pertama kali load
+    displayProducts(products);
+
+    // Filter berdasarkan kategori
+    document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Update active class
+            document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+            this.classList.add('active');
+            
+            const category = this.getAttribute('data-category');
+            const filteredProducts = filterProducts(category);
+            displayProducts(filteredProducts);
+        });
+    });
+
+    // Pencarian produk
+    document.getElementById('search-btn').addEventListener('click', () => {
+        const query = document.getElementById('search-input').value;
+        const searchedProducts = searchProducts(query);
+        displayProducts(searchedProducts);
+    });
+
+    // Pencarian saat menekan enter
+    document.getElementById('search-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const query = document.getElementById('search-input').value;
+            const searchedProducts = searchProducts(query);
+            displayProducts(searchedProducts);
+        }
+    });
+
+    // Pengurutan produk
+    document.getElementById('sort-select').addEventListener('change', function() {
+        const sortBy = this.value;
+        const currentProducts = Array.from(document.querySelectorAll('.product-card')).length > 0 ? 
+            products.filter(p => 
+                Array.from(document.querySelectorAll('.product-card')).some(card => 
+                    card.querySelector('h3').textContent === p.name
+                )
+            ) : products;
+        
+        const sortedProducts = sortProducts(currentProducts, sortBy);
+        displayProducts(sortedProducts);
+    });
+
+    // Tutup modal
+    document.querySelector('.close-modal').addEventListener('click', () => {
+        document.getElementById('product-modal').style.display = 'none';
+    });
+
+    // Tutup modal saat klik di luar konten modal
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('product-modal');
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+    </script>
+</body>
+</html>
