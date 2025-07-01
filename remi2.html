@@ -677,23 +677,13 @@
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: ${progress}%"></div>
                             </div>
-                            <div style="font-size: 0.9rem; color: #7f8c8d;">
-                                ${player.score}/${targetScore} ${player.score >= 0 ? `(${Math.round(progress)}%)` : '(Minus)'}
-                            </div>
                         </div>
                         
                         <div class="score-controls">
                             <div class="score-input-group">
-                                <button class="score-btn minus" onclick="updateScoreByInput(${player.id}, 'minus')">- Kurang</button>
+                                <button class="score-btn minus" onclick="updateScoreByInput(${player.id}, 'minus')">Kurang</button>
                                 <input type="number" class="score-input" id="scoreInput_${player.id}" value="1" min="1">
-                                <button class="score-btn plus" onclick="updateScoreByInput(${player.id}, 'plus')">+ Tambah</button>
-                            </div>
-                            <div class="quick-actions">
-                                <button class="quick-btn" onclick="setScoreInput(${player.id}, 1)">1</button>
-                                <button class="quick-btn" onclick="setScoreInput(${player.id}, 5)">5</button>
-                                <button class="quick-btn" onclick="setScoreInput(${player.id}, 10)">10</button>
-                                <button class="quick-btn" onclick="setScoreInput(${player.id}, 25)">25</button>
-                                <button class="quick-btn" onclick="setScoreInput(${player.id}, 50)">50</button>
+                                <button class="score-btn plus" onclick="updateScoreByInput(${player.id}, 'plus')">Tambah</button>
                             </div>
                         </div>
                     </div>
