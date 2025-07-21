@@ -594,7 +594,7 @@
 
     <script>
       // Data storage
-      let schedules = JSON.parse(localStorage.getItem("curozSchedules")) || [];
+      //   let schedules = JSON.parse(localStorage.getItem("curozSchedules")) || [];
 
       // State aplikasi
       let currentUser = null;
@@ -630,8 +630,8 @@
       const userInfoDisplay = document.getElementById("userInfoDisplay");
 
       // Event Listeners
-      document.addEventListener("DOMContentLoaded", () => {
-        renderSchedules();
+      document.addEventListener("DOMContentLoaded", async () => {
+        await loadSchedules();
 
         // Cek jika sudah login
         const storedUser = localStorage.getItem("curozUser");
@@ -703,7 +703,7 @@
         };
 
         schedules.push(newSchedule);
-        saveToLocalStorage();
+        saveToGist();
         renderSchedules();
         addScheduleModal.style.display = "none";
 
@@ -762,7 +762,7 @@
           return;
         }
 
-        saveToLocalStorage();
+        saveToGist();
         renderSchedules();
         joinModal.style.display = "none";
 
@@ -796,7 +796,7 @@
         song.youtubeLink = newYoutubeLink;
         song.chordLink = newChordLink;
 
-        saveToLocalStorage();
+        saveToGist();
         renderSchedules();
         editSongModal.style.display = "none";
       });
@@ -809,7 +809,7 @@
 
         schedule.songs = schedule.songs.filter((s) => s.id !== currentSongId);
 
-        saveToLocalStorage();
+        saveToGist();
         renderSchedules();
         editSongModal.style.display = "none";
       });
@@ -839,7 +839,7 @@
         // Tambahkan ke posisi baru
         song.positions[newPosition] = newMember || "";
 
-        saveToLocalStorage();
+        saveToGist();
         renderSchedules();
         editPositionModal.style.display = "none";
       });
@@ -994,8 +994,92 @@
         return positions[pos] || pos;
       }
 
-      function saveToLocalStorage() {
-        localStorage.setItem("curozSchedules", JSON.stringify(schedules));
+      const GIST_ID = "GIST_ID_ANDA"; // Ganti dengan ID Gist Anda
+      const GIST_FILENAME = "curoz_schedules.json";
+      const GITHUB_TOKEN = "ghp_TOKEN_ANDA"; // Token dengan gist scope
+
+      // Data storage
+      let schedules = [];
+
+      // Fungsi untuk memuat data dari Gist
+      async function loadSchedules() {
+        try {
+          const response = await fetch(
+            `https://api.github.com/gists/${GIST_ID}`
+          );
+          const gist = await response.json();
+
+          if (gist.files && gist.files[GIST_FILENAME]) {
+            schedules = JSON.parse(gist.files[GIST_FILENAME].content) || [];
+          } else {
+            // Data default jika Gist kosong
+            schedules = [
+              {
+                id: 1,
+                date: new Date(Date.now() + 86400000)
+                  .toISOString()
+                  .split("T")[0],
+                time: "19:00",
+                location: "Studio Harmoni, Jl. Melodi No. 12",
+                notes: "Latihan untuk persiapan gig minggu depan",
+                songs: [
+                  {
+                    id: Date.now(),
+                    title: "Lagu Pertama",
+                    youtubeLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    chordLink: "https://chordtela.com/lagu-pertama",
+                    positions: {
+                      vocal: "Andi",
+                      melodi: "Budi",
+                      bass: "",
+                      drum: "Doni",
+                      rhytem: "",
+                    },
+                  },
+                ],
+                creator: "6281234567890", // EgiAdmin
+              },
+            ];
+            await saveToGist();
+          }
+
+          renderSchedules();
+        } catch (error) {
+          console.error("Gagal memuat data:", error);
+          alert("Gagal memuat data jadwal. Silakan coba lagi.");
+        }
+      }
+
+      // Fungsi untuk menyimpan data ke Gist
+      async function saveToGist() {
+        try {
+          const response = await fetch(
+            `https://api.github.com/gists/${GIST_ID}`,
+            {
+              method: "PATCH",
+              headers: {
+                Authorization: `token ${GITHUB_TOKEN}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                files: {
+                  [GIST_FILENAME]: {
+                    content: JSON.stringify(schedules, null, 2),
+                  },
+                },
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Gagal menyimpan data");
+          }
+
+          console.log("Data berhasil disimpan ke Gist");
+        } catch (error) {
+          console.error("Gagal menyimpan data:", error);
+          alert("Gagal menyimpan data. Silakan coba lagi.");
+        }
       }
 
       function saveToGoogleCalendar(schedule) {
@@ -1073,7 +1157,7 @@
 
         if (song.positions[position] === "") {
           song.positions[position] = currentUser.name;
-          saveToLocalStorage();
+          saveToGist();
           renderSchedules();
         } else {
           alert(
