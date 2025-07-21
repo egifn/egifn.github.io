@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Curoz</title>
+    <style>
+      :root {
+        --primary: #000000;
+        --secondary: #ffffff;
+        --accent: #ffd700;
+        --light: #f5f5f5;
+        --dark: #212121;
+        --gray: #333333;
+        --light-gray: #e0e0e0;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--gray);
+        color: var(--secondary);
+        line-height: 1.6;
+        padding-bottom: 60px;
+      }
+
+      header {
+        background: linear-gradient(135deg, var(--primary), var(--gray));
+        color: var(--accent);
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 2px solid var(--accent);
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 0 1rem;
+      }
+
+      /* Button Styles */
+      .btn {
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .btn-primary {
+        background-color: var(--accent);
+        color: var(--primary);
+      }
+
+      .btn-primary:hover {
+        background-color: #ffc000;
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background-color: var(--secondary);
+        color: var(--primary);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light-gray);
+        transform: translateY(-2px);
+      }
+
+      .btn-danger {
+        background-color: #d9534f;
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background-color: #c9302c;
+        transform: translateY(-2px);
+      }
+
+      .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      /* Action Buttons */
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .action-buttons .btn {
+        flex: 1;
+      }
+
+      /* Schedule List */
+      .schedule-list {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .schedule-card {
+        background: var(--primary);
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        position: relative;
+        border: 1px solid var(--accent);
+      }
+
+      .schedule-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--accent);
+        padding-bottom: 0.5rem;
+      }
+
+      .schedule-date {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .schedule-time {
+        color: var(--secondary);
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+
+      .schedule-location {
+        margin-bottom: 1rem;
+        font-weight: 500;
+      }
+
+      .schedule-notes {
+        margin-bottom: 1rem;
+        font-style: italic;
+        opacity: 0.8;
+      }
+
+      /* Songs Section */
+      .songs-section {
+        margin-top: 1.5rem;
+      }
+
+      .songs-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--accent);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .song-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .song-card {
+        background: var(--gray);
+        border-radius: 6px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        border-left: 3px solid var(--accent);
+      }
+
+      .song-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .song-title {
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      .song-links {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .song-link {
+        color: var(--secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.3rem 0.6rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        transition: all 0.3s;
+      }
+
+      .song-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: var(--accent);
+      }
+
+      .position-list {
+        margin-top: 1rem;
+      }
+
+      .position-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+      }
+
+      .position-name {
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      .position-member {
+        color: var(--secondary);
+      }
+
+      .empty-position {
+        color: #888;
+        font-style: italic;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 200;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background: var(--primary);
+        width: 90%;
+        max-width: 500px;
+        border-radius: 8px;
+        padding: 1.5rem;
+        position: relative;
+        border: 1px solid var(--accent);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-title {
+        color: var(--accent);
+        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
+        text-align: center;
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--secondary);
+        transition: all 0.3s;
+      }
+
+      .close-modal:hover {
+        color: var(--accent);
+      }
+
+      /* Form Styles */
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--gray);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        font-size: 1rem;
+        color: var(--secondary);
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+      }
+
+      /* Login Section */
+      .login-section {
+        text-align: center;
+        margin: 2rem 0;
+      }
+
+      .login-btn {
+        background-color: #25d366;
+        color: white;
+      }
+
+      .login-btn:hover {
+        background-color: #128c7e;
+      }
+
+      .user-info {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* Add Schedule Button */
+      .add-schedule-btn {
+        position: fixed;
+        bottom: 2rem;
+        right: 1rem;
+        z-index: 100;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: var(--primary);
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .add-schedule-btn:hover {
+        transform: scale(1.1) rotate(90deg);
+        background: #ffc000;
+      }
+
+      /* Responsive */
+      @media (min-width: 768px) {
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>NGE-JAM</h1>
+      <div id="userInfoDisplay" class="user-info"></div>
+    </header>
+
+    <div class="container">
+      <!-- Login Section -->
+      <div class="login-section" id="loginSection">
+        <p>Silakan login dengan WhatsApp untuk mengakses fitur lengkap</p>
+        <button class="btn login-btn" id="loginBtn">
+          <span>📱</span> Login dengan WhatsApp
+        </button>
+      </div>
+
+      <!-- Schedule List -->
+      <div class="schedule-list" id="scheduleList">
+        <!-- Schedule cards will be added here dynamically -->
+      </div>
+    </div>
+
+    <!-- Add Schedule Button (only for EgiAdmin) -->
+    <button class="add-schedule-btn" id="addScheduleBtn" style="display: none">
+      +
+    </button>
+
+    <!-- Add Schedule Modal -->
+    <div class="modal" id="addScheduleModal">
+      <div class="modal-content">
+        <span class="close-modal" id="closeAddModal">&times;</span>
+        <h2 class="modal-title">Tambah Jadwal Baru</h2>
+        <div class="form-group">
+          <label for="eventDate" class="form-label">Tanggal</label>
+          <input type="date" id="eventDate" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="eventTime" class="form-label">Waktu</label>
+          <input type="time" id="eventTime" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="eventLocation" class="form-label">Lokasi</label>
+          <input
+            type="text"
+            id="eventLocation"
+            class="form-control"
+            placeholder="Tempat latihan/tampil"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="eventNotes" class="form-label">Catatan</label>
+          <textarea
+            id="eventNotes"
+            class="form-control"
+            rows="3"
+            placeholder="Tambahkan catatan jika perlu"
+          ></textarea>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="saveScheduleBtn">
+            Simpan Jadwal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Join Modal -->
+    <div class="modal" id="joinModal">
+      <div class="modal-content">
+        <span class="close-modal" id="closeModal">&times;</span>
+        <h2 class="modal-title">Join Jadwal</h2>
+        <div class="form-group">
+          <label for="songTitle" class="form-label">Judul Lagu</label>
+          <input
+            type="text"
+            id="songTitle"
+            class="form-control"
+            placeholder="Masukkan judul lagu"
+          />
+        </div>
+        <div class="form-group">
+          <label for="songPosition" class="form-label">Posisi</label>
+          <select id="songPosition" class="form-control">
+            <option value="vocal">Vokal</option>
+            <option value="melodi">Melodi</option>
+            <option value="bass">Bass</option>
+            <option value="drum">Drum</option>
+            <option value="rhytem">Rhytem</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="youtubeLink" class="form-label">Link YouTube Musik</label>
+          <input
+            type="url"
+            id="youtubeLink"
+            class="form-control"
+            placeholder="https://youtube.com/..."
+          />
+        </div>
+        <div class="form-group">
+          <label for="chordLink" class="form-label">Link Chord</label>
+          <input
+            type="url"
+            id="chordLink"
+            class="form-control"
+            placeholder="https://..."
+          />
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="saveJoinBtn">Simpan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Song Modal -->
+    <div class="modal" id="editSongModal">
+      <div class="modal-content">
+        <span class="close-modal" id="closeEditSongModal">&times;</span>
+        <h2 class="modal-title">Edit Lagu</h2>
+        <div class="form-group">
+          <label for="editSongTitle" class="form-label">Judul Lagu</label>
+          <input type="text" id="editSongTitle" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="editYoutubeLink" class="form-label"
+            >Link YouTube Musik</label
+          >
+          <input type="url" id="editYoutubeLink" class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="editChordLink" class="form-label">Link Chord</label>
+          <input type="url" id="editChordLink" class="form-control" />
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="saveEditSongBtn">
+            Simpan Perubahan
+          </button>
+          <button class="btn btn-danger" id="deleteSongBtn">Hapus Lagu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Position Modal -->
+    <div class="modal" id="editPositionModal">
+      <div class="modal-content">
+        <span class="close-modal" id="closeEditPositionModal">&times;</span>
+        <h2 class="modal-title">Edit Posisi</h2>
+        <div class="form-group">
+          <label for="editPositionSelect" class="form-label">Posisi</label>
+          <select id="editPositionSelect" class="form-control">
+            <option value="vocal">Vokal</option>
+            <option value="melodi">Melodi</option>
+            <option value="bass">Bass</option>
+            <option value="drum">Drum</option>
+            <option value="rhytem">Rhytem</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editPositionMember" class="form-label">Anggota</label>
+          <input
+            type="text"
+            id="editPositionMember"
+            class="form-control"
+            placeholder="Kosongkan jika belum ada"
+          />
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="saveEditPositionBtn">
+            Simpan Perubahan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WhatsApp Login Modal -->
+    <div class="modal" id="waLoginModal">
+      <div class="modal-content">
+        <span class="close-modal" id="closeWaModal">&times;</span>
+        <h2 class="modal-title">Masukkan Nomor WhatsApp</h2>
+        <div class="form-group">
+          <label for="phoneNumber" class="form-label"
+            >Nomor WhatsApp (dengan kode negara)</label
+          >
+          <input
+            type="tel"
+            id="phoneNumber"
+            class="form-control"
+            placeholder="contoh: 62812345678910"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="userName" class="form-label">Nama Anda</label>
+          <input
+            type="text"
+            id="userName"
+            class="form-control"
+            placeholder="Nama lengkap"
+            required
+          />
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="verifyWaBtn">Verifikasi</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Data storage
+      let schedules = JSON.parse(localStorage.getItem("curozSchedules")) || [];
+
+      // State aplikasi
+      let currentUser = null;
+      let currentScheduleId = null;
+      let currentSongId = null;
+      let currentPosition = null;
+
+      // DOM Elements
+      const loginSection = document.getElementById("loginSection");
+      const scheduleList = document.getElementById("scheduleList");
+      const loginBtn = document.getElementById("loginBtn");
+      const addScheduleBtn = document.getElementById("addScheduleBtn");
+      const addScheduleModal = document.getElementById("addScheduleModal");
+      const closeAddModal = document.getElementById("closeAddModal");
+      const saveScheduleBtn = document.getElementById("saveScheduleBtn");
+      const joinModal = document.getElementById("joinModal");
+      const closeModal = document.getElementById("closeModal");
+      const saveJoinBtn = document.getElementById("saveJoinBtn");
+      const waLoginModal = document.getElementById("waLoginModal");
+      const closeWaModal = document.getElementById("closeWaModal");
+      const verifyWaBtn = document.getElementById("verifyWaBtn");
+      const editSongModal = document.getElementById("editSongModal");
+      const closeEditSongModal = document.getElementById("closeEditSongModal");
+      const saveEditSongBtn = document.getElementById("saveEditSongBtn");
+      const deleteSongBtn = document.getElementById("deleteSongBtn");
+      const editPositionModal = document.getElementById("editPositionModal");
+      const closeEditPositionModal = document.getElementById(
+        "closeEditPositionModal"
+      );
+      const saveEditPositionBtn = document.getElementById(
+        "saveEditPositionBtn"
+      );
+      const userInfoDisplay = document.getElementById("userInfoDisplay");
+
+      // Event Listeners
+      document.addEventListener("DOMContentLoaded", () => {
+        renderSchedules();
+
+        // Cek jika sudah login
+        const storedUser = localStorage.getItem("curozUser");
+        if (storedUser) {
+          currentUser = JSON.parse(storedUser);
+          handleLoginSuccess();
+        }
+      });
+
+      loginBtn.addEventListener("click", () => {
+        waLoginModal.style.display = "flex";
+      });
+
+      closeWaModal.addEventListener("click", () => {
+        waLoginModal.style.display = "none";
+      });
+
+      verifyWaBtn.addEventListener("click", () => {
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        const userName = document.getElementById("userName").value;
+
+        if (!phoneNumber || !userName) {
+          alert("Harap isi nomor WhatsApp dan nama lengkap");
+          return;
+        }
+
+        currentUser = {
+          phone: phoneNumber,
+          name: userName,
+        };
+
+        localStorage.setItem("curozUser", JSON.stringify(currentUser));
+        waLoginModal.style.display = "none";
+        handleLoginSuccess();
+        alert(`Verifikasi berhasil! Selamat datang ${userName}`);
+      });
+
+      addScheduleBtn.addEventListener("click", () => {
+        document.getElementById("eventDate").value = "";
+        document.getElementById("eventTime").value = "";
+        document.getElementById("eventLocation").value = "";
+        document.getElementById("eventNotes").value = "";
+        addScheduleModal.style.display = "flex";
+      });
+
+      closeAddModal.addEventListener("click", () => {
+        addScheduleModal.style.display = "none";
+      });
+
+      saveScheduleBtn.addEventListener("click", () => {
+        const date = document.getElementById("eventDate").value;
+        const time = document.getElementById("eventTime").value;
+        const location = document.getElementById("eventLocation").value;
+        const notes = document.getElementById("eventNotes").value;
+
+        if (!date || !time || !location) {
+          alert("Harap isi tanggal, waktu, dan lokasi");
+          return;
+        }
+
+        const newSchedule = {
+          id: Date.now(),
+          date,
+          time,
+          location,
+          notes,
+          songs: [],
+          creator: currentUser.phone,
+        };
+
+        schedules.push(newSchedule);
+        saveToLocalStorage();
+        renderSchedules();
+        addScheduleModal.style.display = "none";
+
+        // Simpan ke Google Calendar (simulasi)
+        saveToGoogleCalendar(newSchedule);
+      });
+
+      closeModal.addEventListener("click", () => {
+        joinModal.style.display = "none";
+      });
+
+      saveJoinBtn.addEventListener("click", () => {
+        const songTitle = document.getElementById("songTitle").value;
+        const position = document.getElementById("songPosition").value;
+        const youtubeLink = document.getElementById("youtubeLink").value;
+        const chordLink = document.getElementById("chordLink").value;
+
+        if (!songTitle || !position || !youtubeLink) {
+          alert("Harap isi judul lagu, posisi, dan link YouTube");
+          return;
+        }
+
+        const schedule = schedules.find((s) => s.id === currentScheduleId);
+        if (!schedule) return;
+
+        // Cek apakah lagu sudah ada
+        let song = schedule.songs.find(
+          (s) => s.title.toLowerCase() === songTitle.toLowerCase()
+        );
+
+        if (!song) {
+          // Buat lagu baru
+          song = {
+            id: Date.now(),
+            title: songTitle,
+            youtubeLink,
+            chordLink,
+            positions: {
+              vocal: "",
+              melodi: "",
+              bass: "",
+              drum: "",
+              rhytem: "",
+            },
+          };
+          schedule.songs.push(song);
+        }
+
+        // Isi posisi
+        if (song.positions[position] === "") {
+          song.positions[position] = currentUser.name;
+        } else {
+          alert(
+            `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
+          );
+          return;
+        }
+
+        saveToLocalStorage();
+        renderSchedules();
+        joinModal.style.display = "none";
+
+        // Reset form
+        document.getElementById("songTitle").value = "";
+        document.getElementById("youtubeLink").value = "";
+        document.getElementById("chordLink").value = "";
+      });
+
+      closeEditSongModal.addEventListener("click", () => {
+        editSongModal.style.display = "none";
+      });
+
+      saveEditSongBtn.addEventListener("click", () => {
+        const newTitle = document.getElementById("editSongTitle").value;
+        const newYoutubeLink = document.getElementById("editYoutubeLink").value;
+        const newChordLink = document.getElementById("editChordLink").value;
+
+        if (!newTitle || !newYoutubeLink) {
+          alert("Judul lagu dan link YouTube harus diisi");
+          return;
+        }
+
+        const schedule = schedules.find((s) => s.id === currentScheduleId);
+        if (!schedule) return;
+
+        const song = schedule.songs.find((s) => s.id === currentSongId);
+        if (!song) return;
+
+        song.title = newTitle;
+        song.youtubeLink = newYoutubeLink;
+        song.chordLink = newChordLink;
+
+        saveToLocalStorage();
+        renderSchedules();
+        editSongModal.style.display = "none";
+      });
+
+      deleteSongBtn.addEventListener("click", () => {
+        if (!confirm("Apakah Anda yakin ingin menghapus lagu ini?")) return;
+
+        const schedule = schedules.find((s) => s.id === currentScheduleId);
+        if (!schedule) return;
+
+        schedule.songs = schedule.songs.filter((s) => s.id !== currentSongId);
+
+        saveToLocalStorage();
+        renderSchedules();
+        editSongModal.style.display = "none";
+      });
+
+      closeEditPositionModal.addEventListener("click", () => {
+        editPositionModal.style.display = "none";
+      });
+
+      saveEditPositionBtn.addEventListener("click", () => {
+        const newPosition = document.getElementById("editPositionSelect").value;
+        const newMember = document.getElementById("editPositionMember").value;
+
+        const schedule = schedules.find((s) => s.id === currentScheduleId);
+        if (!schedule) return;
+
+        const song = schedule.songs.find((s) => s.id === currentSongId);
+        if (!song) return;
+
+        // Hapus dari posisi lama jika ada
+        if (
+          currentPosition &&
+          song.positions[currentPosition] === currentUser.name
+        ) {
+          song.positions[currentPosition] = "";
+        }
+
+        // Tambahkan ke posisi baru
+        song.positions[newPosition] = newMember || "";
+
+        saveToLocalStorage();
+        renderSchedules();
+        editPositionModal.style.display = "none";
+      });
+
+      // Fungsi bantuan
+      function handleLoginSuccess() {
+        loginSection.style.display = "none";
+        userInfoDisplay.textContent = `Halo, ${currentUser.name}`;
+
+        // Tampilkan tombol tambah jadwal hanya untuk EgiAdmin
+        if (currentUser.name === "EgiAdmin") {
+          addScheduleBtn.style.display = "flex";
+        }
+      }
+
+      function renderSchedules() {
+        scheduleList.innerHTML = "";
+
+        if (schedules.length === 0) {
+          scheduleList.innerHTML =
+            '<p style="text-align: center; margin: 2rem 0;">Belum ada jadwal yang dibuat</p>';
+          return;
+        }
+
+        // Urutkan jadwal dari yang terbaru
+        const sortedSchedules = [...schedules].sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+
+        sortedSchedules.forEach((schedule) => {
+          const card = document.createElement("div");
+          card.className = "schedule-card";
+
+          const dateObj = new Date(schedule.date);
+          const formattedDate = dateObj.toLocaleDateString("id-ID", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+
+          card.innerHTML = `
+                    <div class="schedule-header">
+                        <div>
+                            <div class="schedule-date">${formattedDate}</div>
+                            <div class="schedule-time">${schedule.time}</div>
+                        </div>
+                        <button onclick="saveToGoogleCalendarById(${
+                          schedule.id
+                        })" class="btn btn-sm btn-secondary">📅 Google Calendar</button>
+                    </div>
+                    <div class="schedule-location">📍 ${schedule.location}</div>
+                    ${
+                      schedule.notes
+                        ? `<div class="schedule-notes">📝 ${schedule.notes}</div>`
+                        : ""
+                    }
+                    
+                    <div class="songs-section">
+                        <div class="songs-title">
+                            <span>Daftar Lagu</span>
+                            <button onclick="openJoinModal(${
+                              schedule.id
+                            })" class="btn btn-sm btn-primary">+ Tambah Lagu</button>
+                        </div>
+                        
+                        <div class="song-list">
+                            ${
+                              schedule.songs.length > 0
+                                ? schedule.songs
+                                    .map((song) =>
+                                      renderSong(schedule.id, song)
+                                    )
+                                    .join("")
+                                : '<p style="text-align: center; opacity: 0.7;">Belum ada lagu yang ditambahkan</p>'
+                            }
+                        </div>
+                    </div>
+                `;
+
+          scheduleList.appendChild(card);
+        });
+      }
+
+      function renderSong(scheduleId, song) {
+        const isAdmin = currentUser && currentUser.phone === "6281234567890";
+
+        return `
+                <div class="song-card">
+                    <div class="song-header">
+                        <div class="song-title">${song.title}</div>
+                        ${
+                          isAdmin
+                            ? `<button onclick="openEditSongModal(${scheduleId}, ${song.id})" class="btn btn-sm btn-secondary">✏️ Edit</button>`
+                            : ""
+                        }
+                    </div>
+                    
+                    <div class="song-links">
+                        ${
+                          song.youtubeLink
+                            ? `<a href="${song.youtubeLink}" target="_blank" class="song-link">🎵 YouTube</a>`
+                            : ""
+                        }
+                        ${
+                          song.chordLink
+                            ? `<a href="${song.chordLink}" target="_blank" class="song-link">🎼 Chord</a>`
+                            : ""
+                        }
+                    </div>
+                    
+                    <div class="position-list">
+                        ${Object.entries(song.positions)
+                          .map(
+                            ([pos, member]) => `
+                            <div class="position-item">
+                                <span class="position-name">${getPositionName(
+                                  pos
+                                )}:</span>
+                                <span class="position-member ${
+                                  !member ? "empty-position" : ""
+                                }">
+                                    ${member || "(kosong)"}
+                                    ${
+                                      !member
+                                        ? `<button onclick="fillPosition(${scheduleId}, ${song.id}, '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">+ Isi</button>`
+                                        : ""
+                                    }
+                                    ${
+                                      member && isAdmin
+                                        ? `<button onclick="editPosition(${scheduleId}, ${song.id}, '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">✏️</button>`
+                                        : ""
+                                    }
+                                </span>
+                            </div>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                </div>
+            `;
+      }
+
+      function getPositionName(pos) {
+        const positions = {
+          vocal: "Vokal",
+          melodi: "Melodi",
+          bass: "Bass",
+          drum: "Drum",
+          rhytem: "Rhytem",
+        };
+        return positions[pos] || pos;
+      }
+
+      function saveToLocalStorage() {
+        localStorage.setItem("curozSchedules", JSON.stringify(schedules));
+      }
+
+      function saveToGoogleCalendar(schedule) {
+        console.log("Menyimpan ke Google Calendar:", schedule);
+
+        const startDateTime = new Date(`${schedule.date}T${schedule.time}:00`);
+        const endDateTime = new Date(
+          startDateTime.getTime() + 2 * 60 * 60 * 1000
+        ); // +2 jam
+
+        const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=The+Curoz+Band+Schedule&dates=${formatDateForGoogleCalendar(
+          startDateTime
+        )}/${formatDateForGoogleCalendar(
+          endDateTime
+        )}&details=${encodeURIComponent(
+          `Lokasi: ${schedule.location}\nCatatan: ${schedule.notes || ""}`
+        )}&location=${encodeURIComponent(schedule.location)}`;
+
+        window.open(googleCalendarUrl, "_blank");
+      }
+
+      function formatDateForGoogleCalendar(date) {
+        return date.toISOString().replace(/-|:|\.\d+/g, "");
+      }
+
+      // Fungsi yang diakses dari HTML
+      window.saveToGoogleCalendarById = function (scheduleId) {
+        const schedule = schedules.find((s) => s.id === scheduleId);
+        if (schedule) {
+          saveToGoogleCalendar(schedule);
+        }
+      };
+
+      window.openJoinModal = function (scheduleId) {
+        if (!currentUser) {
+          alert("Silakan login terlebih dahulu");
+          return;
+        }
+
+        currentScheduleId = scheduleId;
+        document.getElementById("songTitle").value = "";
+        document.getElementById("youtubeLink").value = "";
+        document.getElementById("chordLink").value = "";
+        joinModal.style.display = "flex";
+      };
+
+      window.openEditSongModal = function (scheduleId, songId) {
+        currentScheduleId = scheduleId;
+        currentSongId = songId;
+
+        const schedule = schedules.find((s) => s.id === scheduleId);
+        if (!schedule) return;
+
+        const song = schedule.songs.find((s) => s.id === songId);
+        if (!song) return;
+
+        document.getElementById("editSongTitle").value = song.title;
+        document.getElementById("editYoutubeLink").value = song.youtubeLink;
+        document.getElementById("editChordLink").value = song.chordLink || "";
+
+        editSongModal.style.display = "flex";
+      };
+
+      window.fillPosition = function (scheduleId, songId, position) {
+        if (!currentUser) {
+          alert("Silakan login terlebih dahulu");
+          return;
+        }
+
+        const schedule = schedules.find((s) => s.id === scheduleId);
+        if (!schedule) return;
+
+        const song = schedule.songs.find((s) => s.id === songId);
+        if (!song) return;
+
+        if (song.positions[position] === "") {
+          song.positions[position] = currentUser.name;
+          saveToLocalStorage();
+          renderSchedules();
+        } else {
+          alert(
+            `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
+          );
+        }
+      };
+
+      window.editPosition = function (scheduleId, songId, position) {
+        currentScheduleId = scheduleId;
+        currentSongId = songId;
+        currentPosition = position;
+
+        const schedule = schedules.find((s) => s.id === scheduleId);
+        if (!schedule) return;
+
+        const song = schedule.songs.find((s) => s.id === songId);
+        if (!song) return;
+
+        document.getElementById("editPositionSelect").value = position;
+        document.getElementById("editPositionMember").value =
+          song.positions[position] || "";
+
+        editPositionModal.style.display = "flex";
+      };
+    </script>
+  </body>
+</html>
