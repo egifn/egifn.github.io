@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Curoz</title>
+    <title>The Curoz - Jadwal Band</title>
     <style>
       :root {
         --primary: #000000;
@@ -375,6 +375,26 @@
         background: #ffc000;
       }
 
+      /* Loading Spinner */
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 4px solid var(--accent);
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 2rem auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       /* Responsive */
       @media (min-width: 768px) {
         .container {
@@ -386,7 +406,8 @@
   </head>
   <body>
     <header>
-      <h1>NGE-JAM</h1>
+      <h1>THE CUROZ - JADWAL BAND</h1>
+      <p>Atur jadwal latihan dan tampil bersama</p>
       <div id="userInfoDisplay" class="user-info"></div>
     </header>
 
@@ -398,6 +419,9 @@
           <span>📱</span> Login dengan WhatsApp
         </button>
       </div>
+
+      <!-- Loading Spinner -->
+      <div id="loadingSpinner" class="spinner" style="display: none"></div>
 
       <!-- Schedule List -->
       <div class="schedule-list" id="scheduleList">
@@ -464,7 +488,6 @@
             placeholder="Masukkan judul lagu"
           />
         </div>
-
         <div class="form-group">
           <label for="songPosition" class="form-label">Posisi</label>
           <select id="songPosition" class="form-control">
@@ -572,7 +595,7 @@
             type="tel"
             id="phoneNumber"
             class="form-control"
-            placeholder="contoh: 62812345678910"
+            placeholder="contoh: 62891234567890"
             required
           />
         </div>
@@ -593,14 +616,17 @@
     </div>
 
     <script>
-      // Data storage
-      //   let schedules = JSON.parse(localStorage.getItem("curozSchedules")) || [];
+      // Konfigurasi Google Sheets
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbzSPtpXLSloyBE_i8eZPGY_Uv5Z6JjRfPPl8-exQvsWfwtWGuh9458tD31axcWRPtcTMQ/exec";
+      const ADMIN_NAME = "EgiAdmin"; // Nomor WhatsApp admin
 
       // State aplikasi
       let currentUser = null;
       let currentScheduleId = null;
       let currentSongId = null;
       let currentPosition = null;
+      let schedules = [];
 
       // DOM Elements
       const loginSection = document.getElementById("loginSection");
@@ -628,17 +654,18 @@
         "saveEditPositionBtn"
       );
       const userInfoDisplay = document.getElementById("userInfoDisplay");
+      const loadingSpinner = document.getElementById("loadingSpinner");
 
       // Event Listeners
-      document.addEventListener("DOMContentLoaded", async () => {
-        await loadSchedules();
-
+      document.addEventListener("DOMContentLoaded", () => {
         // Cek jika sudah login
         const storedUser = localStorage.getItem("curozUser");
         if (storedUser) {
           currentUser = JSON.parse(storedUser);
           handleLoginSuccess();
         }
+
+        loadSchedules();
       });
 
       loginBtn.addEventListener("click", () => {
@@ -681,7 +708,7 @@
         addScheduleModal.style.display = "none";
       });
 
-      saveScheduleBtn.addEventListener("click", () => {
+      saveScheduleBtn.addEventListener("click", async () => {
         const date = document.getElementById("eventDate").value;
         const time = document.getElementById("eventTime").value;
         const location = document.getElementById("eventLocation").value;
@@ -693,29 +720,37 @@
         }
 
         const newSchedule = {
-          id: Date.now(),
+          id: Date.now().toString(),
           date,
           time,
           location,
-          notes,
+          notes: notes || "",
           songs: [],
           creator: currentUser.phone,
         };
 
-        schedules.push(newSchedule);
-        saveToGist();
-        renderSchedules();
-        addScheduleModal.style.display = "none";
+        try {
+          loadingSpinner.style.display = "block";
+          await saveScheduleToGoogleSheets(newSchedule);
+          schedules.push(newSchedule);
+          renderSchedules();
+          addScheduleModal.style.display = "none";
 
-        // Simpan ke Google Calendar (simulasi)
-        saveToGoogleCalendar(newSchedule);
+          // Simpan ke Google Calendar
+          saveToGoogleCalendar(newSchedule);
+        } catch (error) {
+          console.error("Error saving schedule:", error);
+          alert("Gagal menyimpan jadwal. Silakan coba lagi.");
+        } finally {
+          loadingSpinner.style.display = "none";
+        }
       });
 
       closeModal.addEventListener("click", () => {
         joinModal.style.display = "none";
       });
 
-      saveJoinBtn.addEventListener("click", () => {
+      saveJoinBtn.addEventListener("click", async () => {
         const songTitle = document.getElementById("songTitle").value;
         const position = document.getElementById("songPosition").value;
         const youtubeLink = document.getElementById("youtubeLink").value;
@@ -726,21 +761,25 @@
           return;
         }
 
-        const schedule = schedules.find((s) => s.id === currentScheduleId);
-        if (!schedule) return;
+        const scheduleIndex = schedules.findIndex(
+          (s) => s.id === currentScheduleId
+        );
+        if (scheduleIndex === -1) return;
+
+        const schedule = schedules[scheduleIndex];
 
         // Cek apakah lagu sudah ada
-        let song = schedule.songs.find(
+        let songIndex = schedule.songs.findIndex(
           (s) => s.title.toLowerCase() === songTitle.toLowerCase()
         );
 
-        if (!song) {
+        if (songIndex === -1) {
           // Buat lagu baru
-          song = {
-            id: Date.now(),
+          const newSong = {
+            id: Date.now().toString(),
             title: songTitle,
             youtubeLink,
-            chordLink,
+            chordLink: chordLink || "",
             positions: {
               vocal: "",
               melodi: "",
@@ -749,34 +788,63 @@
               rhytem: "",
             },
           };
-          schedule.songs.push(song);
-        }
 
-        // Isi posisi
-        if (song.positions[position] === "") {
-          song.positions[position] = currentUser.name;
+          // Isi posisi
+          newSong.positions[position] = currentUser.name;
+
+          try {
+            loadingSpinner.style.display = "block";
+            await addSongToSchedule(schedule.id, newSong);
+            schedule.songs.push(newSong);
+            renderSchedules();
+            joinModal.style.display = "none";
+
+            // Reset form
+            document.getElementById("songTitle").value = "";
+            document.getElementById("youtubeLink").value = "";
+            document.getElementById("chordLink").value = "";
+          } catch (error) {
+            console.error("Error adding song:", error);
+            alert("Gagal menambahkan lagu. Silakan coba lagi.");
+          } finally {
+            loadingSpinner.style.display = "none";
+          }
         } else {
-          alert(
-            `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
-          );
-          return;
+          // Update lagu yang sudah ada
+          const song = schedule.songs[songIndex];
+
+          if (song.positions[position] === "") {
+            song.positions[position] = currentUser.name;
+
+            try {
+              loadingSpinner.style.display = "block";
+              await updateSongInSchedule(schedule.id, song);
+              renderSchedules();
+              joinModal.style.display = "none";
+
+              // Reset form
+              document.getElementById("songTitle").value = "";
+              document.getElementById("youtubeLink").value = "";
+              document.getElementById("chordLink").value = "";
+            } catch (error) {
+              console.error("Error updating song:", error);
+              alert("Gagal memperbarui lagu. Silakan coba lagi.");
+            } finally {
+              loadingSpinner.style.display = "none";
+            }
+          } else {
+            alert(
+              `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
+            );
+          }
         }
-
-        saveToGist();
-        renderSchedules();
-        joinModal.style.display = "none";
-
-        // Reset form
-        document.getElementById("songTitle").value = "";
-        document.getElementById("youtubeLink").value = "";
-        document.getElementById("chordLink").value = "";
       });
 
       closeEditSongModal.addEventListener("click", () => {
         editSongModal.style.display = "none";
       });
 
-      saveEditSongBtn.addEventListener("click", () => {
+      saveEditSongBtn.addEventListener("click", async () => {
         const newTitle = document.getElementById("editSongTitle").value;
         const newYoutubeLink = document.getElementById("editYoutubeLink").value;
         const newChordLink = document.getElementById("editChordLink").value;
@@ -786,62 +854,108 @@
           return;
         }
 
-        const schedule = schedules.find((s) => s.id === currentScheduleId);
-        if (!schedule) return;
+        const scheduleIndex = schedules.findIndex(
+          (s) => s.id === currentScheduleId
+        );
+        if (scheduleIndex === -1) return;
 
-        const song = schedule.songs.find((s) => s.id === currentSongId);
-        if (!song) return;
+        const songIndex = schedules[scheduleIndex].songs.findIndex(
+          (s) => s.id === currentSongId
+        );
+        if (songIndex === -1) return;
 
-        song.title = newTitle;
-        song.youtubeLink = newYoutubeLink;
-        song.chordLink = newChordLink;
+        const updatedSong = {
+          ...schedules[scheduleIndex].songs[songIndex],
+          title: newTitle,
+          youtubeLink: newYoutubeLink,
+          chordLink: newChordLink || "",
+        };
 
-        saveToGist();
-        renderSchedules();
-        editSongModal.style.display = "none";
+        try {
+          loadingSpinner.style.display = "block";
+          await updateSongInSchedule(currentScheduleId, updatedSong);
+          schedules[scheduleIndex].songs[songIndex] = updatedSong;
+          renderSchedules();
+          editSongModal.style.display = "none";
+        } catch (error) {
+          console.error("Error updating song:", error);
+          alert("Gagal memperbarui lagu. Silakan coba lagi.");
+        } finally {
+          loadingSpinner.style.display = "none";
+        }
       });
 
-      deleteSongBtn.addEventListener("click", () => {
+      deleteSongBtn.addEventListener("click", async () => {
         if (!confirm("Apakah Anda yakin ingin menghapus lagu ini?")) return;
 
-        const schedule = schedules.find((s) => s.id === currentScheduleId);
-        if (!schedule) return;
+        const scheduleIndex = schedules.findIndex(
+          (s) => s.id === currentScheduleId
+        );
+        if (scheduleIndex === -1) return;
 
-        schedule.songs = schedule.songs.filter((s) => s.id !== currentSongId);
+        const songIndex = schedules[scheduleIndex].songs.findIndex(
+          (s) => s.id === currentSongId
+        );
+        if (songIndex === -1) return;
 
-        saveToGist();
-        renderSchedules();
-        editSongModal.style.display = "none";
+        try {
+          loadingSpinner.style.display = "block";
+          await deleteSongFromSchedule(currentScheduleId, currentSongId);
+          schedules[scheduleIndex].songs.splice(songIndex, 1);
+          renderSchedules();
+          editSongModal.style.display = "none";
+        } catch (error) {
+          console.error("Error deleting song:", error);
+          alert("Gagal menghapus lagu. Silakan coba lagi.");
+        } finally {
+          loadingSpinner.style.display = "none";
+        }
       });
 
       closeEditPositionModal.addEventListener("click", () => {
         editPositionModal.style.display = "none";
       });
 
-      saveEditPositionBtn.addEventListener("click", () => {
+      saveEditPositionBtn.addEventListener("click", async () => {
         const newPosition = document.getElementById("editPositionSelect").value;
         const newMember = document.getElementById("editPositionMember").value;
 
-        const schedule = schedules.find((s) => s.id === currentScheduleId);
-        if (!schedule) return;
+        const scheduleIndex = schedules.findIndex(
+          (s) => s.id === currentScheduleId
+        );
+        if (scheduleIndex === -1) return;
 
-        const song = schedule.songs.find((s) => s.id === currentSongId);
-        if (!song) return;
+        const songIndex = schedules[scheduleIndex].songs.findIndex(
+          (s) => s.id === currentSongId
+        );
+        if (songIndex === -1) return;
+
+        const song = schedules[scheduleIndex].songs[songIndex];
+        const updatedSong = JSON.parse(JSON.stringify(song));
 
         // Hapus dari posisi lama jika ada
         if (
           currentPosition &&
-          song.positions[currentPosition] === currentUser.name
+          updatedSong.positions[currentPosition] === currentUser.name
         ) {
-          song.positions[currentPosition] = "";
+          updatedSong.positions[currentPosition] = "";
         }
 
         // Tambahkan ke posisi baru
-        song.positions[newPosition] = newMember || "";
+        updatedSong.positions[newPosition] = newMember || "";
 
-        saveToGist();
-        renderSchedules();
-        editPositionModal.style.display = "none";
+        try {
+          loadingSpinner.style.display = "block";
+          await updateSongInSchedule(currentScheduleId, updatedSong);
+          schedules[scheduleIndex].songs[songIndex] = updatedSong;
+          renderSchedules();
+          editPositionModal.style.display = "none";
+        } catch (error) {
+          console.error("Error updating position:", error);
+          alert("Gagal memperbarui posisi. Silakan coba lagi.");
+        } finally {
+          loadingSpinner.style.display = "none";
+        }
       });
 
       // Fungsi bantuan
@@ -849,9 +963,30 @@
         loginSection.style.display = "none";
         userInfoDisplay.textContent = `Halo, ${currentUser.name}`;
 
-        // Tampilkan tombol tambah jadwal hanya untuk EgiAdmin
-        if (currentUser.name === "EgiAdmin") {
+        // Tampilkan tombol tambah jadwal hanya untuk admin
+        if (currentUser.name === ADMIN_NAME) {
           addScheduleBtn.style.display = "flex";
+        }
+      }
+
+      async function loadSchedules() {
+        try {
+          loadingSpinner.style.display = "block";
+          scheduleList.innerHTML = "";
+
+          const response = await fetch(`${SCRIPT_URL}?action=getSchedules`);
+          if (!response.ok) {
+            throw new Error("Gagal memuat jadwal");
+          }
+
+          schedules = await response.json();
+          renderSchedules();
+        } catch (error) {
+          console.error("Error loading schedules:", error);
+          scheduleList.innerHTML =
+            '<p style="text-align: center; color: var(--accent);">Gagal memuat jadwal. Silakan refresh halaman.</p>';
+        } finally {
+          loadingSpinner.style.display = "none";
         }
       }
 
@@ -887,9 +1022,9 @@
                             <div class="schedule-date">${formattedDate}</div>
                             <div class="schedule-time">${schedule.time}</div>
                         </div>
-                        <button onclick="saveToGoogleCalendarById(${
+                        <button onclick="saveToGoogleCalendarById('${
                           schedule.id
-                        })" class="btn btn-sm btn-secondary">📅 Google Calendar</button>
+                        }')" class="btn btn-sm btn-secondary">📅 Google Calendar</button>
                     </div>
                     <div class="schedule-location">📍 ${schedule.location}</div>
                     ${
@@ -901,9 +1036,11 @@
                     <div class="songs-section">
                         <div class="songs-title">
                             <span>Daftar Lagu</span>
-                            <button onclick="openJoinModal(${
-                              schedule.id
-                            })" class="btn btn-sm btn-primary">+ Tambah Lagu</button>
+                            ${
+                              currentUser
+                                ? `<button onclick="openJoinModal('${schedule.id}')" class="btn btn-sm btn-primary">+ Tambah Lagu</button>`
+                                : ""
+                            }
                         </div>
                         
                         <div class="song-list">
@@ -925,15 +1062,16 @@
       }
 
       function renderSong(scheduleId, song) {
-        const isAdmin = currentUser && currentUser.phone === "6281234567890";
+        const isAdmin = currentUser && currentUser.phone === ADMIN_NAME;
+        const isCreator = currentUser && song.creator === currentUser.name;
 
         return `
                 <div class="song-card">
                     <div class="song-header">
                         <div class="song-title">${song.title}</div>
                         ${
-                          isAdmin
-                            ? `<button onclick="openEditSongModal(${scheduleId}, ${song.id})" class="btn btn-sm btn-secondary">✏️ Edit</button>`
+                          isAdmin || isCreator
+                            ? `<button onclick="openEditSongModal('${scheduleId}', '${song.id}')" class="btn btn-sm btn-secondary">✏️ Edit</button>`
                             : ""
                         }
                     </div>
@@ -964,13 +1102,13 @@
                                 }">
                                     ${member || "(kosong)"}
                                     ${
-                                      !member
-                                        ? `<button onclick="fillPosition(${scheduleId}, ${song.id}, '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">+ Isi</button>`
+                                      !member && currentUser
+                                        ? `<button onclick="fillPosition('${scheduleId}', '${song.id}', '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">+ Isi</button>`
                                         : ""
                                     }
                                     ${
-                                      member && isAdmin
-                                        ? `<button onclick="editPosition(${scheduleId}, ${song.id}, '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">✏️</button>`
+                                      member && (isAdmin || isCreator)
+                                        ? `<button onclick="editPosition('${scheduleId}', '${song.id}', '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">✏️</button>`
                                         : ""
                                     }
                                 </span>
@@ -994,97 +1132,7 @@
         return positions[pos] || pos;
       }
 
-      const GIST_ID = "GIST_ID_ANDA"; // Ganti dengan ID Gist Anda
-      const GIST_FILENAME = "curoz_schedules.json";
-      const GITHUB_TOKEN = "ghp_TOKEN_ANDA"; // Token dengan gist scope
-
-      // Data storage
-      let schedules = [];
-
-      // Fungsi untuk memuat data dari Gist
-      async function loadSchedules() {
-        try {
-          const response = await fetch(
-            `https://api.github.com/gists/${GIST_ID}`
-          );
-          const gist = await response.json();
-
-          if (gist.files && gist.files[GIST_FILENAME]) {
-            schedules = JSON.parse(gist.files[GIST_FILENAME].content) || [];
-          } else {
-            // Data default jika Gist kosong
-            schedules = [
-              {
-                id: 1,
-                date: new Date(Date.now() + 86400000)
-                  .toISOString()
-                  .split("T")[0],
-                time: "19:00",
-                location: "Studio Harmoni, Jl. Melodi No. 12",
-                notes: "Latihan untuk persiapan gig minggu depan",
-                songs: [
-                  {
-                    id: Date.now(),
-                    title: "Lagu Pertama",
-                    youtubeLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                    chordLink: "https://chordtela.com/lagu-pertama",
-                    positions: {
-                      vocal: "Andi",
-                      melodi: "Budi",
-                      bass: "",
-                      drum: "Doni",
-                      rhytem: "",
-                    },
-                  },
-                ],
-                creator: "6281234567890", // EgiAdmin
-              },
-            ];
-            await saveToGist();
-          }
-
-          renderSchedules();
-        } catch (error) {
-          console.error("Gagal memuat data:", error);
-          alert("Gagal memuat data jadwal. Silakan coba lagi.");
-        }
-      }
-
-      // Fungsi untuk menyimpan data ke Gist
-      async function saveToGist() {
-        try {
-          const response = await fetch(
-            `https://api.github.com/gists/${GIST_ID}`,
-            {
-              method: "PATCH",
-              headers: {
-                Authorization: `token ${GITHUB_TOKEN}`,
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                files: {
-                  [GIST_FILENAME]: {
-                    content: JSON.stringify(schedules, null, 2),
-                  },
-                },
-              }),
-            }
-          );
-
-          if (!response.ok) {
-            throw new Error("Gagal menyimpan data");
-          }
-
-          console.log("Data berhasil disimpan ke Gist");
-        } catch (error) {
-          console.error("Gagal menyimpan data:", error);
-          alert("Gagal menyimpan data. Silakan coba lagi.");
-        }
-      }
-
       function saveToGoogleCalendar(schedule) {
-        console.log("Menyimpan ke Google Calendar:", schedule);
-
         const startDateTime = new Date(`${schedule.date}T${schedule.time}:00`);
         const endDateTime = new Date(
           startDateTime.getTime() + 2 * 60 * 60 * 1000
@@ -1103,6 +1151,86 @@
 
       function formatDateForGoogleCalendar(date) {
         return date.toISOString().replace(/-|:|\.\d+/g, "");
+      }
+
+      // Fungsi untuk berinteraksi dengan Google Sheets
+      async function saveScheduleToGoogleSheets(schedule) {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "addSchedule",
+            schedule: schedule,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Gagal menyimpan jadwal");
+        }
+
+        return await response.json();
+      }
+
+      async function addSongToSchedule(scheduleId, song) {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "addSong",
+            scheduleId: scheduleId,
+            song: song,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Gagal menambahkan lagu");
+        }
+
+        return await response.json();
+      }
+
+      async function updateSongInSchedule(scheduleId, song) {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "updateSong",
+            scheduleId: scheduleId,
+            song: song,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Gagal memperbarui lagu");
+        }
+
+        return await response.json();
+      }
+
+      async function deleteSongFromSchedule(scheduleId, songId) {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "deleteSong",
+            scheduleId: scheduleId,
+            songId: songId,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Gagal menghapus lagu");
+        }
+
+        return await response.json();
       }
 
       // Fungsi yang diakses dari HTML
@@ -1143,22 +1271,37 @@
         editSongModal.style.display = "flex";
       };
 
-      window.fillPosition = function (scheduleId, songId, position) {
+      window.fillPosition = async function (scheduleId, songId, position) {
         if (!currentUser) {
           alert("Silakan login terlebih dahulu");
           return;
         }
 
-        const schedule = schedules.find((s) => s.id === scheduleId);
-        if (!schedule) return;
+        const scheduleIndex = schedules.findIndex((s) => s.id === scheduleId);
+        if (scheduleIndex === -1) return;
 
-        const song = schedule.songs.find((s) => s.id === songId);
-        if (!song) return;
+        const songIndex = schedules[scheduleIndex].songs.findIndex(
+          (s) => s.id === songId
+        );
+        if (songIndex === -1) return;
+
+        const song = schedules[scheduleIndex].songs[songIndex];
 
         if (song.positions[position] === "") {
-          song.positions[position] = currentUser.name;
-          saveToGist();
-          renderSchedules();
+          const updatedSong = JSON.parse(JSON.stringify(song));
+          updatedSong.positions[position] = currentUser.name;
+
+          try {
+            loadingSpinner.style.display = "block";
+            await updateSongInSchedule(scheduleId, updatedSong);
+            schedules[scheduleIndex].songs[songIndex] = updatedSong;
+            renderSchedules();
+          } catch (error) {
+            console.error("Error filling position:", error);
+            alert("Gagal mengisi posisi. Silakan coba lagi.");
+          } finally {
+            loadingSpinner.style.display = "none";
+          }
         } else {
           alert(
             `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
