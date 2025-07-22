@@ -54,7 +54,7 @@
 
       .container {
         max-width: 100%;
-        padding: 0 1rem;
+        padding: 0 7px;
       }
 
       /* Button Styles */
@@ -95,6 +95,8 @@
       .btn-danger {
         background-color: #d9534f;
         color: white;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
       }
 
       .btn-danger:hover {
@@ -139,8 +141,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid var(--accent);
         padding-bottom: 0.5rem;
       }
 
@@ -157,7 +157,7 @@
       }
 
       .schedule-location {
-        margin-bottom: 1rem;
+        margin-top: 1rem;
         font-weight: 500;
       }
 
@@ -391,6 +391,25 @@
         animation: spin 1s ease-in-out infinite;
       }
 
+      #logoutBtn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        margin-left: 0.5rem;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .btn-danger.btn-sm {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+
       @keyframes spin {
         to {
           transform: rotate(360deg);
@@ -408,8 +427,17 @@
   </head>
   <body>
     <header>
-      <h1>CUROZ</h1>
-      <div id="userInfoDisplay" class="user-info"></div>
+      <h1>NGE-JAM</h1>
+      <div id="userInfoDisplay" class="user-info">
+        <span id="userNameDisplay"></span>
+        <button
+          id="logoutBtn"
+          class="btn btn-sm btn-danger"
+          style="display: none; margin-left: 0.5rem"
+        >
+          Logout
+        </button>
+      </div>
     </header>
 
     <div class="container">
@@ -436,7 +464,7 @@
       </div>
     </div>
 
-    <!-- Add Schedule Button (only for EgiAdmin) -->
+    <!-- Add Schedule Button (only for Egi) -->
     <button class="add-schedule-btn" id="addScheduleBtn" style="display: none">
       +
     </button>
@@ -961,19 +989,43 @@
           });
       });
 
+      //   logout
+      const logoutBtn = document.getElementById("logoutBtn");
+      const userNameDisplay = document.getElementById("userNameDisplay");
+
+      // Fungsi handleLogout
+      function handleLogout() {
+        currentUser = null;
+        localStorage.removeItem("curozUser");
+
+        logoutBtn.style.display = "none";
+        addScheduleBtn.style.display = "none";
+        loginSection.style.display = "block";
+        userNameDisplay.textContent = "";
+        userInfoDisplay.textContent = "";
+
+        alert("Anda telah logout");
+      }
+
+      // Event listener untuk tombol logout
+      logoutBtn.addEventListener("click", handleLogout);
+
       // Fungsi bantuan
       function handleLoginSuccess() {
         loginSection.style.display = "none";
-        userInfoDisplay.textContent = `Halo, ${currentUser.name}`;
-
-        // Tampilkan tombol tambah jadwal hanya untuk EgiAdmin
-        if (currentUser.phone === "6281234567890") {
+        userNameDisplay.textContent = `Halo, ${currentUser.name}`;
+        logoutBtn.style.display = "inline-block";
+        // Tampilkan tombol tambah jadwal hanya untuk Egi
+        if (currentUser.name === "Egi") {
           addScheduleBtn.style.display = "flex";
         }
       }
 
       function renderSchedules(schedulesData) {
         scheduleList.innerHTML = "";
+
+        // Tambahkan definisi isAdmin di sini
+        const isAdmin = currentUser && currentUser.name === "Egi";
 
         if (!schedulesData || Object.keys(schedulesData).length === 0) {
           scheduleList.innerHTML =
@@ -1007,9 +1059,16 @@
                             <div class="schedule-date">${formattedDate}</div>
                             <div class="schedule-time">${schedule.time}</div>
                         </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--accent);padding-bottom: 5px;">
                         <button onclick="saveToGoogleCalendarById('${
                           schedule.id
                         }')" class="btn btn-sm btn-secondary">📅 Google Calendar</button>
+                        ${
+                          isAdmin
+                            ? `<button onclick="deleteSchedule('${schedule.id}')" class="btn btn-sm btn-danger" style="margin-left: 0.5rem;">🗑️ Hapus</button>`
+                            : ""
+                        }
                     </div>
                     <div class="schedule-location">📍 ${schedule.location}</div>
                     ${
@@ -1045,7 +1104,7 @@
       }
 
       function renderSong(scheduleId, song) {
-        const isAdmin = currentUser && currentUser.phone === "6281234567890";
+        const isAdmin = currentUser && currentUser.name === "Egi";
 
         return `
                 <div class="song-card">
@@ -1149,6 +1208,63 @@
             }
           });
       };
+
+      window.deleteSchedule = function (scheduleId) {
+        if (
+          !confirm(
+            "Apakah Anda yakin ingin menghapus jadwal ini beserta semua lagunya?"
+          )
+        ) {
+          return;
+        }
+
+        // Tampilkan loading
+        loadingIndicator.style.display = "block";
+
+        // Hapus dari Firebase
+        database
+          .ref("schedules/" + scheduleId)
+          .remove()
+          .then(() => {
+            loadingIndicator.style.display = "none";
+            alert("Jadwal berhasil dihapus");
+          })
+          .catch((error) => {
+            loadingIndicator.style.display = "none";
+            alert("Gagal menghapus jadwal: " + error.message);
+          });
+      };
+
+      deleteSongBtn.addEventListener("click", () => {
+        if (!confirm("Apakah Anda yakin ingin menghapus lagu ini?")) return;
+
+        loadingIndicator.style.display = "block";
+
+        database
+          .ref("schedules/" + currentScheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
+
+            schedule.songs = schedule.songs.filter(
+              (s) => s.id !== currentSongId
+            );
+
+            return database.ref("schedules/" + currentScheduleId).update({
+              songs: schedule.songs,
+            });
+          })
+          .then(() => {
+            loadingIndicator.style.display = "none";
+            editSongModal.style.display = "none";
+            alert("Lagu berhasil dihapus");
+          })
+          .catch((error) => {
+            loadingIndicator.style.display = "none";
+            alert("Gagal menghapus lagu: " + error.message);
+          });
+      });
 
       window.openJoinModal = function (scheduleId) {
         if (!currentUser) {
