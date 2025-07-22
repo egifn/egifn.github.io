@@ -618,7 +618,7 @@
     <script>
       // Konfigurasi Google Sheets
       const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbzSPtpXLSloyBE_i8eZPGY_Uv5Z6JjRfPPl8-exQvsWfwtWGuh9458tD31axcWRPtcTMQ/exec";
+        "https://script.google.com/macros/s/AKfycbyyrviF5usH45hQFBWTBuqOAsBiusGyp_lRR-jCWdzmGP-OCJJ9udbcMSx61o4vDm_mJg/exec";
       const ADMIN_NAME = "EgiAdmin"; // Nomor WhatsApp admin
 
       // State aplikasi
@@ -971,23 +971,46 @@
 
       async function loadSchedules() {
         try {
-          loadingSpinner.style.display = "block";
-          scheduleList.innerHTML = "";
+          const SCRIPT_URL =
+            "https://script.google.com/macros/s/AKfycbyyrviF5usH45hQFBWTBuqOAsBiusGyp_lRR-jCWdzmGP-OCJJ9udbcMSx61o4vDm_mJg/exec";
 
-          const response = await fetch(`${SCRIPT_URL}?action=getSchedules`);
-          if (!response.ok) {
-            throw new Error("Gagal memuat jadwal");
-          }
+          const response = await fetch(
+            `${SCRIPT_URL}?action=getSchedules&origin=${encodeURIComponent(
+              window.location.origin
+            )}`,
+            {
+              redirect: "follow",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
-          schedules = await response.json();
+          if (!response.ok) throw new Error("Network response was not ok");
+
+          const data = await response.json();
+          schedules = data;
           renderSchedules();
         } catch (error) {
           console.error("Error loading schedules:", error);
-          scheduleList.innerHTML =
-            '<p style="text-align: center; color: var(--accent);">Gagal memuat jadwal. Silakan refresh halaman.</p>';
-        } finally {
-          loadingSpinner.style.display = "none";
+          // Fallback: Tampilkan data default jika online gagal
+          schedules = getDefaultSchedules();
+          renderSchedules();
         }
+      }
+
+      function getDefaultSchedules() {
+        return [
+          {
+            id: "default-1",
+            date: new Date().toISOString().split("T")[0],
+            time: "19:00",
+            location: "Studio Default",
+            notes: "Data offline - Gagal terhubung ke server",
+            songs: [],
+            creator: "system",
+          },
+        ];
       }
 
       function renderSchedules() {
