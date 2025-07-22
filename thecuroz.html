@@ -778,8 +778,8 @@
           date,
           time,
           location,
-          notes,
-          songs: [],
+          notes: notes || "",
+          songs: [], // Pastikan ini ada
           creator: currentUser.phone,
           createdAt: firebase.database.ServerValue.TIMESTAMP,
         };
@@ -819,7 +819,14 @@
           .once("value")
           .then((snapshot) => {
             const schedule = snapshot.val();
-            if (!schedule) return;
+            if (!schedule) {
+              throw new Error("Jadwal tidak ditemukan");
+            }
+
+            // Inisialisasi songs jika belum ada
+            if (!schedule.songs) {
+              schedule.songs = [];
+            }
 
             // Cek apakah lagu sudah ada
             let song = schedule.songs.find(
@@ -832,7 +839,7 @@
                 id: Date.now().toString(),
                 title: songTitle,
                 youtubeLink,
-                chordLink,
+                chordLink: chordLink || "",
                 positions: {
                   vocal: "",
                   melodi: "",
@@ -848,10 +855,9 @@
             if (song.positions[position] === "") {
               song.positions[position] = currentUser.name;
             } else {
-              alert(
+              throw new Error(
                 `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
               );
-              return;
             }
 
             // Update ke Firebase
