@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Curoz</title>
+    <!-- Tambahkan Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
     <style>
       :root {
         --primary: #000000;
@@ -375,22 +380,19 @@
         background: #ffc000;
       }
 
-      /* Loading Spinner */
-      .spinner {
-        border: 4px solid rgba(255, 255, 255, 0.3);
+      /* Loading Indicator */
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
         border-radius: 50%;
-        border-top: 4px solid var(--accent);
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-        margin: 2rem auto;
+        border-top-color: var(--accent);
+        animation: spin 1s ease-in-out infinite;
       }
 
       @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
+        to {
           transform: rotate(360deg);
         }
       }
@@ -406,8 +408,7 @@
   </head>
   <body>
     <header>
-      <h1>THE CUROZ</h1>
-      <p>Atur jadwal latihan dan tampil bersama</p>
+      <h1>CUROZ</h1>
       <div id="userInfoDisplay" class="user-info"></div>
     </header>
 
@@ -420,8 +421,14 @@
         </button>
       </div>
 
-      <!-- Loading Spinner -->
-      <div id="loadingSpinner" class="spinner" style="display: none"></div>
+      <!-- Loading Indicator -->
+      <div
+        id="loadingIndicator"
+        style="text-align: center; margin: 2rem 0; display: none"
+      >
+        <div class="loading"></div>
+        <p>Memuat data...</p>
+      </div>
 
       <!-- Schedule List -->
       <div class="schedule-list" id="scheduleList">
@@ -488,6 +495,7 @@
             placeholder="Masukkan judul lagu"
           />
         </div>
+
         <div class="form-group">
           <label for="songPosition" class="form-label">Posisi</label>
           <select id="songPosition" class="form-control">
@@ -595,7 +603,7 @@
             type="tel"
             id="phoneNumber"
             class="form-control"
-            placeholder="contoh: 62891234567890"
+            placeholder="contoh: 62812345678910"
             required
           />
         </div>
@@ -616,17 +624,28 @@
     </div>
 
     <script>
-      // Konfigurasi Google Sheets
-      const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyyrviF5usH45hQFBWTBuqOAsBiusGyp_lRR-jCWdzmGP-OCJJ9udbcMSx61o4vDm_mJg/exec";
-      const ADMIN_NAME = "EgiAdmin"; // Nomor WhatsApp admin
+      // Firebase configuration - GANTI DENGAN KONFIGURASI ANDA
+      const firebaseConfig = {
+        apiKey: "AIzaSyARW_bBG92UnhP1fBcx4x9MpwoP3B6Sito",
+        authDomain: "nge-jam.firebaseapp.com",
+        databaseURL: "https://nge-jam-default-rtdb.firebaseio.com",
+        projectId: "nge-jam",
+        storageBucket: "nge-jam.firebasestorage.app",
+        messagingSenderId: "531432095212",
+        appId: "1:531432095212:web:337437c2c1218ae884d4c9",
+        measurementId: "G-82L4V9V60E",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+      const auth = firebase.auth();
 
       // State aplikasi
       let currentUser = null;
       let currentScheduleId = null;
       let currentSongId = null;
       let currentPosition = null;
-      let schedules = [];
 
       // DOM Elements
       const loginSection = document.getElementById("loginSection");
@@ -654,18 +673,25 @@
         "saveEditPositionBtn"
       );
       const userInfoDisplay = document.getElementById("userInfoDisplay");
-      const loadingSpinner = document.getElementById("loadingSpinner");
+      const loadingIndicator = document.getElementById("loadingIndicator");
 
       // Event Listeners
       document.addEventListener("DOMContentLoaded", () => {
+        // Tampilkan loading indicator
+        loadingIndicator.style.display = "block";
+
+        // Load data dari Firebase
+        database.ref("schedules").on("value", (snapshot) => {
+          renderSchedules(snapshot.val());
+          loadingIndicator.style.display = "none";
+        });
+
         // Cek jika sudah login
         const storedUser = localStorage.getItem("curozUser");
         if (storedUser) {
           currentUser = JSON.parse(storedUser);
           handleLoginSuccess();
         }
-
-        loadSchedules();
       });
 
       loginBtn.addEventListener("click", () => {
@@ -708,7 +734,7 @@
         addScheduleModal.style.display = "none";
       });
 
-      saveScheduleBtn.addEventListener("click", async () => {
+      saveScheduleBtn.addEventListener("click", () => {
         const date = document.getElementById("eventDate").value;
         const time = document.getElementById("eventTime").value;
         const location = document.getElementById("eventLocation").value;
@@ -724,33 +750,31 @@
           date,
           time,
           location,
-          notes: notes || "",
+          notes,
           songs: [],
           creator: currentUser.phone,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
         };
 
-        try {
-          loadingSpinner.style.display = "block";
-          await saveScheduleToGoogleSheets(newSchedule);
-          schedules.push(newSchedule);
-          renderSchedules();
-          addScheduleModal.style.display = "none";
-
-          // Simpan ke Google Calendar
-          saveToGoogleCalendar(newSchedule);
-        } catch (error) {
-          console.error("Error saving schedule:", error);
-          alert("Gagal menyimpan jadwal. Silakan coba lagi.");
-        } finally {
-          loadingSpinner.style.display = "none";
-        }
+        // Simpan ke Firebase
+        database
+          .ref("schedules/" + newSchedule.id)
+          .set(newSchedule)
+          .then(() => {
+            addScheduleModal.style.display = "none";
+            // Simpan ke Google Calendar (simulasi)
+            saveToGoogleCalendar(newSchedule);
+          })
+          .catch((error) => {
+            alert("Gagal menyimpan jadwal: " + error.message);
+          });
       });
 
       closeModal.addEventListener("click", () => {
         joinModal.style.display = "none";
       });
 
-      saveJoinBtn.addEventListener("click", async () => {
+      saveJoinBtn.addEventListener("click", () => {
         const songTitle = document.getElementById("songTitle").value;
         const position = document.getElementById("songPosition").value;
         const youtubeLink = document.getElementById("youtubeLink").value;
@@ -761,90 +785,69 @@
           return;
         }
 
-        const scheduleIndex = schedules.findIndex(
-          (s) => s.id === currentScheduleId
-        );
-        if (scheduleIndex === -1) return;
+        // Dapatkan schedule dari Firebase
+        database
+          .ref("schedules/" + currentScheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
 
-        const schedule = schedules[scheduleIndex];
+            // Cek apakah lagu sudah ada
+            let song = schedule.songs.find(
+              (s) => s.title.toLowerCase() === songTitle.toLowerCase()
+            );
 
-        // Cek apakah lagu sudah ada
-        let songIndex = schedule.songs.findIndex(
-          (s) => s.title.toLowerCase() === songTitle.toLowerCase()
-        );
+            if (!song) {
+              // Buat lagu baru
+              song = {
+                id: Date.now().toString(),
+                title: songTitle,
+                youtubeLink,
+                chordLink,
+                positions: {
+                  vocal: "",
+                  melodi: "",
+                  bass: "",
+                  drum: "",
+                  rhytem: "",
+                },
+              };
+              schedule.songs.push(song);
+            }
 
-        if (songIndex === -1) {
-          // Buat lagu baru
-          const newSong = {
-            id: Date.now().toString(),
-            title: songTitle,
-            youtubeLink,
-            chordLink: chordLink || "",
-            positions: {
-              vocal: "",
-              melodi: "",
-              bass: "",
-              drum: "",
-              rhytem: "",
-            },
-          };
+            // Isi posisi
+            if (song.positions[position] === "") {
+              song.positions[position] = currentUser.name;
+            } else {
+              alert(
+                `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
+              );
+              return;
+            }
 
-          // Isi posisi
-          newSong.positions[position] = currentUser.name;
-
-          try {
-            loadingSpinner.style.display = "block";
-            await addSongToSchedule(schedule.id, newSong);
-            schedule.songs.push(newSong);
-            renderSchedules();
+            // Update ke Firebase
+            return database.ref("schedules/" + currentScheduleId).update({
+              songs: schedule.songs,
+            });
+          })
+          .then(() => {
             joinModal.style.display = "none";
-
             // Reset form
             document.getElementById("songTitle").value = "";
             document.getElementById("youtubeLink").value = "";
             document.getElementById("chordLink").value = "";
-          } catch (error) {
-            console.error("Error adding song:", error);
-            alert("Gagal menambahkan lagu. Silakan coba lagi.");
-          } finally {
-            loadingSpinner.style.display = "none";
-          }
-        } else {
-          // Update lagu yang sudah ada
-          const song = schedule.songs[songIndex];
-
-          if (song.positions[position] === "") {
-            song.positions[position] = currentUser.name;
-
-            try {
-              loadingSpinner.style.display = "block";
-              await updateSongInSchedule(schedule.id, song);
-              renderSchedules();
-              joinModal.style.display = "none";
-
-              // Reset form
-              document.getElementById("songTitle").value = "";
-              document.getElementById("youtubeLink").value = "";
-              document.getElementById("chordLink").value = "";
-            } catch (error) {
-              console.error("Error updating song:", error);
-              alert("Gagal memperbarui lagu. Silakan coba lagi.");
-            } finally {
-              loadingSpinner.style.display = "none";
-            }
-          } else {
-            alert(
-              `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
-            );
-          }
-        }
+          })
+          .catch((error) => {
+            alert("Gagal menyimpan data: " + error.message);
+          });
       });
 
       closeEditSongModal.addEventListener("click", () => {
         editSongModal.style.display = "none";
       });
 
-      saveEditSongBtn.addEventListener("click", async () => {
+      saveEditSongBtn.addEventListener("click", () => {
         const newTitle = document.getElementById("editSongTitle").value;
         const newYoutubeLink = document.getElementById("editYoutubeLink").value;
         const newChordLink = document.getElementById("editChordLink").value;
@@ -854,108 +857,108 @@
           return;
         }
 
-        const scheduleIndex = schedules.findIndex(
-          (s) => s.id === currentScheduleId
-        );
-        if (scheduleIndex === -1) return;
+        // Dapatkan schedule dari Firebase
+        database
+          .ref("schedules/" + currentScheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
 
-        const songIndex = schedules[scheduleIndex].songs.findIndex(
-          (s) => s.id === currentSongId
-        );
-        if (songIndex === -1) return;
+            const songIndex = schedule.songs.findIndex(
+              (s) => s.id === currentSongId
+            );
+            if (songIndex === -1) return;
 
-        const updatedSong = {
-          ...schedules[scheduleIndex].songs[songIndex],
-          title: newTitle,
-          youtubeLink: newYoutubeLink,
-          chordLink: newChordLink || "",
-        };
+            schedule.songs[songIndex].title = newTitle;
+            schedule.songs[songIndex].youtubeLink = newYoutubeLink;
+            schedule.songs[songIndex].chordLink = newChordLink;
 
-        try {
-          loadingSpinner.style.display = "block";
-          await updateSongInSchedule(currentScheduleId, updatedSong);
-          schedules[scheduleIndex].songs[songIndex] = updatedSong;
-          renderSchedules();
-          editSongModal.style.display = "none";
-        } catch (error) {
-          console.error("Error updating song:", error);
-          alert("Gagal memperbarui lagu. Silakan coba lagi.");
-        } finally {
-          loadingSpinner.style.display = "none";
-        }
+            // Update ke Firebase
+            return database.ref("schedules/" + currentScheduleId).update({
+              songs: schedule.songs,
+            });
+          })
+          .then(() => {
+            editSongModal.style.display = "none";
+          })
+          .catch((error) => {
+            alert("Gagal menyimpan perubahan: " + error.message);
+          });
       });
 
-      deleteSongBtn.addEventListener("click", async () => {
+      deleteSongBtn.addEventListener("click", () => {
         if (!confirm("Apakah Anda yakin ingin menghapus lagu ini?")) return;
 
-        const scheduleIndex = schedules.findIndex(
-          (s) => s.id === currentScheduleId
-        );
-        if (scheduleIndex === -1) return;
+        // Dapatkan schedule dari Firebase
+        database
+          .ref("schedules/" + currentScheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
 
-        const songIndex = schedules[scheduleIndex].songs.findIndex(
-          (s) => s.id === currentSongId
-        );
-        if (songIndex === -1) return;
+            schedule.songs = schedule.songs.filter(
+              (s) => s.id !== currentSongId
+            );
 
-        try {
-          loadingSpinner.style.display = "block";
-          await deleteSongFromSchedule(currentScheduleId, currentSongId);
-          schedules[scheduleIndex].songs.splice(songIndex, 1);
-          renderSchedules();
-          editSongModal.style.display = "none";
-        } catch (error) {
-          console.error("Error deleting song:", error);
-          alert("Gagal menghapus lagu. Silakan coba lagi.");
-        } finally {
-          loadingSpinner.style.display = "none";
-        }
+            // Update ke Firebase
+            return database.ref("schedules/" + currentScheduleId).update({
+              songs: schedule.songs,
+            });
+          })
+          .then(() => {
+            editSongModal.style.display = "none";
+          })
+          .catch((error) => {
+            alert("Gagal menghapus lagu: " + error.message);
+          });
       });
 
       closeEditPositionModal.addEventListener("click", () => {
         editPositionModal.style.display = "none";
       });
 
-      saveEditPositionBtn.addEventListener("click", async () => {
+      saveEditPositionBtn.addEventListener("click", () => {
         const newPosition = document.getElementById("editPositionSelect").value;
         const newMember = document.getElementById("editPositionMember").value;
 
-        const scheduleIndex = schedules.findIndex(
-          (s) => s.id === currentScheduleId
-        );
-        if (scheduleIndex === -1) return;
+        // Dapatkan schedule dari Firebase
+        database
+          .ref("schedules/" + currentScheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
 
-        const songIndex = schedules[scheduleIndex].songs.findIndex(
-          (s) => s.id === currentSongId
-        );
-        if (songIndex === -1) return;
+            const songIndex = schedule.songs.findIndex(
+              (s) => s.id === currentSongId
+            );
+            if (songIndex === -1) return;
 
-        const song = schedules[scheduleIndex].songs[songIndex];
-        const updatedSong = JSON.parse(JSON.stringify(song));
+            // Hapus dari posisi lama jika ada
+            if (
+              currentPosition &&
+              schedule.songs[songIndex].positions[currentPosition] ===
+                currentUser.name
+            ) {
+              schedule.songs[songIndex].positions[currentPosition] = "";
+            }
 
-        // Hapus dari posisi lama jika ada
-        if (
-          currentPosition &&
-          updatedSong.positions[currentPosition] === currentUser.name
-        ) {
-          updatedSong.positions[currentPosition] = "";
-        }
+            // Tambahkan ke posisi baru
+            schedule.songs[songIndex].positions[newPosition] = newMember || "";
 
-        // Tambahkan ke posisi baru
-        updatedSong.positions[newPosition] = newMember || "";
-
-        try {
-          loadingSpinner.style.display = "block";
-          await updateSongInSchedule(currentScheduleId, updatedSong);
-          schedules[scheduleIndex].songs[songIndex] = updatedSong;
-          renderSchedules();
-          editPositionModal.style.display = "none";
-        } catch (error) {
-          console.error("Error updating position:", error);
-          alert("Gagal memperbarui posisi. Silakan coba lagi.");
-        } finally {
-          loadingSpinner.style.display = "none";
-        }
+            // Update ke Firebase
+            return database.ref("schedules/" + currentScheduleId).update({
+              songs: schedule.songs,
+            });
+          })
+          .then(() => {
+            editPositionModal.style.display = "none";
+          })
+          .catch((error) => {
+            alert("Gagal menyimpan perubahan: " + error.message);
+          });
       });
 
       // Fungsi bantuan
@@ -963,67 +966,26 @@
         loginSection.style.display = "none";
         userInfoDisplay.textContent = `Halo, ${currentUser.name}`;
 
-        // Tampilkan tombol tambah jadwal hanya untuk admin
-        if (currentUser.name === ADMIN_NAME) {
+        // Tampilkan tombol tambah jadwal hanya untuk EgiAdmin
+        if (currentUser.phone === "6281234567890") {
           addScheduleBtn.style.display = "flex";
         }
       }
 
-      async function loadSchedules() {
-        try {
-          const SCRIPT_URL =
-            "https://script.google.com/macros/s/AKfycbyyrviF5usH45hQFBWTBuqOAsBiusGyp_lRR-jCWdzmGP-OCJJ9udbcMSx61o4vDm_mJg/exec";
-
-          const response = await fetch(
-            `${SCRIPT_URL}?action=getSchedules&origin=${encodeURIComponent(
-              window.location.origin
-            )}`,
-            {
-              redirect: "follow",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-
-          if (!response.ok) throw new Error("Network response was not ok");
-
-          const data = await response.json();
-          schedules = data;
-          renderSchedules();
-        } catch (error) {
-          console.error("Error loading schedules:", error);
-          // Fallback: Tampilkan data default jika online gagal
-          schedules = getDefaultSchedules();
-          renderSchedules();
-        }
-      }
-
-      function getDefaultSchedules() {
-        return [
-          {
-            id: "default-1",
-            date: new Date().toISOString().split("T")[0],
-            time: "19:00",
-            location: "Studio Default",
-            notes: "Data offline - Gagal terhubung ke server",
-            songs: [],
-            creator: "system",
-          },
-        ];
-      }
-
-      function renderSchedules() {
+      function renderSchedules(schedulesData) {
         scheduleList.innerHTML = "";
 
-        if (schedules.length === 0) {
+        if (!schedulesData || Object.keys(schedulesData).length === 0) {
           scheduleList.innerHTML =
             '<p style="text-align: center; margin: 2rem 0;">Belum ada jadwal yang dibuat</p>';
           return;
         }
 
+        // Konversi object ke array
+        const schedulesArray = Object.values(schedulesData);
+
         // Urutkan jadwal dari yang terbaru
-        const sortedSchedules = [...schedules].sort(
+        const sortedSchedules = schedulesArray.sort(
           (a, b) => new Date(a.date) - new Date(b.date)
         );
 
@@ -1059,16 +1021,14 @@
                     <div class="songs-section">
                         <div class="songs-title">
                             <span>Daftar Lagu</span>
-                            ${
-                              currentUser
-                                ? `<button onclick="openJoinModal('${schedule.id}')" class="btn btn-sm btn-primary">+ Tambah Lagu</button>`
-                                : ""
-                            }
+                            <button onclick="openJoinModal('${
+                              schedule.id
+                            }')" class="btn btn-sm btn-primary">+ Tambah Lagu</button>
                         </div>
                         
                         <div class="song-list">
                             ${
-                              schedule.songs.length > 0
+                              schedule.songs && schedule.songs.length > 0
                                 ? schedule.songs
                                     .map((song) =>
                                       renderSong(schedule.id, song)
@@ -1085,15 +1045,14 @@
       }
 
       function renderSong(scheduleId, song) {
-        const isAdmin = currentUser && currentUser.phone === ADMIN_NAME;
-        const isCreator = currentUser && song.creator === currentUser.name;
+        const isAdmin = currentUser && currentUser.phone === "6281234567890";
 
         return `
                 <div class="song-card">
                     <div class="song-header">
                         <div class="song-title">${song.title}</div>
                         ${
-                          isAdmin || isCreator
+                          isAdmin
                             ? `<button onclick="openEditSongModal('${scheduleId}', '${song.id}')" class="btn btn-sm btn-secondary">✏️ Edit</button>`
                             : ""
                         }
@@ -1125,12 +1084,12 @@
                                 }">
                                     ${member || "(kosong)"}
                                     ${
-                                      !member && currentUser
+                                      !member
                                         ? `<button onclick="fillPosition('${scheduleId}', '${song.id}', '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">+ Isi</button>`
                                         : ""
                                     }
                                     ${
-                                      member && (isAdmin || isCreator)
+                                      member && isAdmin
                                         ? `<button onclick="editPosition('${scheduleId}', '${song.id}', '${pos}')" class="btn btn-sm" style="padding: 0.2rem 0.5rem; margin-left: 0.5rem;">✏️</button>`
                                         : ""
                                     }
@@ -1156,6 +1115,8 @@
       }
 
       function saveToGoogleCalendar(schedule) {
+        console.log("Menyimpan ke Google Calendar:", schedule);
+
         const startDateTime = new Date(`${schedule.date}T${schedule.time}:00`);
         const endDateTime = new Date(
           startDateTime.getTime() + 2 * 60 * 60 * 1000
@@ -1176,92 +1137,17 @@
         return date.toISOString().replace(/-|:|\.\d+/g, "");
       }
 
-      // Fungsi untuk berinteraksi dengan Google Sheets
-      async function saveScheduleToGoogleSheets(schedule) {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            action: "addSchedule",
-            schedule: schedule,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Gagal menyimpan jadwal");
-        }
-
-        return await response.json();
-      }
-
-      async function addSongToSchedule(scheduleId, song) {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            action: "addSong",
-            scheduleId: scheduleId,
-            song: song,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Gagal menambahkan lagu");
-        }
-
-        return await response.json();
-      }
-
-      async function updateSongInSchedule(scheduleId, song) {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            action: "updateSong",
-            scheduleId: scheduleId,
-            song: song,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Gagal memperbarui lagu");
-        }
-
-        return await response.json();
-      }
-
-      async function deleteSongFromSchedule(scheduleId, songId) {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            action: "deleteSong",
-            scheduleId: scheduleId,
-            songId: songId,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Gagal menghapus lagu");
-        }
-
-        return await response.json();
-      }
-
       // Fungsi yang diakses dari HTML
       window.saveToGoogleCalendarById = function (scheduleId) {
-        const schedule = schedules.find((s) => s.id === scheduleId);
-        if (schedule) {
-          saveToGoogleCalendar(schedule);
-        }
+        database
+          .ref("schedules/" + scheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (schedule) {
+              saveToGoogleCalendar(schedule);
+            }
+          });
       };
 
       window.openJoinModal = function (scheduleId) {
@@ -1281,55 +1167,54 @@
         currentScheduleId = scheduleId;
         currentSongId = songId;
 
-        const schedule = schedules.find((s) => s.id === scheduleId);
-        if (!schedule) return;
+        database
+          .ref("schedules/" + scheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
 
-        const song = schedule.songs.find((s) => s.id === songId);
-        if (!song) return;
+            const song = schedule.songs.find((s) => s.id === songId);
+            if (!song) return;
 
-        document.getElementById("editSongTitle").value = song.title;
-        document.getElementById("editYoutubeLink").value = song.youtubeLink;
-        document.getElementById("editChordLink").value = song.chordLink || "";
+            document.getElementById("editSongTitle").value = song.title;
+            document.getElementById("editYoutubeLink").value = song.youtubeLink;
+            document.getElementById("editChordLink").value =
+              song.chordLink || "";
 
-        editSongModal.style.display = "flex";
+            editSongModal.style.display = "flex";
+          });
       };
 
-      window.fillPosition = async function (scheduleId, songId, position) {
+      window.fillPosition = function (scheduleId, songId, position) {
         if (!currentUser) {
           alert("Silakan login terlebih dahulu");
           return;
         }
 
-        const scheduleIndex = schedules.findIndex((s) => s.id === scheduleId);
-        if (scheduleIndex === -1) return;
+        database
+          .ref("schedules/" + scheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
 
-        const songIndex = schedules[scheduleIndex].songs.findIndex(
-          (s) => s.id === songId
-        );
-        if (songIndex === -1) return;
+            const songIndex = schedule.songs.findIndex((s) => s.id === songId);
+            if (songIndex === -1) return;
 
-        const song = schedules[scheduleIndex].songs[songIndex];
+            if (schedule.songs[songIndex].positions[position] === "") {
+              schedule.songs[songIndex].positions[position] = currentUser.name;
 
-        if (song.positions[position] === "") {
-          const updatedSong = JSON.parse(JSON.stringify(song));
-          updatedSong.positions[position] = currentUser.name;
-
-          try {
-            loadingSpinner.style.display = "block";
-            await updateSongInSchedule(scheduleId, updatedSong);
-            schedules[scheduleIndex].songs[songIndex] = updatedSong;
-            renderSchedules();
-          } catch (error) {
-            console.error("Error filling position:", error);
-            alert("Gagal mengisi posisi. Silakan coba lagi.");
-          } finally {
-            loadingSpinner.style.display = "none";
-          }
-        } else {
-          alert(
-            `Posisi ${position} sudah diisi oleh ${song.positions[position]}`
-          );
-        }
+              // Update ke Firebase
+              return database.ref("schedules/" + scheduleId).update({
+                songs: schedule.songs,
+              });
+            } else {
+              alert(
+                `Posisi ${position} sudah diisi oleh ${schedule.songs[songIndex].positions[position]}`
+              );
+            }
+          });
       };
 
       window.editPosition = function (scheduleId, songId, position) {
@@ -1337,17 +1222,22 @@
         currentSongId = songId;
         currentPosition = position;
 
-        const schedule = schedules.find((s) => s.id === scheduleId);
-        if (!schedule) return;
+        database
+          .ref("schedules/" + scheduleId)
+          .once("value")
+          .then((snapshot) => {
+            const schedule = snapshot.val();
+            if (!schedule) return;
 
-        const song = schedule.songs.find((s) => s.id === songId);
-        if (!song) return;
+            const song = schedule.songs.find((s) => s.id === songId);
+            if (!song) return;
 
-        document.getElementById("editPositionSelect").value = position;
-        document.getElementById("editPositionMember").value =
-          song.positions[position] || "";
+            document.getElementById("editPositionSelect").value = position;
+            document.getElementById("editPositionMember").value =
+              song.positions[position] || "";
 
-        editPositionModal.style.display = "flex";
+            editPositionModal.style.display = "flex";
+          });
       };
     </script>
   </body>
