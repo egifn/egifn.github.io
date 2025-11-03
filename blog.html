@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LPK Yukki Gakkou - Lembaga Pelatihan Bahasa Jepang</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-red: #dc143c;
+        --dark-red: #b01030;
+        --light-gray: #f8f9fa;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .navbar {
+        background: linear-gradient(135deg, #000 0%, #2c2c2c 100%);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        color: var(--primary-red) !important;
+        font-size: 1.5rem;
+      }
+
+      .nav-link {
+        color: #fff !important;
+        transition: color 0.3s;
+        margin: 0 10px;
+      }
+
+      .nav-link:hover {
+        color: var(--primary-red) !important;
+      }
+
+      .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("https://images.unsplash.com/photo-1528164344705-47542687000d?w=1200");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 150px 0 100px;
+        text-align: center;
+      }
+
+      .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero-section p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+      }
+
+      .btn-primary-custom {
+        background: var(--primary-red);
+        border: none;
+        padding: 12px 40px;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        transition: all 0.3s;
+      }
+
+      .btn-primary-custom:hover {
+        background: var(--dark-red);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(220, 20, 60, 0.4);
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        padding-bottom: 20px;
+      }
+
+      .section-title h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #000;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--primary-red);
+      }
+
+      .program-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        height: 100%;
+      }
+
+      .program-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .program-card .card-header {
+        background: var(--primary-red);
+        color: white;
+        padding: 20px;
+        font-size: 1.3rem;
+        font-weight: bold;
+      }
+
+      .program-card .card-body {
+        padding: 25px;
+      }
+
+      .program-card ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .program-card li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .program-card li:last-child {
+        border-bottom: none;
+      }
+
+      .program-card li i {
+        color: var(--primary-red);
+        margin-right: 10px;
+      }
+
+      .testimonial-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .testimonial-card .quote-icon {
+        color: var(--primary-red);
+        font-size: 2rem;
+        margin-bottom: 15px;
+      }
+
+      .testimonial-card .profile {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .testimonial-card .profile img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-right: 15px;
+        border: 3px solid var(--primary-red);
+      }
+
+      .testimonial-card .profile .name {
+        font-weight: bold;
+        color: #000;
+      }
+
+      .testimonial-card .profile .company {
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .gallery-item {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-bottom: 30px;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.1);
+      }
+
+      .gallery-item .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(220, 20, 60, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .gallery-item:hover .overlay {
+        opacity: 1;
+      }
+
+      .gallery-item .overlay i {
+        color: white;
+        font-size: 2rem;
+      }
+
+      .blog-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+        height: 100%;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .blog-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .blog-card .card-body {
+        padding: 20px;
+      }
+
+      .blog-card .blog-date {
+        color: var(--primary-red);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+
+      .blog-card .blog-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #000;
+      }
+
+      .about-section {
+        background: var(--light-gray);
+      }
+
+      .about-section .about-content {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+      }
+
+      .about-section img {
+        width: 100%;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .stats-section {
+        background: linear-gradient(
+          135deg,
+          var(--primary-red) 0%,
+          var(--dark-red) 100%
+        );
+        color: white;
+        padding: 60px 0;
+      }
+
+      .stat-item {
+        text-align: center;
+      }
+
+      .stat-item i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+      }
+
+      .stat-item h3 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .stat-item p {
+        font-size: 1.1rem;
+      }
+
+      .contact-section {
+        background: #000;
+        color: white;
+        padding: 60px 0;
+      }
+
+      .contact-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .contact-info i {
+        font-size: 1.5rem;
+        color: var(--primary-red);
+        margin-right: 15px;
+        width: 40px;
+      }
+
+      footer {
+        background: #000;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        border-top: 2px solid var(--primary-red);
+      }
+
+      @media (max-width: 768px) {
+        .hero-section h1 {
+          font-size: 2rem;
+        }
+
+        .hero-section p {
+          font-size: 1rem;
+        }
+
+        .about-section .about-content {
+          flex-direction: column;
+        }
+
+        .section-title h2 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#home">
+          <i class="fas fa-torii-gate"></i> Yukki Gakkou
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#home">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">Tentang Kami</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#programs">Program</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#testimonials">Testimoni</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#gallery">Galeri</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Kontak</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+      <div class="container">
+        <h1>Wujudkan Impian Kerja di Jepang</h1>
+        <p>
+          Lembaga Pelatihan Kerja Bahasa Jepang Terpercaya dengan Program
+          Bersertifikat
+        </p>
+        <a href="/blog-formulir.html" class="btn btn-primary-custom"
+          >Lihat Program Kami</a
+        >
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <h2 class="section-title">Tentang Kami</h2>
+            <p class="lead">
+              LPK Yukki Gakkou adalah lembaga pendidikan dan pelatihan bahasa
+              Jepang yang telah berdiri sejak 2010, dengan fokus pada
+              pembelajaran bahasa Jepang yang efektif dan penempatan kerja ke
+              Jepang.
+            </p>
+
+            <a href="#contact" class="btn btn-primary mt-3">Hubungi Kami</a>
+          </div>
+          <div class="col-lg-6">
+            <img
+              src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400"
+              alt="Persiapan JLPT"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <h3>2000+</h3>
+              <p>Alumni Sukses</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <h3>15+</h3>
+              <p>Instruktur Ahli</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-building"></i>
+              <h3>50+</h3>
+              <p>Partner Perusahaan</p>
+            </div>
+          </div>
+          <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+              <i class="fas fa-certificate"></i>
+              <h3>95%</h3>
+              <p>Tingkat Kelulusan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="py-5">
+      <div class="container">
+        <div class="section-title">
+          <h2>Program Unggulan</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card program-card">
+              <div class="card-header">
+                <i class="fas fa-book-reader"></i> Program Regular
+              </div>
+              <div class="card-body">
+                <h5>Rp 3.500.000 / 6 Bulan</h5>
+                <ul>
+                  <li>
+                    <i class="fas fa-check"></i> Bahasa Jepang Level N5 - N4
+                  </li>
+                  <li><i class="fas fa-check"></i> Kelas 3x seminggu</li>
+                  <li>
+                    <i class="fas fa-check"></i> Materi budaya kerja Jepang
+                  </li>
+                  <li><i class="fas fa-check"></i> Sertifikat resmi</li>
+                  <li><i class="fas fa-check"></i> Konsultasi karir</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary-custom w-100 mt-3"
+                  >Daftar Sekarang</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card program-card">
+              <div class="card-header">
+                <i class="fas fa-rocket"></i> Program Intensif
+              </div>
+              <div class="card-body">
+                <h5>Rp 5.000.000 / 4 Bulan</h5>
+                <ul>
+                  <li>
+                    <i class="fas fa-check"></i> Bahasa Jepang Level N5 - N3
+                  </li>
+                  <li><i class="fas fa-check"></i> Kelas 5x seminggu</li>
+                  <li><i class="fas fa-check"></i> Simulasi interview</li>
+                  <li>
+                    <i class="fas fa-check"></i> Praktik percakapan harian
+                  </li>
+                  <li><i class="fas fa-check"></i> Jaminan penempatan kerja</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary-custom w-100 mt-3"
+                  >Daftar Sekarang</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card program-card">
+              <div class="card-header">
+                <i class="fas fa-star"></i> Program Premium
+              </div>
+              <div class="card-body">
+                <h5>Rp 8.000.000 / 6 Bulan</h5>
+                <ul>
+                  <li>
+                    <i class="fas fa-check"></i> Bahasa Jepang Level N5 - N2
+                  </li>
+                  <li><i class="fas fa-check"></i> Kelas private & group</li>
+                  <li><i class="fas fa-check"></i> Persiapan JLPT lengkap</li>
+                  <li><i class="fas fa-check"></i> Homestay simulation</li>
+                  <li><i class="fas fa-check"></i> Garansi kerja 100%</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary-custom w-100 mt-3"
+                  >Daftar Sekarang</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section
+      id="testimonials"
+      class="py-5"
+      style="background: var(--light-gray)"
+    >
+      <div class="container">
+        <div class="section-title">
+          <h2>Testimoni Alumni</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="testimonial-card">
+              <div class="quote-icon">
+                <i class="fas fa-quote-left"></i>
+              </div>
+              <p style="color: #333">
+                "Program intensif di Yukki Gakkou sangat membantu saya. Dalam 4
+                bulan saya bisa lulus N4 dan langsung dapat tawaran kerja di
+                Tokyo. Sensei-nya sangat sabar dan profesional!"
+              </p>
+              <div class="profile">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100"
+                  alt="Alumni"
+                />
+                <div>
+                  <div class="name">Budi Santoso</div>
+                  <div class="company">Factory Worker - Toyota, Tokyo</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="testimonial-card">
+              <div class="quote-icon">
+                <i class="fas fa-quote-left"></i>
+              </div>
+              <p style="color: #333">
+                "Saya sangat terbantu dengan program premium yang lengkap. Tidak
+                hanya bahasa, tapi juga diajari budaya kerja Jepang. Sekarang
+                saya bekerja di Osaka dengan gaji yang memuaskan."
+              </p>
+              <div class="profile">
+                <img
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100"
+                  alt="Alumni"
+                />
+                <div>
+                  <div class="name">Siti Nurhaliza</div>
+                  <div class="company">Caregiver - Osaka</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="testimonial-card">
+              <div class="quote-icon">
+                <i class="fas fa-quote-left"></i>
+              </div>
+              <p style="color: #333">
+                "Fasilitasnya bagus, metode belajarnya fun, dan yang paling
+                penting ada job placement. 2 minggu setelah lulus langsung dapat
+                panggilan interview dan diterima!"
+              </p>
+              <div class="profile">
+                <img
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100"
+                  alt="Alumni"
+                />
+                <div>
+                  <div class="name">Ahmad Wijaya</div>
+                  <div class="company">Construction - Nagoya</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-5">
+      <div class="container">
+        <div class="section-title">
+          <h2>Galeri Kegiatan</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600"
+                alt="Kelas Bahasa Jepang"
+              />
+              <div class="overlay">
+                <i class="fas fa-search-plus"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=600"
+                alt="Praktik Percakapan"
+              />
+              <div class="overlay">
+                <i class="fas fa-search-plus"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600"
+                alt="Ujian JLPT"
+              />
+              <div class="overlay">
+                <i class="fas fa-search-plus"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600"
+                alt="Workshop Budaya"
+              />
+              <div class="overlay">
+                <i class="fas fa-search-plus"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=600"
+                alt="Kegiatan Siswa"
+              />
+              <div class="overlay">
+                <i class="fas fa-search-plus"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="gallery-item">
+              <img
+                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600"
+                alt="Wisuda"
+              />
+              <div class="overlay">
+                <i class="fas fa-search-plus"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-5" style="background: var(--light-gray)">
+      <div class="container">
+        <div class="section-title">
+          <h2>Blog & Artikel</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card blog-card">
+              <img
+                src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=400"
+                alt="Tips Belajar"
+              />
+              <div class="card-body">
+                <div class="blog-date">
+                  <i class="far fa-calendar"></i> 15 Oktober 2024
+                </div>
+                <div class="blog-title">
+                  5 Tips Efektif Belajar Bahasa Jepang untuk Pemula
+                </div>
+                <p style="color: #666">
+                  Pelajari strategi terbaik untuk menguasai bahasa Jepang dengan
+                  cepat dan mudah...
+                </p>
+                <a
+                  href="#"
+                  style="color: var(--primary-red); text-decoration: none"
+                  >Baca Selengkapnya <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card blog-card">
+              <img
+                src="https://images.unsplash.com/photo-1480796927426-f609979314bd?w=400"
+                alt="Budaya Jepang"
+              />
+              <div class="card-body">
+                <div class="blog-date">
+                  <i class="far fa-calendar"></i> 20 Oktober 2024
+                </div>
+                <div class="blog-title">
+                  Mengenal Budaya Kerja di Jepang yang Unik
+                </div>
+                <p style="color: #666">
+                  Sebelum bekerja di Jepang, kenali dulu budaya kerja mereka
+                  yang berbeda...
+                </p>
+                <a
+                  href="#"
+                  style="color: var(--primary-red); text-decoration: none"
+                  >Baca Selengkapnya <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card blog-card">
+              <img
+                src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400"
+                alt="Persiapan JLPT"
+              />
+              <div class="card-body">
+                <div class="blog-date">
+                  <i class="far fa-calendar"></i> 25 Oktober 2024
+                </div>
+                <div class="blog-title">
+                  Panduan Lengkap Persiapan Ujian JLPT N5-N4
+                </div>
+                <p style="color: #666">
+                  Strategi jitu untuk menghadapi ujian JLPT dan meraih skor
+                  maksimal...
+                </p>
+                <a
+                  href="#"
+                  style="color: var(--primary-red); text-decoration: none"
+                  >Baca Selengkapnya <i class="fas fa-arrow-right"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <footer class="footer py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 mb-4 mb-lg-0">
+            <h4 class="mb-3">LPK Yukki Gakkou</h4>
+            <p>
+              Pusat Pendidikan Bahasa Jepang dan Penempatan Kerja ke Jepang yang
+              terpercaya sejak 2010.
+            </p>
+            <div class="d-flex mt-4">
+              <a href="#" class="text-white me-3"
+                ><i class="bi bi-facebook fs-5"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="bi bi-instagram fs-5"></i
+              ></a>
+              <a href="#" class="text-white me-3"
+                ><i class="bi bi-youtube fs-5"></i
+              ></a>
+              <a href="#" class="text-white"
+                ><i class="bi bi-whatsapp fs-5"></i
+              ></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+            <h5 class="mb-3">Menu</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <a href="#home" class="text-white text-decoration-none"
+                  >Beranda</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#about" class="text-white text-decoration-none"
+                  >Tentang Kami</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#program" class="text-white text-decoration-none"
+                  >Program</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#testimoni" class="text-white text-decoration-none"
+                  >Testimoni</a
+                >
+              </li>
+              <li class="mb-2">
+                <a href="#blog" class="text-white text-decoration-none">Blog</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+            <h5 class="mb-3">Kontak Kami</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="bi bi-geo-alt me-2"></i>
+                Jl. Pendidikan No. 123, Jakarta Selatan
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-telephone me-2"></i>
+                (021) 1234-5678
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-whatsapp me-2"></i>
+                +62 812-3456-7890
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-envelope me-2"></i>
+                info@yukkigakkou.com
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-3">
+            <h5 class="mb-3">Jam Operasional</h5>
+            <ul class="list-unstyled">
+              <li class="mb-2">Senin - Jumat: 08.00 - 17.00</li>
+              <li class="mb-2">Sabtu: 08.00 - 15.00</li>
+              <li class="mb-2">Minggu & Hari Libur: Tutup</li>
+            </ul>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="text-center">
+          <p class="mb-0">&copy; 2023 LPK Yukki Gakkou. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
