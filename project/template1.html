@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Y2K Studio | Capture Your Digital Dreams</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff00ff;
+            --secondary: #00ffff;
+            --accent1: #ffff00;
+            --accent2: #00ff00;
+            --dark: #000033;
+            --light: #ffffff;
+            --gradient1: linear-gradient(135deg, #ff00ff, #00ffff);
+            --gradient2: linear-gradient(45deg, #ffff00, #00ff00);
+            --holographic: linear-gradient(90deg, 
+                #ff00ff, #ff00cc, #ff0099, #ff0066, #ff0033, 
+                #ff6600, #ffcc00, #ffff00, #ccff00, #66ff00, 
+                #00ff00, #00ff33, #00ff66, #00ff99, #00ffcc, 
+                #00ffff, #00ccff, #0099ff, #0066ff, #0033ff, 
+                #0000ff, #3300ff, #6600ff, #9900ff, #cc00ff, #ff00ff);
+        }
+
+        @keyframes holographicShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes glitter {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Orbitron', sans-serif;
+            line-height: 1.6;
+            color: var(--light);
+            background-color: var(--dark);
+            background-image: url('https://www.transparenttextures.com/patterns/asfalt-light.png');
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Press Start 2P', cursive;
+            line-height: 1.3;
+            text-transform: uppercase;
+        }
+
+        h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--gradient1);
+            background-size: 200% 200%;
+            color: var(--light);
+            border: 2px solid var(--light);
+            border-radius: 30px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            animation: holographicShift 3s infinite;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .btn:hover::before {
+            transform: rotate(45deg) translate(100%, 100%);
+        }
+
+        .btn-secondary {
+            background: var(--gradient2);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.5);
+        }
+
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: var(--holographic);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: holographicShift 5s infinite;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 5px;
+            background: var(--gradient1);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+        }
+
+        .section-title p {
+            max-width: 700px;
+            margin: 20px auto 0;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        /* Y2K Decorative Elements */
+        .star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffff00'%3E%3Cpath d='M12 0l3.09 9.26L24 12l-8.91 2.74L12 24l-3.09-9.26L0 12l8.91-2.74z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            animation: float 3s infinite ease-in-out, rotate 10s infinite linear;
+            z-index: 0;
+        }
+
+        .butterfly {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff00ff'%3E%3Cpath d='M12 2C8 2 4 5 4 9c0 2.5 1.5 4.5 3 6.5s3 4 3 6.5h4c0-2.5 1.5-4.5 3-6.5s3-4 3-6.5c0-4-4-7-8-7z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            animation: float 4s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff0066'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: contain;
+            animation: pulse 2s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        /* Glitter Overlay */
+        .glitter-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Ccircle cx='5' cy='5' r='1' fill='white'/%3E%3C/svg%3E");
+            opacity: 0.2;
+            pointer-events: none;
+            animation: glitter 2s infinite;
+            z-index: 1;
+        }
+
+        /* Chrome/Metallic Effect */
+        .chrome-text {
+            background: linear-gradient(to bottom, #ffffff 0%, #cccccc 50%, #ffffff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .metallic-border {
+            border: 4px solid transparent;
+            border-image: linear-gradient(45deg, #c0c0c0, #ffffff, #c0c0c0, #808080, #c0c0c0, #ffffff, #c0c0c0);
+            border-image-slice: 1;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            background: var(--holographic);
+            background-size: 400% 400%;
+            animation: holographicShift 5s infinite;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--light);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--dark);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+            animation: pulse 2s infinite;
+        }
+
+        .hero-content h1 span {
+            display: block;
+            background: var(--holographic);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: holographicShift 5s infinite;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: var(--light);
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.8);
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+        }
+
+        .hero-gallery {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        }
+
+        .hero-gallery::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 0, 255, 0.3), rgba(0, 255, 255, 0.3));
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .gallery-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .gallery-slide.active {
+            opacity: 1;
+        }
+
+        .gallery-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Services Section */
+        .services {
+            background-color: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+            border-image: var(--holographic);
+            border-image-slice: 1;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--holographic);
+            background-size: 400% 400%;
+            opacity: 0.1;
+            animation: holographicShift 5s infinite;
+            z-index: -1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--light);
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.8);
+        }
+
+        .service-card p {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pixel-decoration {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent1);
+            bottom: 10px;
+            right: 10px;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+            animation: blink 2s infinite;
+        }
+
+        /* Booking Section */
+        .booking {
+            background-color: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .booking::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .booking-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--light);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+        }
+
+        .booking-content p {
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .digital-clock {
+            font-family: 'VT323', monospace;
+            font-size: 2rem;
+            color: var(--accent1);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+            animation: blink 2s infinite;
+        }
+
+        .booking-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid transparent;
+            border-image: var(--holographic);
+            border-image-slice: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .booking-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--holographic);
+            background-size: 400% 400%;
+            opacity: 0.1;
+            animation: holographicShift 5s infinite;
+            z-index: -1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--light);
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+            border-radius: 20px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Gallery Preview */
+        .gallery-preview {
+            background-color: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 200px);
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .gallery-grid > div {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-grid > div:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-grid > div:nth-child(2) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-grid > div:nth-child(3) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-grid > div:nth-child(4) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-grid > div:nth-child(5) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border: 4px solid transparent;
+            border-image: linear-gradient(45deg, #c0c0c0, #ffffff, #c0c0c0, #808080, #c0c0c0, #ffffff, #c0c0c0);
+            border-image-slice: 1;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 0, 255, 0.5), rgba(0, 255, 255, 0.5));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-overlay i {
+            color: var(--light);
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .gallery-cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .gallery-cta .btn {
+            background: linear-gradient(45deg, #c0c0c0, #ffffff, #c0c0c0, #808080, #c0c0c0, #ffffff, #c0c0c0);
+            color: var(--dark);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            font-weight: 700;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 60px 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: var(--holographic);
+            background-size: 400% 400%;
+            animation: holographicShift 5s infinite;
+        }
+
+        .wave-divider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='%23000033' opacity='.25'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' fill='%23000033' opacity='.5'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' fill='%23000033' opacity='.75'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center;
+            transform: rotate(180deg);
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: var(--light);
+            text-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--gradient1);
+        }
+
+        .footer-col p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-address {
+            margin-bottom: 20px;
+        }
+
+        .footer-address p {
+            margin-bottom: 5px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links li a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links li a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-links li a::before {
+            content: '>';
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: var(--gradient1);
+            background-size: 200% 200%;
+            border-radius: 50%;
+            color: var(--light);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            animation: holographicShift 3s infinite;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px) rotate(10deg);
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.5);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cursor Trail */
+        .cursor-trail {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-container, .booking-container {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid > div:nth-child(1) {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--holographic);
+                background-size: 400% 400%;
+                animation: holographicShift 5s infinite;
+                padding: 20px 0;
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s ease;
+            }
+
+            nav.active {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero-btns {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            section {
+                padding: 60px 0;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid > div:nth-child(1) {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative Elements -->
+    <div class="star" style="top: 15%; left: 10%;"></div>
+    <div class="star" style="top: 25%; left: 85%;"></div>
+    <div class="star" style="top: 65%; left: 15%;"></div>
+    <div class="star" style="top: 85%; left: 80%;"></div>
+    <div class="butterfly" style="top: 30%; left: 5%;"></div>
+    <div class="butterfly" style="top: 70%; left: 90%;"></div>
+    <div class="heart" style="top: 20%; left: 95%;"></div>
+    <div class="heart" style="top: 60%; left: 5%;"></div>
+    <div class="heart" style="top: 90%; left: 50%;"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo chrome-text">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z'/%3E%3C/svg%3E" alt="Logo">
+                Y2K Studio
+            </a>
+            <div class="mobile-toggle" id="mobile-toggle">☰</div>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#booking">Booking</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="glitter-overlay"></div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1>CAPTURE YOUR <span>Y2K DREAMS</span></h1>
+                <p>Step into our digital time capsule where we blend nostalgic Y2K aesthetics with modern photography techniques to create unforgettable visual experiences.</p>
+                <div class="hero-btns">
+                    <a href="#gallery" class="btn">View Gallery</a>
+                    <a href="#booking" class="btn btn-secondary">Book a Session</a>
+                </div>
+            </div>
+            <div class="hero-gallery metallic-border">
+                <div class="glitter-overlay"></div>
+                <div class="gallery-slide active">
+                    <img src="https://images.unsplash.com/photo-1581591524425-c7e0978865fc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Studio Photo 1">
+                </div>
+                <div class="gallery-slide">
+                    <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6a3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Studio Photo 2">
+                </div>
+                <div class="gallery-slide">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Studio Photo 3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Photo Packages</h2>
+                <p>Choose from our range of Y2K-inspired photography experiences</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff00ff'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E" alt="Portrait Icon" class="service-icon">
+                    <h3>Y2K PORTRAITS</h3>
+                    <p>Channel your inner pop star with our Y2K-inspired portrait sessions featuring holographic backdrops and cyber props.</p>
+                    <a href="#booking" class="btn">Book Now</a>
+                    <div class="pixel-decoration"></div>
+                </div>
+                <div class="service-card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ffff'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E" alt="Fashion Icon" class="service-icon">
+                    <h3>CYBER FASHION</h3>
+                    <p>Showcase your futuristic fashion with our cyber-themed photoshoots complete with digital effects and metallic styling.</p>
+                    <a href="#booking" class="btn">Book Now</a>
+                    <div class="pixel-decoration"></div>
+                </div>
+                <div class="service-card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffff00'%3E%3Cpath d='M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM8 15c0-1.66 1.34-3 3-3 .35 0 .69.07 1 .18V6h5v2h-3v7.03c-.02 1.64-1.35 2.97-3 2.97-1.66 0-3-1.34-3-3z'/%3E%3C/svg%3E" alt="Music Icon" class="service-icon">
+                    <h3>RETRO MUSIC VIBES</h3>
+                    <p>Create your own album cover with our music-inspired sessions featuring CD walls, cassettes, and digital music elements.</p>
+                    <a href="#booking" class="btn">Book Now</a>
+                    <div class="pixel-decoration"></div>
+                </div>
+                <div class="service-card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ff00'%3E%3Cpath d='M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z'/%3E%3C/svg%3E" alt="Group Icon" class="service-icon">
+                    <h3>SQUAD GOALS</h3>
+                    <p>Bring your friends for a group photoshoot with nostalgic Y2K themes, perfect for recreating iconic 2000s moments.</p>
+                    <a href="#booking" class="btn">Book Now</a>
+                    <div class="pixel-decoration"></div>
+                </div>
+                <div class="service-card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff00ff'%3E%3Cpath d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/%3E%3C/svg%3E" alt="Product Icon" class="service-icon">
+                    <h3>DIGITAL DREAMSCAPES</h3>
+                    <p>Step into surreal digital landscapes with our green screen technology and Y2K-inspired digital backgrounds.</p>
+                    <a href="#booking" class="btn">Book Now</a>
+                    <div class="pixel-decoration"></div>
+                </div>
+                <div class="service-card">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300ffff'%3E%3Cpath d='M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z'/%3E%3Cpath d='M12 8v5l4.28 2.54.72-1.21-3.5-2.08V8H12z'/%3E%3C/svg%3E" alt="Event Icon" class="service-icon">
+                    <h3>TIME CAPSULE</h3>
+                    <p>Document your special events with our Y2K time capsule package, complete with digital time stamps and retro effects.</p>
+                    <a href="#booking" class="btn">Book Now</a>
+                    <div class="pixel-decoration"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Preview -->
+    <section id="gallery" class="gallery-preview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Y2K Gallery</h2>
+                <p>Check out some of our favorite Y2K-inspired photoshoots</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="Gallery 1">
+                    <div class="gallery-overlay">
+                        <i>🔍</i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="Gallery 2">
+                    <div class="gallery-overlay">
+                        <i>🔍</i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80" alt="Gallery 3">
+                    <div class="gallery-overlay">
+                        <i>🔍</i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1173&q=80" alt="Gallery 4">
+                    <div class="gallery-overlay">
+                        <i>🔍</i>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1541216970279-affbfdd55aa8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Gallery 5">
+                    <div class="gallery-overlay">
+                        <i>🔍</i>
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-cta">
+                <a href="#" class="btn chrome-text">More Photos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking">
+        <div class="container">
+            <div class="section-title">
+                <h2>Book Your Y2K Experience</h2>
+                <p>Step back in time with our nostalgic photo sessions</p>
+            </div>
+            <div class="booking-container">
+                <div class="booking-content">
+                    <div class="digital-clock" id="digital-clock">00:00:00</div>
+                    <h2>Why Choose Y2K Studio?</h2>
+                    <p>At Y2K Studio, we specialize in creating nostalgic photography experiences that transport you back to the exciting era of the early 2000s. Our team combines authentic Y2K props, digital effects, and expert photography to create images that perfectly capture the essence of this iconic time period.</p>
+                    <p>Whether you're looking for a fun portrait session, a fashion photoshoot, or a group experience, our studio has everything you need to create the perfect Y2K-inspired photos.</p>
+                    <ul>
+                        <li>Authentic Y2K props and backgrounds</li>
+                        <li>Digital effects and editing</li>
+                        <li>Professional photographers</li>
+                        <li>Custom packages available</li>
+                        <li>Digital and printed photos</li>
+                    </ul>
+                </div>
+                <div class="booking-form">
+                    <div class="glitter-overlay"></div>
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Your Phone</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="package">Select Package</label>
+                            <select id="package" name="package" required>
+                                <option value="">Choose a package</option>
+                                <option value="portraits">Y2K Portraits</option>
+                                <option value="fashion">Cyber Fashion</option>
+                                <option value="music">Retro Music Vibes</option>
+                                <option value="group">Squad Goals</option>
+                                <option value="dreamscapes">Digital Dreamscapes</option>
+                                <option value="timecapsule">Time Capsule</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Preferred Date</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Special Requests</label>
+                            <textarea id="message" name="message"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Book Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="wave-divider"></div>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Y2K Studio</h3>
+                    <p>Bringing back the nostalgic Y2K aesthetic through modern photography.</p>
+                    <div class="footer-address">
+                        <p><strong>Studio Address:</strong></p>
+                        <p>123 Digital Avenue</p>
+                        <p>Cyber City, NY 10001</p>
+                        <p><strong>Phone:</strong> (123) 456-7890</p>
+                        <p><strong>Email:</strong> hello@y2kstudio.com</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><span>FB</span></a>
+                        <a href="#"><span>IG</span></a>
+                        <a href="#"><span>TW</span></a>
+                        <a href="#"><span>PT</span></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                        <li><a href="#booking">Booking</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Our Packages</h3>
+                    <ul class="footer-links">
+                        <li><a href="#services">Y2K Portraits</a></li>
+                        <li><a href="#services">Cyber Fashion</a></li>
+                        <li><a href="#services">Retro Music Vibes</a></li>
+                        <li><a href="#services">Squad Goals</a></li>
+                        <li><a href="#services">Digital Dreamscapes</a></li>
+                        <li><a href="#services">Time Capsule</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Studio Hours</h3>
+                    <p><strong>Monday - Friday:</strong> 10am - 8pm</p>
+                    <p><strong>Saturday:</strong> 10am - 6pm</p>
+                    <p><strong>Sunday:</strong> 12pm - 5pm</p>
+                    <p class="chrome-text">✨ Y2K VIBES ONLY ✨</p>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Y2K Studio. All Rights Reserved. | Designed with 💖 and Y2K nostalgia
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cursor Trails -->
+    <div class="cursor-trail" id="cursor-trail"></div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const nav = document.getElementById('nav');
+
+        mobileToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        // Hero Gallery Slider
+        const gallerySlides = document.querySelectorAll('.gallery-slide');
+        let currentSlide = 0;
+
+        function changeSlide() {
+            gallerySlides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (currentSlide + 1) % gallerySlides.length;
+            gallerySlides[currentSlide].classList.add('active');
+        }
+
+        setInterval(changeSlide, 3000);
+
+        // Digital Clock
+        const digitalClock = document.getElementById('digital-clock');
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            digitalClock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Cursor Trail Effect
+        const cursorTrail = document.getElementById('cursor-trail');
+        const trails = [];
+        const trailCount = 20;
+
+        // Create multiple trail elements
+        for (let i = 0; i < trailCount; i++) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.width = `${10 - (i * 0.4)}px`;
+            trail.style.height = `${10 - (i * 0.4)}px`;
+            trail.style.opacity = 1 - (i * 0.05);
+            document.body.appendChild(trail);
+            trails.push({
+                element: trail,
+                x: 0,
+                y: 0
+            });
+        }
+
+        // Update trail positions
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            // Update the first trail to mouse position
+            trails[0].x = mouseX;
+            trails[0].y = mouseY;
+            
+            // Update the rest of the trails to follow
+            for (let i = 1; i < trails.length; i++) {
+                trails[i].x += (trails[i-1].x - trails[i].x) * 0.3;
+                trails[i].y += (trails[i-1].y - trails[i].y) * 0.3;
+            }
+            
+            // Apply positions to elements
+            trails.forEach(trail => {
+                trail.element.style.transform = `translate(${trail.x}px, ${trail.y}px)`;
+                trail.element.style.opacity = '1';
+            });
+        });
+
+        document.addEventListener('mouseout', () => {
+            trails.forEach(trail => {
+                trail.element.style.opacity = '0';
+            });
+        });
+
+        // Form Validation
+        const bookingForm = document.getElementById('booking-form');
+        
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simple validation
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const package = document.getElementById('package').value;
+            const date = document.getElementById('date').value;
+            
+            if (name && email && phone && package && date) {
+                // In a real application, you would send this data to a server
+                alert('Thanks for booking your Y2K photoshoot! We\'ll contact you soon to confirm your appointment.');
+                bookingForm.reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+
+        // Add Y2K decorative elements randomly
+        function addRandomDecorations() {
+            const decorations = ['star', 'butterfly', 'heart'];
+            const container = document.body;
+            
+            for (let i = 0; i < 10; i++) {
+                const decoration = document.createElement('div');
+                const type = decorations[Math.floor(Math.random() * decorations.length)];
+                decoration.className = type;
+                decoration.style.top = `${Math.random() * 100}%`;
+                decoration.style.left = `${Math.random() * 100}%`;
+                decoration.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(decoration);
+            }
+        }
+
+        addRandomDecorations();
+    </script>
+</body>
+</html>

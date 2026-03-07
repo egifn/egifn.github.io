@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Booking dan Manajemen Jadwal</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --text-color: #333;
+            --bg-color: #f5f7fa;
+            --card-bg: #fff;
+            --border-color: #e0e0e0;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --primary-color: #3a5a80;
+            --secondary-color: #0d4c73;
+            --accent-color: #0288d1;
+            --text-color: #f5f5f5;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .user-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        nav {
+            margin-bottom: 30px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        nav li {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav li:hover {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        nav li.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Calendar Styles */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .calendar-header button:hover {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .calendar-day:hover {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        .calendar-day.today {
+            background-color: rgba(79, 195, 247, 0.2);
+            border: 2px solid var(--accent-color);
+        }
+
+        .calendar-day.has-events::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+        }
+
+        .calendar-day.other-month {
+            color: #aaa;
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Schedule List Styles */
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .schedule-list,
+        .admin-bookings {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .schedule-item,
+        .booking-item {
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .schedule-info h3,
+        .booking-info h3 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .schedule-actions,
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: var(--warning-color);
+        }
+
+        .status-confirmed {
+            background-color: rgba(33, 150, 243, 0.2);
+            color: var(--accent-color);
+        }
+
+        .status-completed {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-canceled {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger-color);
+        }
+
+        /* Admin Styles */
+        .admin-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .stat-card p {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: #777;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+            }
+
+            nav li {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+                min-width: 120px;
+            }
+
+            .admin-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .schedule-item,
+            .booking-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .schedule-actions,
+            .booking-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-day {
+                font-size: 0.8rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistem Booking dan Manajemen Jadwal</h1>
+            <div class="user-controls">
+                <button id="loginBtn" class="btn"><i class="fas fa-user"></i> Login</button>
+                <button id="darkModeToggle" class="btn"><i class="fas fa-moon"></i></button>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li class="active" data-tab="calendar"><i class="fas fa-calendar-alt"></i> Kalender</li>
+                <li data-tab="booking"><i class="fas fa-book"></i> Booking</li>
+                <li data-tab="schedule"><i class="fas fa-clock"></i> Jadwal</li>
+                <li data-tab="admin" id="adminTab" style="display: none;"><i class="fas fa-cog"></i> Admin</li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- Calendar Tab -->
+            <section id="calendar" class="tab-content active">
+                <div class="calendar-header">
+                    <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                    <h2 id="currentMonth">Mei 2025</h2>
+                    <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="weekdays">
+                    <div>Min</div>
+                    <div>Sen</div>
+                    <div>Sel</div>
+                    <div>Rab</div>
+                    <div>Kam</div>
+                    <div>Jum</div>
+                    <div>Sab</div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar days will be generated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Booking Tab -->
+            <section id="booking" class="tab-content">
+                <h2>Buat Booking Baru</h2>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="name">Nama:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Nomor Telepon:</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Tanggal:</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Waktu:</label>
+                        <select id="time" required>
+                            <option value="">Pilih Waktu</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Layanan:</label>
+                        <select id="service" required>
+                            <option value="">Pilih Layanan</option>
+                            <option value="service1">Konsultasi</option>
+                            <option value="service2">Perawatan</option>
+                            <option value="service3">Pemeriksaan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Catatan:</label>
+                        <textarea id="notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Buat Booking</button>
+                </form>
+            </section>
+
+            <!-- Schedule Tab -->
+            <section id="schedule" class="tab-content">
+                <h2>Jadwal Anda</h2>
+                <div class="filter-controls">
+                    <input type="text" id="scheduleSearch" placeholder="Cari...">
+                    <select id="scheduleFilter">
+                        <option value="all">Semua</option>
+                        <option value="upcoming">Akan Datang</option>
+                        <option value="past">Selesai</option>
+                        <option value="canceled">Dibatalkan</option>
+                    </select>
+                </div>
+                <div class="schedule-list" id="scheduleList">
+                    <!-- Schedule items will be generated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Admin Tab -->
+            <section id="admin" class="tab-content">
+                <h2>Panel Admin</h2>
+                <div class="admin-controls">
+                    <button id="exportData" class="btn"><i class="fas fa-download"></i> Export Data</button>
+                    <button id="settingsBtn" class="btn"><i class="fas fa-cog"></i> Pengaturan</button>
+                </div>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h3>Total Booking</h3>
+                        <p id="totalBookings">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Hari Ini</h3>
+                        <p id="todayBookings">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Minggu Ini</h3>
+                        <p id="weekBookings">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Dibatalkan</h3>
+                        <p id="canceledBookings">0</p>
+                    </div>
+                </div>
+                <h3>Semua Booking</h3>
+                <div class="filter-controls">
+                    <input type="text" id="adminSearch" placeholder="Cari...">
+                    <select id="adminFilter">
+                        <option value="all">Semua</option>
+                        <option value="pending">Menunggu</option>
+                        <option value="confirmed">Dikonfirmasi</option>
+                        <option value="completed">Selesai</option>
+                        <option value="canceled">Dibatalkan</option>
+                    </select>
+                </div>
+                <div class="admin-bookings" id="adminBookings">
+                    <!-- Admin booking items will be generated by JavaScript -->
+                </div>
+            </section>
+        </main>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Sistem Booking dan Manajemen Jadwal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize the application
+            initApp();
+
+            // Set up event listeners
+            setupEventListeners();
+
+            // Generate calendar for current month
+            generateCalendar();
+
+            // Load sample data
+            loadSampleData();
+        });
+
+        // Global variables
+        let currentDate = new Date();
+        let bookings = [];
+        let isAdmin = false;
+
+        // Initialize the application
+        function initApp() {
+            // Check if dark mode is enabled in localStorage
+            if (localStorage.getItem('darkMode') === 'enabled') {
+                document.body.classList.add('dark-mode');
+            }
+
+            // For demo purposes, we'll add an admin login option
+            // In a real application, this would be handled with proper authentication
+            const adminPassword = 'admin123';
+
+            // Check if admin is already logged in
+            if (localStorage.getItem('isAdmin') === 'true') {
+                isAdmin = true;
+                document.getElementById('adminTab').style.display = 'block';
+            }
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Tab navigation
+            const tabLinks = document.querySelectorAll('nav li');
+            tabLinks.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const tabId = this.getAttribute('data-tab');
+
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // Remove active class from all tabs
+                    tabLinks.forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+
+                    // Show the selected tab content and mark tab as active
+                    document.getElementById(tabId).classList.add('active');
+                    this.classList.add('active');
+                });
+            });
+
+            // Calendar navigation
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                generateCalendar();
+            });
+
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                generateCalendar();
+            });
+
+            // Booking form submission
+            document.getElementById('bookingForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                createBooking();
+            });
+
+            // Login button
+            document.getElementById('loginBtn').addEventListener('click', function () {
+                if (isAdmin) {
+                    // Logout
+                    isAdmin = false;
+                    localStorage.removeItem('isAdmin');
+                    document.getElementById('adminTab').style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-user"></i> Login';
+
+                    // Switch to calendar tab if currently on admin tab
+                    if (document.getElementById('admin').classList.contains('active')) {
+                        document.querySelector('nav li[data-tab="calendar"]').click();
+                    }
+                } else {
+                    // Show login modal
+                    showModal(`
+                <h2>Admin Login</h2>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password">
+                </div>
+                <button id="loginSubmit" class="btn btn-primary">Login</button>
+            `);
+
+                    // Add event listener to login submit button
+                    document.getElementById('loginSubmit').addEventListener('click', function () {
+                        const password = document.getElementById('password').value;
+                        if (password ===
+                            'admin123') { // In a real app, this would be a secure authentication
+                            isAdmin = true;
+                            localStorage.setItem('isAdmin', 'true');
+                            document.getElementById('adminTab').style.display = 'block';
+                            document.getElementById('loginBtn').innerHTML =
+                                '<i class="fas fa-sign-out-alt"></i> Logout';
+                            closeModal();
+                        } else {
+                            alert('Password salah!');
+                        }
+                    });
+                }
+            });
+
+            // Dark mode toggle
+            document.getElementById('darkModeToggle').addEventListener('click', function () {
+                document.body.classList.toggle('dark-mode');
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                    this.innerHTML = '<i class="fas fa-sun"></i>';
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                    this.innerHTML = '<i class="fas fa-moon"></i>';
+                }
+            });
+
+            // Initialize dark mode button icon
+            if (document.body.classList.contains('dark-mode')) {
+                document.getElementById('darkModeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            // Close modal when clicking on X or outside the modal
+            document.querySelector('.close').addEventListener('click', closeModal);
+            window.addEventListener('click', function (e) {
+                if (e.target === document.getElementById('modal')) {
+                    closeModal();
+                }
+            });
+
+            // Schedule filter
+            document.getElementById('scheduleFilter').addEventListener('change', filterSchedule);
+            document.getElementById('scheduleSearch').addEventListener('input', filterSchedule);
+
+            // Admin filter
+            document.getElementById('adminFilter').addEventListener('change', filterAdminBookings);
+            document.getElementById('adminSearch').addEventListener('input', filterAdminBookings);
+
+            // Export data button
+            document.getElementById('exportData').addEventListener('click', exportData);
+
+            // Settings button
+            document.getElementById('settingsBtn').addEventListener('click', showSettings);
+        }
+
+        // Generate calendar for the current month
+        function generateCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            // Update the current month display
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
+                'Oktober', 'November', 'Desember'
+            ];
+            document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+
+            // Get the first day of the month
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+
+            // Get the day of the week for the first day (0 = Sunday, 1 = Monday, etc.)
+            let startingDay = firstDay.getDay();
+
+            // Calculate the number of days in the previous month
+            const prevMonthLastDay = new Date(year, month, 0).getDate();
+
+            // Clear the calendar grid
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            // Add days from the previous month
+            for (let i = startingDay - 1; i >= 0; i--) {
+                const day = prevMonthLastDay - i;
+                const dayElement = createDayElement(day, 'other-month');
+                calendarGrid.appendChild(dayElement);
+            }
+
+            // Add days for the current month
+            const today = new Date();
+            for (let i = 1; i <= lastDay.getDate(); i++) {
+                let classes = '';
+
+                // Check if this day is today
+                if (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
+                    classes = 'today';
+                }
+
+                // Check if this day has events
+                const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                if (bookings.some(booking => booking.date === dateString)) {
+                    classes += ' has-events';
+                }
+
+                const dayElement = createDayElement(i, classes);
+
+                // Add click event to show bookings for this day
+                dayElement.addEventListener('click', function () {
+                    const clickedDate = new Date(year, month, i);
+                    showBookingsForDate(clickedDate);
+                });
+
+                calendarGrid.appendChild(dayElement);
+            }
+
+            // Add days for the next month to fill the grid
+            const totalCells = 42; // 6 rows of 7 days
+            const daysFromCurrentMonth = lastDay.getDate() + startingDay;
+            const daysFromNextMonth = totalCells - daysFromCurrentMonth;
+
+            for (let i = 1; i <= daysFromNextMonth; i++) {
+                const dayElement = createDayElement(i, 'other-month');
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        // Create a day element for the calendar
+        function createDayElement(day, classes = '') {
+            const dayElement = document.createElement('div');
+            dayElement.className = `calendar-day ${classes}`;
+            dayElement.textContent = day;
+            return dayElement;
+        }
+
+        // Show bookings for a specific date
+        function showBookingsForDate(date) {
+            const dateString = formatDate(date);
+            const dayBookings = bookings.filter(booking => booking.date === dateString);
+
+            let modalContent = `
+        <h2>Booking untuk ${date.getDate()} ${getMonthName(date.getMonth())} ${date.getFullYear()}</h2>
+    `;
+
+            if (dayBookings.length === 0) {
+                modalContent += `<p>Tidak ada booking untuk tanggal ini.</p>`;
+                if (isAdmin) {
+                    modalContent += `
+                <button id="addBookingBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tambah Booking
+                </button>
+            `;
+                }
+            } else {
+                modalContent += `<div class="schedule-list">`;
+                dayBookings.forEach(booking => {
+                    modalContent += `
+                <div class="schedule-item">
+                    <div class="schedule-info">
+                        <h3>${booking.service}</h3>
+                        <p>${booking.time} - ${booking.name}</p>
+                        <span class="status status-${booking.status.toLowerCase()}">${getStatusText(booking.status)}</span>
+                    </div>
+                    <div class="schedule-actions">
+                        <button class="btn" onclick="viewBookingDetails('${booking.id}')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        ${isAdmin ? `
+                            <button class="btn" onclick="editBooking('${booking.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn" onclick="deleteBooking('${booking.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+                });
+                modalContent += `</div>`;
+
+                if (isAdmin) {
+                    modalContent += `
+                <button id="addBookingBtn" class="btn btn-primary" style="margin-top: 20px;">
+                    <i class="fas fa-plus"></i> Tambah Booking
+                </button>
+            `;
+                }
+            }
+
+            showModal(modalContent);
+
+            // Add event listener to add booking button
+            const addBookingBtn = document.getElementById('addBookingBtn');
+            if (addBookingBtn) {
+                addBookingBtn.addEventListener('click', function () {
+                    document.querySelector('nav li[data-tab="booking"]').click();
+                    document.getElementById('date').value = dateString;
+                });
+            }
+        }
+
+        // Create a new booking
+        function createBooking() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const service = document.getElementById('service').options[document.getElementById('service').selectedIndex]
+                .text;
+            const notes = document.getElementById('notes').value;
+
+            const booking = {
+                id: generateId(),
+                name,
+                email,
+                phone,
+                date,
+                time,
+                service,
+                notes,
+                status: 'Pending',
+                createdAt: new Date().toISOString()
+            };
+
+            bookings.push(booking);
+
+            // Save to localStorage (in a real app, this would be saved to a database)
+            saveBookings();
+
+            // Reset form
+            document.getElementById('bookingForm').reset();
+
+            // Show success message
+            alert('Booking berhasil dibuat!');
+
+            // Update calendar and schedule
+            generateCalendar();
+            updateScheduleList();
+            updateAdminBookings();
+            updateStats();
+        }
+
+        // Generate a unique ID
+        function generateId() {
+            return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        }
+
+        // Save bookings to localStorage
+        function saveBookings() {
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+        }
+
+        // Load bookings from localStorage
+        function loadBookings() {
+            const savedBookings = localStorage.getItem('bookings');
+            if (savedBookings) {
+                bookings = JSON.parse(savedBookings);
+            }
+        }
+
+        // Update the schedule list
+        function updateScheduleList() {
+            const scheduleList = document.getElementById('scheduleList');
+            scheduleList.innerHTML = '';
+
+            const filteredBookings = filterBookings();
+
+            if (filteredBookings.length === 0) {
+                scheduleList.innerHTML = '<p>Tidak ada jadwal yang ditemukan.</p>';
+                return;
+            }
+
+            filteredBookings.forEach(booking => {
+                const scheduleItem = document.createElement('div');
+                scheduleItem.className = 'schedule-item';
+                scheduleItem.innerHTML = `
+            <div class="schedule-info">
+                <h3>${booking.service}</h3>
+                <p>${formatDateForDisplay(booking.date)} - ${booking.time}</p>
+                <span class="status status-${booking.status.toLowerCase()}">${getStatusText(booking.status)}</span>
+            </div>
+            <div class="schedule-actions">
+                <button class="btn view-booking" data-id="${booking.id}">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn cancel-booking" data-id="${booking.id}">
+                    <i class="fas fa-times"></i> Batalkan
+                </button>
+            </div>
+        `;
+
+                scheduleList.appendChild(scheduleItem);
+            });
+
+            // Add event listeners to buttons
+            document.querySelectorAll('.view-booking').forEach(button => {
+                button.addEventListener('click', function () {
+                    const bookingId = this.getAttribute('data-id');
+                    viewBookingDetails(bookingId);
+                });
+            });
+
+            document.querySelectorAll('.cancel-booking').forEach(button => {
+                button.addEventListener('click', function () {
+                    const bookingId = this.getAttribute('data-id');
+                    cancelBooking(bookingId);
+                });
+            });
+        }
+
+        // Filter bookings based on search and filter
+        function filterBookings() {
+            const searchTerm = document.getElementById('scheduleSearch').value.toLowerCase();
+            const filterValue = document.getElementById('scheduleFilter').value;
+
+            return bookings.filter(booking => {
+                // Filter by status
+                if (filterValue === 'upcoming' && booking.status !== 'Pending' && booking.status !==
+                    'Confirmed') {
+                    return false;
+                }
+                if (filterValue === 'past' && booking.status !== 'Completed') {
+                    return false;
+                }
+                if (filterValue === 'canceled' && booking.status !== 'Canceled') {
+                    return false;
+                }
+
+                // Filter by search term
+                const searchString = `${booking.service} ${booking.date} ${booking.time} ${booking.name}`
+                    .toLowerCase();
+                return searchString.includes(searchTerm);
+            });
+        }
+
+        // Filter schedule based on search and filter
+        function filterSchedule() {
+            updateScheduleList();
+        }
+
+        // Update admin bookings list
+        function updateAdminBookings() {
+            if (!isAdmin) return;
+
+            const adminBookings = document.getElementById('adminBookings');
+            adminBookings.innerHTML = '';
+
+            const filteredBookings = filterAdminBookingsData();
+
+            if (filteredBookings.length === 0) {
+                adminBookings.innerHTML = '<p>Tidak ada booking yang ditemukan.</p>';
+                return;
+            }
+
+            filteredBookings.forEach(booking => {
+                const bookingItem = document.createElement('div');
+                bookingItem.className = 'booking-item';
+                bookingItem.innerHTML = `
+            <div class="booking-info">
+                <h3>${booking.service}</h3>
+                <p>${formatDateForDisplay(booking.date)} - ${booking.time}</p>
+                <p>${booking.name} - ${booking.phone}</p>
+                <span class="status status-${booking.status.toLowerCase()}">${getStatusText(booking.status)}</span>
+            </div>
+            <div class="booking-actions">
+                <button class="btn admin-view-booking" data-id="${booking.id}">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn admin-edit-booking" data-id="${booking.id}">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn admin-delete-booking" data-id="${booking.id}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
+
+                adminBookings.appendChild(bookingItem);
+            });
+
+            // Add event listeners to buttons
+            document.querySelectorAll('.admin-view-booking').forEach(button => {
+                button.addEventListener('click', function () {
+                    const bookingId = this.getAttribute('data-id');
+                    viewBookingDetails(bookingId);
+                });
+            });
+
+            document.querySelectorAll('.admin-edit-booking').forEach(button => {
+                button.addEventListener('click', function () {
+                    const bookingId = this.getAttribute('data-id');
+                    editBooking(bookingId);
+                });
+            });
+
+            document.querySelectorAll('.admin-delete-booking').forEach(button => {
+                button.addEventListener('click', function () {
+                    const bookingId = this.getAttribute('data-id');
+                    deleteBooking(bookingId);
+                });
+            });
+        }
+
+        // Filter admin bookings based on search and filter
+        function filterAdminBookingsData() {
+            const searchTerm = document.getElementById('adminSearch').value.toLowerCase();
+            const filterValue = document.getElementById('adminFilter').value;
+
+            return bookings.filter(booking => {
+                // Filter by status
+                if (filterValue === 'pending' && booking.status !== 'Pending') {
+                    return false;
+                }
+                if (filterValue === 'confirmed' && booking.status !== 'Confirmed') {
+                    return false;
+                }
+                if (filterValue === 'completed' && booking.status !== 'Completed') {
+                    return false;
+                }
+                if (filterValue === 'canceled' && booking.status !== 'Canceled') {
+                    return false;
+                }
+
+                // Filter by search term
+                const searchString =
+                    `${booking.service} ${booking.date} ${booking.time} ${booking.name} ${booking.email} ${booking.phone}`
+                    .toLowerCase();
+                return searchString.includes(searchTerm);
+            });
+        }
+
+        // Filter admin bookings
+        function filterAdminBookings() {
+            updateAdminBookings();
+        }
+
+        // View booking details
+        function viewBookingDetails(bookingId) {
+            const booking = bookings.find(b => b.id === bookingId);
+            if (!booking) return;
+
+            let modalContent = `
+        <h2>Detail Booking</h2>
+        <div class="booking-details">
+            <p><strong>Layanan:</strong> ${booking.service}</p>
+            <p><strong>Tanggal:</strong> ${formatDateForDisplay(booking.date)}</p>
+            <p><strong>Waktu:</strong> ${booking.time}</p>
+            <p><strong>Nama:</strong> ${booking.name}</p>
+            <p><strong>Email:</strong> ${booking.email}</p>
+            <p><strong>Telepon:</strong> ${booking.phone}</p>
+            <p><strong>Status:</strong> <span class="status status-${booking.status.toLowerCase()}">${getStatusText(booking.status)}</span></p>
+            <p><strong>Catatan:</strong> ${booking.notes || '-'}</p>
+        </div>
+    `;
+
+            if (isAdmin) {
+                modalContent += `
+            <div class="admin-booking-actions" style="margin-top: 20px;">
+                <button id="confirmBookingBtn" class="btn" ${booking.status === 'Confirmed' ? 'disabled' : ''}>
+                    <i class="fas fa-check"></i> Konfirmasi
+                </button>
+                <button id="completeBookingBtn" class="btn" ${booking.status === 'Completed' ? 'disabled' : ''}>
+                    <i class="fas fa-check-double"></i> Selesai
+                </button>
+                <button id="cancelBookingBtn" class="btn" ${booking.status === 'Canceled' ? 'disabled' : ''}>
+                    <i class="fas fa-times"></i> Batalkan
+                </button>
+                <button id="editBookingBtn" class="btn">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button id="deleteBookingBtn" class="btn">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            </div>
+        `;
+            } else {
+                modalContent += `
+            <div class="booking-actions" style="margin-top: 20px;">
+                <button id="cancelBookingBtn" class="btn" ${booking.status === 'Canceled' ? 'disabled' : ''}>
+                    <i class="fas fa-times"></i> Batalkan Booking
+                </button>
+            </div>
+        `;
+            }
+
+            showModal(modalContent);
+
+            // Add event listeners to buttons
+            if (isAdmin) {
+                document.getElementById('confirmBookingBtn').addEventListener('click', function () {
+                    updateBookingStatus(bookingId, 'Confirmed');
+                    closeModal();
+                });
+
+                document.getElementById('completeBookingBtn').addEventListener('click', function () {
+                    updateBookingStatus(bookingId, 'Completed');
+                    closeModal();
+                });
+
+                document.getElementById('editBookingBtn').addEventListener('click', function () {
+                    editBooking(bookingId);
+                });
+
+                document.getElementById('deleteBookingBtn').addEventListener('click', function () {
+                    deleteBooking(bookingId);
+                    closeModal();
+                });
+            }
+
+            document.getElementById('cancelBookingBtn').addEventListener('click', function () {
+                cancelBooking(bookingId);
+                closeModal();
+            });
+        }
+
+        // Update booking status
+        function updateBookingStatus(bookingId, status) {
+            const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+            if (bookingIndex === -1) return;
+
+            bookings[bookingIndex].status = status;
+            saveBookings();
+
+            // Update UI
+            generateCalendar();
+            updateScheduleList();
+            updateAdminBookings();
+            updateStats();
+        }
+
+        // Cancel booking
+        function cancelBooking(bookingId) {
+            if (confirm('Apakah Anda yakin ingin membatalkan booking ini?')) {
+                updateBookingStatus(bookingId, 'Canceled');
+            }
+        }
+
+        // Edit booking
+        function editBooking(bookingId) {
+            const booking = bookings.find(b => b.id === bookingId);
+            if (!booking) return;
+
+            let modalContent = `
+        <h2>Edit Booking</h2>
+        <form id="editBookingForm">
+            <input type="hidden" id="editBookingId" value="${booking.id}">
+            <div class="form-group">
+                <label for="editName">Nama:</label>
+                <input type="text" id="editName" value="${booking.name}" required>
+            </div>
+            <div class="form-group">
+                <label for="editEmail">Email:</label>
+                <input type="email" id="editEmail" value="${booking.email}" required>
+            </div>
+            <div class="form-group">
+                <label for="editPhone">Nomor Telepon:</label>
+                <input type="tel" id="editPhone" value="${booking.phone}" required>
+            </div>
+            <div class="form-group">
+                <label for="editDate">Tanggal:</label>
+                <input type="date" id="editDate" value="${booking.date}" required>
+            </div>
+            <div class="form-group">
+                <label for="editTime">Waktu:</label>
+                <select id="editTime" required>
+                    <option value="09:00" ${booking.time === '09:00' ? 'selected' : ''}>09:00</option>
+                    <option value="10:00" ${booking.time === '10:00' ? 'selected' : ''}>10:00</option>
+                    <option value="11:00" ${booking.time === '11:00' ? 'selected' : ''}>11:00</option>
+                    <option value="13:00" ${booking.time === '13:00' ? 'selected' : ''}>13:00</option>
+                    <option value="14:00" ${booking.time === '14:00' ? 'selected' : ''}>14:00</option>
+                    <option value="15:00" ${booking.time === '15:00' ? 'selected' : ''}>15:00</option>
+                    <option value="16:00" ${booking.time === '16:00' ? 'selected' : ''}>16:00</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editService">Layanan:</label>
+                <select id="editService" required>
+                    <option value="Konsultasi" ${booking.service === 'Konsultasi' ? 'selected' : ''}>Konsultasi</option>
+                    <option value="Perawatan" ${booking.service === 'Perawatan' ? 'selected' : ''}>Perawatan</option>
+                    <option value="Pemeriksaan" ${booking.service === 'Pemeriksaan' ? 'selected' : ''}>Pemeriksaan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editStatus">Status:</label>
+                <select id="editStatus" required>
+                    <option value="Pending" ${booking.status === 'Pending' ? 'selected' : ''}>Menunggu</option>
+                    <option value="Confirmed" ${booking.status === 'Confirmed' ? 'selected' : ''}>Dikonfirmasi</option>
+                    <option value="Completed" ${booking.status === 'Completed' ? 'selected' : ''}>Selesai</option>
+                    <option value="Canceled" ${booking.status === 'Canceled' ? 'selected' : ''}>Dibatalkan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="editNotes">Catatan:</label>
+                <textarea id="editNotes" rows="3">${booking.notes || ''}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </form>
+    `;
+
+            showModal(modalContent);
+
+            // Add event listener to form submission
+            document.getElementById('editBookingForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                saveEditedBooking();
+            });
+        }
+
+        // Save edited booking
+        function saveEditedBooking() {
+            const bookingId = document.getElementById('editBookingId').value;
+            const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+            if (bookingIndex === -1) return;
+
+            bookings[bookingIndex] = {
+                ...bookings[bookingIndex],
+                name: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                phone: document.getElementById('editPhone').value,
+                date: document.getElementById('editDate').value,
+                time: document.getElementById('editTime').value,
+                service: document.getElementById('editService').value,
+                status: document.getElementById('editStatus').value,
+                notes: document.getElementById('editNotes').value
+            };
+
+            saveBookings();
+
+            // Update UI
+            generateCalendar();
+            updateScheduleList();
+            updateAdminBookings();
+            updateStats();
+
+            closeModal();
+        }
+
+        // Delete booking
+        function deleteBooking(bookingId) {
+            if (confirm('Apakah Anda yakin ingin menghapus booking ini?')) {
+                const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+                if (bookingIndex === -1) return;
+
+                bookings.splice(bookingIndex, 1);
+                saveBookings();
+
+                // Update UI
+                generateCalendar();
+                updateScheduleList();
+                updateAdminBookings();
+                updateStats();
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            if (!isAdmin) return;
+
+            // Total bookings
+            
+            document.getElementById('totalBookings').textContent = bookings.length;
+
+            // Today's bookings
+            const today = formatDate(new Date());
+            const todayBookings = bookings.filter(booking => booking.date === today);
+            document.getElementById('todayBookings').textContent = todayBookings.length;
+
+            // This week's bookings
+            const weekStart = new Date();
+            weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekEnd.getDate() + 6);
+
+            const weekBookings = bookings.filter(booking => {
+                const bookingDate = new Date(booking.date);
+                return bookingDate >= weekStart && bookingDate <= weekEnd;
+            });
+            document.getElementById('weekBookings').textContent = weekBookings.length;
+
+            // Canceled bookings
+            const canceledBookings = bookings.filter(booking => booking.status === 'Canceled');
+            document.getElementById('canceledBookings').textContent = canceledBookings.length;
+        }
+
+        // Export data
+        function exportData() {
+            const dataStr = JSON.stringify(bookings, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+            const exportFileDefaultName = `bookings-${formatDate(new Date())}.json`;
+
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        // Show settings
+        function showSettings() {
+            let modalContent = `
+        <h2>Pengaturan</h2>
+        <div class="form-group">
+            <label for="businessHours">Jam Operasional:</label>
+            <select id="businessHours" multiple>
+                <option value="09:00" selected>09:00</option>
+                <option value="10:00" selected>10:00</option>
+                <option value="11:00" selected>11:00</option>
+                <option value="13:00" selected>13:00</option>
+                <option value="14:00" selected>14:00</option>
+                <option value="15:00" selected>15:00</option>
+                <option value="16:00" selected>16:00</option>
+            </select>
+            <small>Tahan Ctrl untuk memilih beberapa jam</small>
+        </div>
+        <div class="form-group">
+            <label for="services">Layanan:</label>
+            <textarea id="services" rows="3">Konsultasi
+Perawatan
+Pemeriksaan</textarea>
+            <small>Satu layanan per baris</small>
+        </div>
+        <button id="saveSettingsBtn" class="btn btn-primary">Simpan Pengaturan</button>
+    `;
+
+            showModal(modalContent);
+
+            // Add event listener to save settings button
+            document.getElementById('saveSettingsBtn').addEventListener('click', function () {
+                // In a real app, this would save the settings to a database
+                alert('Pengaturan berhasil disimpan!');
+                closeModal();
+            });
+        }
+
+        // Show modal
+        function showModal(content) {
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Format date for display
+        function formatDateForDisplay(dateString) {
+            const date = new Date(dateString);
+            return `${date.getDate()} ${getMonthName(date.getMonth())} ${date.getFullYear()}`;
+        }
+
+        // Format date as YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Get month name
+        function getMonthName(monthIndex) {
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
+                'Oktober', 'November', 'Desember'
+            ];
+            return monthNames[monthIndex];
+        }
+
+        // Get status text
+        function getStatusText(status) {
+            switch (status) {
+                case 'Pending':
+                    return 'Menunggu';
+                case 'Confirmed':
+                    return 'Dikonfirmasi';
+                case 'Completed':
+                    return 'Selesai';
+                case 'Canceled':
+                    return 'Dibatalkan';
+                default:
+                    return status;
+            }
+        }
+
+        // Load sample data for demo purposes
+        function loadSampleData() {
+            // Check if bookings already exist in localStorage
+            loadBookings();
+
+            // If no bookings exist, add sample data
+            if (bookings.length === 0) {
+                const today = new Date();
+                const tomorrow = new Date();
+                tomorrow.setDate(today.getDate() + 1);
+                const nextWeek = new Date();
+                nextWeek.setDate(today.getDate() + 7);
+
+                bookings = [{
+                        id: generateId(),
+                        name: 'Budi Santoso',
+                        email: 'budi@example.com',
+                        phone: '081234567890',
+                        date: formatDate(today),
+                        time: '09:00',
+                        service: 'Konsultasi',
+                        notes: 'Konsultasi pertama',
+                        status: 'Confirmed',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: generateId(),
+                        name: 'Siti Rahayu',
+                        email: 'siti@example.com',
+                        phone: '081234567891',
+                        date: formatDate(today),
+                        time: '13:00',
+                        service: 'Perawatan',
+                        notes: '',
+                        status: 'Completed',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: generateId(),
+                        name: 'Ahmad Hidayat',
+                        email: 'ahmad@example.com',
+                        phone: '081234567892',
+                        date: formatDate(tomorrow),
+                        time: '10:00',
+                        service: 'Pemeriksaan',
+                        notes: 'Alergi obat tertentu',
+                        status: 'Pending',
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: generateId(),
+                        name: 'Dewi Lestari',
+                        email: 'dewi@example.com',
+                        phone: '081234567893',
+                        date: formatDate(nextWeek),
+                        time: '14:00',
+                        service: 'Konsultasi',
+                        notes: '',
+                        status: 'Canceled',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+
+                saveBookings();
+            }
+
+            // Update UI
+            generateCalendar();
+            updateScheduleList();
+            updateAdminBookings();
+            updateStats();
+        }
+    </script>
+</body>
+
+</html>

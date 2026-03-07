@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Studio Foto</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        /* Variabel warna */
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8338ec;
+            --success-color: #06d6a0;
+            --warning-color: #ffbe0b;
+            --danger-color: #ef476f;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        /* Navigasi */
+        .navbar .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        /* Tabel Jadwal */
+        .schedule-table {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .schedule-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .schedule-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        /* Kolom Waktu */
+        .time-slot {
+            font-weight: bold;
+            background-color: #f8f9fa;
+            width: 100px;
+            text-align: center;
+        }
+
+        /* Header Tanggal */
+        .date-header {
+            min-width: 150px;
+            background-color: #f8f9fa;
+            font-weight: 600;
+            padding: 10px 5px;
+        }
+
+        .day-name {
+            font-weight: 500;
+            display: block;
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+            margin-top: 5px;
+        }
+
+        /* Highlight Hari Ini */
+        .date-header.today {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Sel Booking */
+        .booking-cell {
+            cursor: pointer;
+            height: 40px;
+            transition: background-color 0.2s;
+            min-width: 120px;
+        }
+
+        .booking-cell:hover {
+            background-color: #f0f0f0;
+        }
+
+        .booking-cell.booked {
+            background-color: rgba(58, 134, 255, 0.2);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .booking-cell.today {
+            background-color: rgba(58, 134, 255, 0.05);
+        }
+
+        /* Navigasi Bulan */
+        .month-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .month-nav button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-color);
+        }
+
+        .month-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <!-- Navigasi Atas -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Studio Foto Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#"><i class="bi bi-calendar-week"></i> Jadwal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-people"></i> Pelanggan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-camera"></i> Layanan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-graph-up"></i> Laporan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-gear"></i> Pengaturan</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Konten Utama -->
+        <div class="container-fluid p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Manajemen Jadwal</h2>
+                <button class="btn btn-primary" id="newBookingBtn">
+                    <i class="bi bi-plus-circle"></i> Booking Baru
+                </button>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <!-- Navigasi Bulan -->
+                    <div class="month-nav">
+                        <button id="prevWeek"><i class="bi bi-chevron-left"></i></button>
+                        <div class="month-title" id="currentMonth">MEI 2025</div>
+                        <button id="nextWeek"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                    
+                    <!-- Tabel Jadwal -->
+                    <div class="schedule-table">
+                        <table id="scheduleTable" class="table table-bordered">
+                            <!-- Tabel akan diisi oleh JavaScript -->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Booking -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Detail Booking</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form Booking Baru -->
+                    <div id="emptySlotContent">
+                        <p>Slot waktu ini tersedia. Apakah Anda ingin membuat booking baru?</p>
+                        <form id="newBookingForm">
+                            <div class="mb-3">
+                                <label for="customerName" class="form-label">Nama Pelanggan</label>
+                                <input type="text" class="form-control" id="customerName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="customerPhone" class="form-label">Nomor Telepon</label>
+                                <input type="tel" class="form-control" id="customerPhone" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="serviceType" class="form-label">Jenis Layanan</label>
+                                <select class="form-select" id="serviceType" required>
+                                    <option value="">Pilih layanan</option>
+                                    <option value="portrait">Foto Potret</option>
+                                    <option value="family">Foto Keluarga</option>
+                                    <option value="product">Foto Produk</option>
+                                    <option value="wedding">Foto Pernikahan</option>
+                                    <option value="event">Foto Acara</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookingNotes" class="form-label">Catatan</label>
+                                <textarea class="form-control" id="bookingNotes" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Detail Booking yang Sudah Ada -->
+                    <div id="bookedSlotContent" style="display: none;">
+                        <div class="mb-3">
+                            <h6>Informasi Pelanggan</h6>
+                            <p><strong>Nama:</strong> <span id="modalCustomerName"></span></p>
+                            <p><strong>Telepon:</strong> <span id="modalCustomerPhone"></span></p>
+                            <p><strong>Layanan:</strong> <span id="modalServiceType"></span></p>
+                            <p><strong>Tanggal:</strong> <span id="modalBookingDate"></span></p>
+                            <p><strong>Waktu:</strong> <span id="modalBookingTime"></span></p>
+                            <p><strong>Catatan:</strong> <span id="modalBookingNotes"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-danger" id="cancelBookingBtn" style="display: none;">Batalkan Booking</button>
+                    <button type="button" class="btn btn-primary" id="editBookingBtn" style="display: none;">Edit Booking</button>
+                    <button type="button" class="btn btn-success" id="saveBookingBtn">Buat Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Konfirmasi -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Pembatalan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin membatalkan booking ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                    <button type="button" class="btn btn-danger" id="confirmCancelBtn">Ya, Batalkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap 5.3 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // ===== DATA =====
+        
+        // Data tanggal
+        const hariIndonesia = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const bulanIndonesia = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
+        
+        // Tanggal saat ini
+        const tanggalHariIni = new Date();
+        
+        // Tanggal awal minggu yang ditampilkan (diatur ke hari Minggu dari minggu saat ini)
+        let tanggalAwalMinggu = new Date(tanggalHariIni);
+        tanggalAwalMinggu.setDate(tanggalHariIni.getDate() - tanggalHariIni.getDay());
+        
+        // Booking yang dipilih saat ini (untuk edit/hapus)
+        let bookingDipilih = null;
+        
+        // Data booking (contoh data)
+        let dataBooking = [
+            {
+                id: 1,
+                tanggal: '2025-05-02',
+                waktu: '09:00',
+                durasi: 60,
+                namaPelanggan: 'Budi Santoso',
+                telepon: '081234567890',
+                layanan: 'Foto Potret',
+                catatan: 'Foto profil LinkedIn'
+            },
+            {
+                id: 2,
+                tanggal: '2025-05-02',
+                waktu: '14:00',
+                durasi: 90,
+                namaPelanggan: 'Siti Rahayu',
+                telepon: '082345678901',
+                layanan: 'Foto Keluarga',
+                catatan: 'Keluarga 4 orang'
+            },
+            {
+                id: 3,
+                tanggal: '2025-05-05',
+                waktu: '10:00',
+                durasi: 120,
+                namaPelanggan: 'Ahmad Hidayat',
+                telepon: '083456789012',
+                layanan: 'Foto Produk',
+                catatan: 'Lini pakaian baru, 15 item'
+            },
+            {
+                id: 4,
+                tanggal: '2025-05-07',
+                waktu: '13:00',
+                durasi: 60,
+                namaPelanggan: 'Dewi Lestari',
+                telepon: '084567890123',
+                layanan: 'Foto Potret',
+                catatan: 'Foto wisuda'
+            },
+            {
+                id: 5,
+                tanggal: '2025-05-10',
+                waktu: '11:00',
+                durasi: 180,
+                namaPelanggan: 'Rudi Hartono',
+                telepon: '085678901234',
+                layanan: 'Foto Pernikahan',
+                catatan: 'Foto pre-wedding'
+            }
+        ];
+        
+        // ===== INISIALISASI =====
+        
+        // Inisialisasi modal
+        const modalBooking = new bootstrap.Modal(document.getElementById('bookingModal'));
+        const modalKonfirmasi = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        
+        // Menjalankan fungsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tampilkan bulan dan jadwal
+            updateTampilkanBulan();
+            buatTabelJadwal();
+            
+            // Event listener untuk navigasi minggu
+            document.getElementById('prevWeek').addEventListener('click', function() {
+                tanggalAwalMinggu.setDate(tanggalAwalMinggu.getDate() - 7);
+                updateTampilkanBulan();
+                buatTabelJadwal();
+            });
+            
+            document.getElementById('nextWeek').addEventListener('click', function() {
+                tanggalAwalMinggu.setDate(tanggalAwalMinggu.getDate() + 7);
+                updateTampilkanBulan();
+                buatTabelJadwal();
+            });
+            
+            // Event listener untuk tombol booking baru
+            document.getElementById('newBookingBtn').addEventListener('click', function() {
+                bukaModalBookingBaru();
+            });
+            
+            // Event listener untuk tombol simpan booking
+            document.getElementById('saveBookingBtn').addEventListener('click', function() {
+                simpanBooking();
+            });
+            
+            // Event listener untuk tombol edit booking
+            document.getElementById('editBookingBtn').addEventListener('click', function() {
+                bukaFormEdit();
+            });
+            
+            // Event listener untuk tombol batalkan booking
+            document.getElementById('cancelBookingBtn').addEventListener('click', function() {
+                modalKonfirmasi.show();
+            });
+            
+            // Event listener untuk konfirmasi pembatalan
+            document.getElementById('confirmCancelBtn').addEventListener('click', function() {
+                batalkanBooking();
+                modalKonfirmasi.hide();
+                modalBooking.hide();
+            });
+        });
+        
+        // ===== FUNGSI TAMPILAN =====
+        
+        // Update tampilan bulan
+        function updateTampilkanBulan() {
+            // Ambil bulan dari tanggal awal minggu
+            const bulan = bulanIndonesia[tanggalAwalMinggu.getMonth()];
+            const tahun = tanggalAwalMinggu.getFullYear();
+            
+            // Tampilkan bulan dan tahun
+            document.getElementById('currentMonth').textContent = `${bulan} ${tahun}`;
+        }
+        
+        // Buat tabel jadwal
+        function buatTabelJadwal() {
+            const tabel = document.getElementById('scheduleTable');
+            tabel.innerHTML = '';
+            
+            // Buat slot waktu
+            const slotWaktu = [];
+            for (let jam = 8; jam <= 17; jam++) {
+                slotWaktu.push(`${jam.toString().padStart(2, '0')}:00`);
+                if (jam < 17) {
+                    slotWaktu.push(`${jam.toString().padStart(2, '0')}:30`);
+                }
+            }
+            
+            // Buat baris header dengan hari
+            const barisHeader = document.createElement('tr');
+            const headerKosong = document.createElement('th');
+            barisHeader.appendChild(headerKosong);
+            
+            // Atur tanggal hari ini untuk highlight
+            const hariIni = new Date();
+            hariIni.setHours(0, 0, 0, 0);
+            
+            // Tambahkan 7 hari mulai dari tanggal awal minggu
+            for (let i = 0; i < 7; i++) {
+                const tanggalHari = new Date(tanggalAwalMinggu);
+                tanggalHari.setDate(tanggalAwalMinggu.getDate() + i);
+                
+                const headerHari = document.createElement('th');
+                headerHari.className = 'date-header';
+                
+                // Cek apakah ini hari ini
+                if (tanggalHari.getTime() === hariIni.getTime()) {
+                    headerHari.classList.add('today');
+                }
+                
+                // Format nama hari dan tanggal
+                const namaHari = hariIndonesia[tanggalHari.getDay()];
+                const tanggal = tanggalHari.getDate();
+                
+                // Buat elemen untuk nama hari
+                const spanNamaHari = document.createElement('span');
+                spanNamaHari.className = 'day-name';
+                spanNamaHari.textContent = namaHari;
+                
+                // Buat elemen untuk angka tanggal
+                const spanTanggal = document.createElement('span');
+                spanTanggal.className = 'day-number';
+                spanTanggal.textContent = tanggal;
+                
+                // Tambahkan ke header
+                headerHari.appendChild(spanNamaHari);
+                headerHari.appendChild(spanTanggal);
+                
+                barisHeader.appendChild(headerHari);
+            }
+            
+            tabel.appendChild(barisHeader);
+            
+            // Buat baris untuk setiap slot waktu
+            slotWaktu.forEach(waktu => {
+                const baris = document.createElement('tr');
+                
+                // Tambahkan sel slot waktu
+                const selWaktu = document.createElement('td');
+                selWaktu.textContent = waktu;
+                selWaktu.className = 'time-slot';
+                baris.appendChild(selWaktu);
+                
+                // Tambahkan sel booking untuk setiap hari
+                for (let i = 0; i < 7; i++) {
+                    const tanggalHari = new Date(tanggalAwalMinggu);
+                    tanggalHari.setDate(tanggalAwalMinggu.getDate() + i);
+                    
+                    const sel = document.createElement('td');
+                    sel.className = 'booking-cell';
+                    
+                    // Cek apakah ini hari ini
+                    if (tanggalHari.getTime() === hariIni.getTime()) {
+                        sel.classList.add('today');
+                    }
+                    
+                    // Format tanggal untuk perbandingan
+                    const strTanggal = formatTanggal(tanggalHari);
+                    
+                    // Cek apakah ada booking untuk tanggal dan waktu ini
+                    const booking = dataBooking.find(b => b.tanggal === strTanggal && b.waktu === waktu);
+                    
+                    if (booking) {
+                        sel.classList.add('booked');
+                        sel.textContent = booking.namaPelanggan.split(' ')[0]; // Tampilkan nama depan saja
+                        sel.dataset.bookingId = booking.id;
+                    }
+                    
+                    // Tambahkan atribut data untuk tanggal dan waktu
+                    sel.dataset.tanggal = strTanggal;
+                    sel.dataset.waktu = waktu;
+                    
+                    // Tambahkan event click untuk membuka modal
+                    sel.addEventListener('click', function() {
+                        bukaModalBooking(this);
+                    });
+                    
+                    baris.appendChild(sel);
+                }
+                
+                tabel.appendChild(baris);
+            });
+        }
+        
+        // ===== FUNGSI MODAL =====
+        
+        // Buka modal booking baru
+        function bukaModalBookingBaru() {
+            // Reset modal
+            document.getElementById('emptySlotContent').style.display = 'block';
+            document.getElementById('bookedSlotContent').style.display = 'none';
+            document.getElementById('saveBookingBtn').style.display = 'inline-block';
+            document.getElementById('editBookingBtn').style.display = 'none';
+            document.getElementById('cancelBookingBtn').style.display = 'none';
+            
+            // Reset form
+            document.getElementById('newBookingForm').reset();
+            
+            // Set judul modal
+            document.getElementById('bookingModalLabel').textContent = 'Booking Baru';
+            
+            // Tampilkan modal
+            modalBooking.show();
+        }
+        
+        // Buka modal booking
+        function bukaModalBooking(sel) {
+            const tanggal = sel.dataset.tanggal;
+            const waktu = sel.dataset.waktu;
+            const bookingId = sel.dataset.bookingId;
+            
+            // Reset modal
+            document.getElementById('emptySlotContent').style.display = 'none';
+            document.getElementById('bookedSlotContent').style.display = 'none';
+            document.getElementById('saveBookingBtn').style.display = 'none';
+            document.getElementById('editBookingBtn').style.display = 'none';
+            document.getElementById('cancelBookingBtn').style.display = 'none';
+            
+            // Format tanggal untuk tampilan
+            const tanggalTampil = formatTanggalIndonesia(new Date(tanggal));
+            
+            if (bookingId) {
+                // Booking yang sudah ada
+                const booking = dataBooking.find(b => b.id === parseInt(bookingId));
+                bookingDipilih = booking;
+                
+                document.getElementById('bookedSlotContent').style.display = 'block';
+                document.getElementById('editBookingBtn').style.display = 'inline-block';
+                document.getElementById('cancelBookingBtn').style.display = 'inline-block';
+                
+                // Isi detail booking
+                document.getElementById('modalCustomerName').textContent = booking.namaPelanggan;
+                document.getElementById('modalCustomerPhone').textContent = booking.telepon;
+                document.getElementById('modalServiceType').textContent = booking.layanan;
+                document.getElementById('modalBookingDate').textContent = tanggalTampil;
+                document.getElementById('modalBookingTime').textContent = booking.waktu;
+                document.getElementById('modalBookingNotes').textContent = booking.catatan || '-';
+                
+                document.getElementById('bookingModalLabel').textContent = 'Detail Booking';
+            } else {
+                // Booking baru
+                bookingDipilih = null;
+                
+                document.getElementById('emptySlotContent').style.display = 'block';
+                document.getElementById('saveBookingBtn').style.display = 'inline-block';
+                document.getElementById('saveBookingBtn').textContent = 'Buat Booking';
+                
+                // Reset form
+                document.getElementById('newBookingForm').reset();
+                
+                document.getElementById('bookingModalLabel').textContent = 'Booking Baru';
+            }
+            
+            // Simpan tanggal dan waktu yang dipilih
+            modalBooking.tanggalDipilih = tanggal;
+            modalBooking.waktuDipilih = waktu;
+            
+            // Tampilkan modal
+            modalBooking.show();
+        }
+        
+        // Buka form edit
+        function bukaFormEdit() {
+            // Ganti ke mode edit
+            document.getElementById('bookedSlotContent').style.display = 'none';
+            document.getElementById('emptySlotContent').style.display = 'block';
+            document.getElementById('saveBookingBtn').style.display = 'inline-block';
+            document.getElementById('editBookingBtn').style.display = 'none';
+            document.getElementById('cancelBookingBtn').style.display = 'none';
+            
+            // Isi form dengan data booking
+            document.getElementById('customerName').value = bookingDipilih.namaPelanggan;
+            document.getElementById('customerPhone').value = bookingDipilih.telepon;
+            
+            // Pilih jenis layanan yang sesuai
+            const selectLayanan = document.getElementById('serviceType');
+            for (let i = 0; i < selectLayanan.options.length; i++) {
+                if (selectLayanan.options[i].text === bookingDipilih.layanan) {
+                    selectLayanan.selectedIndex = i;
+                    break;
+                }
+            }
+            
+            document.getElementById('bookingNotes').value = bookingDipilih.catatan || '';
+            
+            // Ubah teks tombol simpan
+            document.getElementById('saveBookingBtn').textContent = 'Perbarui Booking';
+        }
+        
+        // ===== FUNGSI BOOKING =====
+        
+        // Simpan booking
+        function simpanBooking() {
+            const namaPelanggan = document.getElementById('customerName').value;
+            const telepon = document.getElementById('customerPhone').value;
+            const selectLayanan = document.getElementById('serviceType');
+            const jenisLayanan = selectLayanan.options[selectLayanan.selectedIndex].text;
+            const catatan = document.getElementById('bookingNotes').value;
+            
+            // Validasi form
+            if (!namaPelanggan || !telepon || selectLayanan.value === '') {
+                alert('Mohon isi semua field yang diperlukan.');
+                return;
+            }
+            
+            if (bookingDipilih) {
+                // Update booking yang sudah ada
+                bookingDipilih.namaPelanggan = namaPelanggan;
+                bookingDipilih.telepon = telepon;
+                bookingDipilih.layanan = jenisLayanan;
+                bookingDipilih.catatan = catatan;
+                
+                alert('Booking berhasil diperbarui!');
+            } else {
+                // Buat booking baru
+                const bookingBaru = {
+                    id: dataBooking.length + 1,
+                    tanggal: modalBooking.tanggalDipilih,
+                    waktu: modalBooking.waktuDipilih,
+                    durasi: 60, // Durasi default
+                    namaPelanggan: namaPelanggan,
+                    telepon: telepon,
+                    layanan: jenisLayanan,
+                    catatan: catatan
+                };
+                
+                dataBooking.push(bookingBaru);
+                alert('Booking berhasil dibuat!');
+            }
+            
+            // Tutup modal dan refresh tabel
+            modalBooking.hide();
+            buatTabelJadwal();
+        }
+        
+        // Batalkan booking
+        function batalkanBooking() {
+            if (bookingDipilih) {
+                // Hapus booking dari array
+                dataBooking = dataBooking.filter(b => b.id !== bookingDipilih.id);
+                alert('Booking berhasil dibatalkan!');
+                
+                // Refresh tabel
+                buatTabelJadwal();
+            }
+        }
+        
+        // ===== FUNGSI UTILITAS =====
+        
+        // Format tanggal ke string YYYY-MM-DD
+        function formatTanggal(tanggal) {
+            const tahun = tanggal.getFullYear();
+            const bulan = (tanggal.getMonth() + 1).toString().padStart(2, '0');
+            const hari = tanggal.getDate().toString().padStart(2, '0');
+            return `${tahun}-${bulan}-${hari}`;
+        }
+        
+        // Format tanggal ke format Indonesia
+        function formatTanggalIndonesia(tanggal) {
+            const namaHari = hariIndonesia[tanggal.getDay()];
+            const tanggalHari = tanggal.getDate();
+            const namaBulan = bulanIndonesia[tanggal.getMonth()];
+            const tahun = tanggal.getFullYear();
+            
+            return `${namaHari}, ${tanggalHari} ${namaBulan} ${tahun}`;
+        }
+    </script>
+</body>
+</html>

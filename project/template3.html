@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoraStudio Photography</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+            color: #000;
+            background-color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            background: none;
+            border: none;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-text {
+            font-size: 0.875rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .close-menu-btn {
+            color: #fff;
+        }
+
+        .mobile-menu-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .mobile-menu-link {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            transition: color 0.2s;
+        }
+
+        .mobile-menu-link:hover {
+            color: #ccc;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: #fff;
+            font-size: 1.5rem;
+            z-index: 2010;
+        }
+
+        .lightbox-image-container {
+            width: 100%;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 2rem;
+            z-index: 2010;
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .lightbox-nav:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .lightbox-prev {
+            left: 10px;
+        }
+
+        .lightbox-next {
+            right: 10px;
+        }
+
+        .lightbox-caption {
+            color: #fff;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        /* Navigation */
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .desktop-nav {
+            display: none;
+        }
+
+        .nav-link {
+            margin-left: 2rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #666;
+        }
+
+        .nav-link.active {
+            border-bottom: 1px solid currentColor;
+        }
+
+        .menu-btn {
+            color: inherit;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            color: #fff;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 100px);
+        }
+
+        .hero-info {
+            margin-top: 3rem;
+        }
+
+        .info-group {
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .hero-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Portfolio Section */
+        .portfolio-section {
+            padding: 4rem 0;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .header-text {
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .year-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s, filter 0.5s;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            color: white;
+            font-weight: bold;
+        }
+
+        .portfolio-item:hover .portfolio-image {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 0.875rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .portfolio-item:hover .portfolio-caption {
+            transform: translateY(0);
+        }
+
+        .section-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .footer-info {
+            margin-bottom: 1rem;
+        }
+
+        /* Instagram-like Grid */
+        @media (max-width: 767px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 4rem 0;
+            background-color: #fff;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+
+        .profile-image-container {
+            width: 16rem;
+            height: 16rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-text {
+            max-width: 600px;
+        }
+
+        .about-description {
+            margin: 1.5rem 0;
+            font-size: 1.125rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-link svg {
+            margin-left: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 4rem 0;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .services-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .service-type {
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .service-detail {
+            margin-bottom: 2rem;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-text {
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .book-btn {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border: 1px solid #fff;
+            color: #fff;
+            background: transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .book-btn svg {
+            margin-left: 0.5rem;
+        }
+
+        .book-btn:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .services-image-container {
+            margin-top: 3rem;
+            aspect-ratio: 16/9;
+        }
+
+        .services-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 4rem 0;
+            background-color: #fff;
+        }
+
+        .form-title {
+            margin-bottom: 2rem;
+        }
+
+        .contact-form {
+            margin-bottom: 4rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0;
+            border: none;
+            border-bottom: 1px solid #000;
+            background: transparent;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+        }
+
+        .form-submit {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .submit-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #333;
+        }
+
+        .contact-footer {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo {
+            margin-bottom: 2rem;
+        }
+
+        .contact-info {
+            margin-bottom: 2rem;
+        }
+
+        .contact-info-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info-text {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 1s ease-out;
+        }
+
+        /* Media Queries */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 5rem;
+            }
+
+            .desktop-nav {
+                display: flex;
+            }
+
+            .menu-btn {
+                display: none;
+            }
+
+            .hero-content {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .hero-info {
+                width: 50%;
+                margin-top: 0;
+            }
+
+            .hero-title {
+                width: 50%;
+                text-align: left;
+                margin-top: 0;
+            }
+
+            .about-content {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .profile-image-container {
+                margin-right: 3rem;
+                margin-bottom: 0;
+            }
+
+            .services-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-footer {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            h1 {
+                font-size: 6rem;
+            }
+
+            .section-title {
+                font-size: 4.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <button class="close-menu-btn" id="closeMenuBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="#portfolio" class="mobile-menu-link">PORTFOLIO</a>
+            <a href="#about" class="mobile-menu-link">ABOUT</a>
+            <a href="#services" class="mobile-menu-link">SERVICES</a>
+            <a href="#contact" class="mobile-menu-link">CONTACT</a>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal for Portfolio Images -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div class="lightbox-image-container">
+                <img src="/placeholder.svg" alt="Portfolio image" class="lightbox-image" id="lightboxImage">
+            </div>
+            <button class="lightbox-nav lightbox-next" id="lightboxNext">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="container">
+            <nav class="main-nav">
+                <div class="logo">MS</div>
+                <div class="desktop-nav">
+                    <a href="#portfolio" class="nav-link">PORTFOLIO</a>
+                    <a href="#about" class="nav-link">ABOUT</a>
+                    <a href="#services" class="nav-link">SERVICES</a>
+                    <a href="#contact" class="nav-link">CONTACT</a>
+                </div>
+                <button class="menu-btn" id="menuBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
+            </nav>
+
+            <div class="hero-content">
+                <div class="hero-info fade-in">
+                    <div class="info-group">
+                        <p class="info-label">PORTFOLIO</p>
+                        <p class="info-text">2022 - 2023</p>
+                    </div>
+
+                    <div class="info-group">
+                        <p class="info-label">FREELANCE</p>
+                        <p class="info-text">PHOTOGRAPHER</p>
+                    </div>
+
+                    <div class="info-group">
+                        <p class="info-label">AWARD</p>
+                        <p class="info-text">WINNER</p>
+                    </div>
+                </div>
+
+                <div class="hero-title slide-up">
+                    <h1>MORA<br>STUDIO</h1>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image-container">
+            <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?q=80&w=1932&auto=format&fit=crop" alt="Photographer silhouette" class="hero-image">
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio-section">
+        <div class="container">
+            <div class="section-header">
+                <p class="header-text">ANYWHERE, ANY CITY 123</p>
+                <p class="header-text">MORASTUDIO</p>
+                <p class="header-text">PHOTOGRAPHY PORTFOLIO</p>
+            </div>
+
+            <h2 class="year-title">©2022 - 2023</h2>
+
+            <div class="portfolio-grid" id="portfolioGrid">
+                <!-- Portfolio items will be dynamically generated -->
+            </div>
+
+            <div class="section-footer">
+                <div class="footer-info">
+                    <p class="info-label">FREELANCE</p>
+                    <p class="info-text">PHOTOGRAPHER</p>
+                </div>
+                <div class="footer-info">
+                    <p class="info-label">MORA</p>
+                    <p class="info-text">STUDIO</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="profile-image-container">
+                    <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=1470&auto=format&fit=crop" alt="MoraStudio" class="profile-image">
+                </div>
+
+                <div class="about-text">
+                    <p class="info-label">FREELANCE<br>PHOTOGRAPHER</p>
+
+                    <p class="about-description">
+                        MoraStudio has been a professional photography studio for 8 years and worked on large media projects for major brands and freelance clients.
+                    </p>
+
+                    <div class="contact-link">
+                        <a href="#contact">CONTACT</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">ABOUT ME</h2>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="header-info">
+                    <p class="info-label">FREELANCE</p>
+                    <p class="info-text">PHOTOGRAPHER</p>
+                </div>
+                <div class="header-info">
+                    <p class="info-label">MORA</p>
+                    <p class="info-text">STUDIO</p>
+                </div>
+            </div>
+
+            <div class="services-content">
+                <div class="services-list">
+                    <p class="service-type">EDITORIAL</p>
+                    <p class="service-type">COMMERCIAL</p>
+                    <p class="service-type">WEDDING PHOTOGRAPHER</p>
+                </div>
+
+                <div class="services-details">
+                    <div class="service-detail">
+                        <h3 class="service-title">PHOTOGRAPHY</h3>
+                        <p class="service-text">WORK WITH ME</p>
+                        <button class="book-btn">
+                            BOOK NOW
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="service-detail">
+                        <h3 class="service-title">FILMMAKING</h3>
+                        <p class="service-text">WORK WITH ME</p>
+                        <button class="book-btn">
+                            BOOK NOW
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title">SERVICES</h2>
+
+            <div class="services-image-container">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1638&auto=format&fit=crop" alt="Camera lens" class="services-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">CONTACT</h2>
+
+            <div class="section-header">
+                <div class="header-info">
+                    <p class="info-label">FREELANCE</p>
+                    <p class="info-text">PHOTOGRAPHER</p>
+                </div>
+            </div>
+
+            <div class="contact-form-container">
+                <h3 class="form-title">LEAVE AN APPLICATION FOR A PHOTOSHOOT</h3>
+                <form id="contactForm" class="contact-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <input type="text" placeholder="NAME" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="E-MAIL" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" placeholder="+01 (000) 000-00-00" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" class="submit-btn">SUBMIT</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="contact-footer">
+                <div class="footer-logo">
+                    <h3>MORA<br>STUDIO</h3>
+                </div>
+
+                <div class="contact-info">
+                    <h4 class="contact-info-title">Contact info</h4>
+                    <p class="contact-info-text">info@morastudio.com</p>
+                    <p class="contact-info-text">+01 (000) 000-00-00</p>
+                    <p class="contact-info-text">Los Angeles, CA</p>
+                </div>
+
+                <div class="copyright">
+                    <p>© MORASTUDIO 2023</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Portfolio gallery data
+            const portfolioData = [
+                {
+                    id: 1,
+                    src: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1528&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=1528&auto=format&fit=crop',
+                    caption: 'Portrait Photography - 2023',
+                    category: 'portrait'
+                },
+                {
+                    id: 2,
+                    src: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1470&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1470&auto=format&fit=crop',
+                    caption: 'Landscape Photography - 2023',
+                    category: 'landscape'
+                },
+                {
+                    id: 3,
+                    src: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1470&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1537633552985-df8429e8048b?q=80&w=1470&auto=format&fit=crop',
+                    caption: 'Wedding Photography - 2022',
+                    category: 'wedding'
+                },
+                {
+                    id: 4,
+                    src: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1374&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1374&auto=format&fit=crop',
+                    caption: 'Portrait Photography - 2023',
+                    category: 'portrait'
+                },
+                {
+                    id: 5,
+                    src: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=1470&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=1470&auto=format&fit=crop',
+                    caption: 'Commercial Photography - 2022',
+                    category: 'commercial'
+                },
+                {
+                    id: 6,
+                    src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1574&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1574&auto=format&fit=crop',
+                    caption: 'Landscape Photography - 2022',
+                    category: 'landscape'
+                },
+                {
+                    id: 7,
+                    src: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1470&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1470&auto=format&fit=crop',
+                    caption: 'Wedding Photography - 2023',
+                    category: 'wedding'
+                },
+                {
+                    id: 8,
+                    src: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop',
+                    caption: 'Portrait Photography - 2022',
+                    category: 'portrait'
+                },
+                {
+                    id: 9,
+                    src: 'https://images.unsplash.com/photo-1551392505-f4056032826e?q=80&w=1497&auto=format&fit=crop',
+                    thumbnail: 'https://images.unsplash.com/photo-1551392505-f4056032826e?q=80&w=1497&auto=format&fit=crop',
+                    caption: 'Commercial Photography - 2023',
+                    category: 'commercial'
+                }
+            ];
+
+            // Generate portfolio grid
+            const portfolioGrid = document.getElementById('portfolioGrid');
+            
+            if (portfolioGrid) {
+                portfolioData.forEach(item => {
+                    const portfolioItem = document.createElement('div');
+                    portfolioItem.className = 'portfolio-item';
+                    portfolioItem.dataset.id = item.id;
+                    
+                    portfolioItem.innerHTML = `
+                        <img src="${item.thumbnail}" alt="${item.caption}" class="portfolio-image">
+                        <div class="portfolio-overlay">
+                            <span>View</span>
+                        </div>
+                        <div class="portfolio-caption">${item.caption}</div>
+                    `;
+                    
+                    portfolioGrid.appendChild(portfolioItem);
+                });
+            }
+
+            // Lightbox functionality
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            
+            let currentImageIndex = 0;
+            
+            // Open lightbox when clicking on a portfolio item
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            
+            portfolioItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const imageId = parseInt(this.dataset.id);
+                    const imageIndex = portfolioData.findIndex(item => item.id === imageId);
+                    
+                    if (imageIndex !== -1) {
+                        openLightbox(imageIndex);
+                    }
+                });
+            });
+            
+            // Open lightbox function
+            function openLightbox(index) {
+                currentImageIndex = index;
+                const image = portfolioData[index];
+                
+                lightboxImage.src = image.src;
+                lightboxCaption.textContent = image.caption;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Preload adjacent images for smoother navigation
+                preloadImage(getPrevIndex(index));
+                preloadImage(getNextIndex(index));
+            }
+            
+            // Close lightbox function
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Clear image source after transition
+                setTimeout(() => {
+                    lightboxImage.src = '';
+                }, 300);
+            }
+            
+            // Navigate to previous image
+            function prevImage() {
+                openLightbox(getPrevIndex(currentImageIndex));
+            }
+            
+            // Navigate to next image
+            function nextImage() {
+                openLightbox(getNextIndex(currentImageIndex));
+            }
+            
+            // Get previous image index with wrap-around
+            function getPrevIndex(index) {
+                return index === 0 ? portfolioData.length - 1 : index - 1;
+            }
+            
+            // Get next image index with wrap-around
+            function getNextIndex(index) {
+                return index === portfolioData.length - 1 ? 0 : index + 1;
+            }
+            
+            // Preload an image
+            function preloadImage(index) {
+                const img = new Image();
+                img.src = portfolioData[index].src;
+            }
+            
+            // Event listeners for lightbox controls
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightboxPrev.addEventListener('click', prevImage);
+            lightboxNext.addEventListener('click', nextImage);
+            
+            // Close lightbox when clicking outside the image
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+            
+            // Keyboard navigation for lightbox
+            document.addEventListener('keydown', function(e) {
+                if (!lightbox.classList.contains('active')) return;
+                
+                if (e.key === 'Escape') {
+                    closeLightbox();
+                } else if (e.key === 'ArrowLeft') {
+                    prevImage();
+                } else if (e.key === 'ArrowRight') {
+                    nextImage();
+                }
+            });
+
+            // Touch swipe functionality for lightbox
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            lightbox.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            lightbox.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    // Swipe left, go to next image
+                    nextImage();
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    // Swipe right, go to previous image
+                    prevImage();
+                }
+            }
+
+            // Mobile menu functionality
+            const menuBtn = document.getElementById('menuBtn');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+            menuBtn.addEventListener('click', function() {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Smooth scrolling for navigation links
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-menu-link, .contact-link a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Active navigation link based on scroll position
+            const sections = document.querySelectorAll('section');
+            const desktopNavLinks = document.querySelectorAll('.nav-link');
+            
+            function setActiveNavLink() {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (window.scrollY >= (sectionTop - 100)) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                desktopNavLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', setActiveNavLink);
+            
+            // Parallax effect for hero image
+            const heroImage = document.querySelector('.hero-image-container');
+            const heroTitle = document.querySelector('.hero-title');
+            
+            window.addEventListener('scroll', function() {
+                const scrollY = window.scrollY;
+                
+                if (heroImage) {
+                    heroImage.style.transform = `translateY(${scrollY * 0.2}px)`;
+                }
+                
+                if (heroTitle) {
+                    heroTitle.style.transform = `translateY(${scrollY * -0.1}px)`;
+                }
+            });
+
+            // Form submission
+            const contactForm = document.getElementById('contactForm');
+            
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const formElements = contactForm.elements;
+                    const name = formElements[0].value;
+                    const email = formElements[1].value;
+                    const phone = formElements[2].value;
+                    
+                    // Simple validation
+                    if (!name || !email || !phone) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+                    
+                    // Simulate form submission
+                    alert('Form submitted successfully!');
+                    contactForm.reset();
+                });
+            }
+
+            // Reveal animations on scroll
+            const revealElements = document.querySelectorAll('.section-title, .about-content, .services-content, .portfolio-grid');
+            
+            function revealOnScroll() {
+                revealElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        element.classList.add('fade-in');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Check on initial load
+        });
+    </script>
+</body>
+</html>
