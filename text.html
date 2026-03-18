@@ -1,919 +1,730 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polaroid Photobooth</title>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fajar Accu - Spesialis Aki Mobil & Motor</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+      :root {
+        --primary: #003366;
+        --secondary: #ff6b00;
+        --light: #f5f5f5;
+        --dark: #333333;
+      }
 
-        header {
-            background-color: #4a4a4a;
-            color: white;
-            width: 100%;
-            text-align: center;
-            padding: 20px 0;
-            margin-bottom: 20px;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: var(--dark);
+        line-height: 1.6;
+      }
 
-        h1 {
-            margin: 0;
-        }
+      .header {
+        background-color: var(--primary);
+        color: white;
+        padding: 1rem 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
 
-        .booth {
-            position: relative;
-            width: 100%;
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-        }
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
 
-        #video {
-            width: 100%;
-            height: 100vh;
-            background-color: #000;
-            border-radius: 2px;
-            transform: scaleX(-1);
-            /* Mirror effect */
-        }
+      .logo {
+        height: 50px;
+        margin-right: 15px;
+      }
 
-        #canvas {
-            display: none;
-        }
+      .tagline {
+        font-style: italic;
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
 
-        .buttons {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            gap: 10px;
-            position: absolute;
-            margin-top: 50vh;
-        }
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("hero-bg.jpg");
+        background-size: cover;
+        background-position: center;
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: white;
+        margin-top: 70px;
+      }
 
-        button {
-            background-color: #ffffff;
-            color: rgb(0, 0, 0);
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
 
-        button:hover {
-            background-color: #b7b7b7;
-        }
+      .cta-buttons {
+        margin-top: 2rem;
+      }
 
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        margin: 0 10px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
 
-        #start-session {
-            background-color: #ffffff;
-            color: black;
-            border-radius: 5px;
-            padding: 10px 20px;
-        }
+      .btn-primary {
+        background-color: var(--secondary);
+        color: white;
+      }
 
-        #start-session:hover {
-            background-color: #b7b7b7;
-        }
+      .btn-secondary {
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+      }
 
-        .countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 150px;
-            color: white;
-            text-shadow: 0 0 10px black;
-            display: none;
-        }
+      .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
 
-        .flash {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            opacity: 0;
-            pointer-events: none;
-        }
+      .services {
+        padding: 4rem 0;
+        background-color: var(--light);
+      }
 
-        .status {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-        }
+      .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+        color: var(--primary);
+      }
 
-        /* Template selection styles */
-        .template-selection {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            z-index: 10;
-            width: 80%;
-            /* max-width: 600px; */
-        }
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
 
-        .template-options {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
-        }
+      .service-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
 
-        .template-option {
-            width: 120px;
-            height: 180px;
-            border: 3px solid #ddd;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: white;
-            padding: 10px;
-        }
+      .service-card:hover {
+        transform: translateY(-10px);
+      }
 
-        .template-option:hover {
-            border-color: #2196F3;
-            transform: scale(1.05);
-        }
+      .service-img {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+      }
 
-        .template-option.selected {
-            border-color: #2196F3;
-            box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
-        }
+      .service-content {
+        padding: 1.5rem;
+      }
 
-        .template-option img {
-            max-width: 100%;
-            max-height: 70%;
-            margin-bottom: 10px;
-        }
+      .about {
+        padding: 4rem 0;
+        background-color: white;
+      }
 
-        .template-option span {
-            font-size: 14px;
-            text-align: center;
-        }
+      .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+      }
 
-         .design-upload {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: #f8f8f8;
-            border-radius: 5px;
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        .design-upload h3 {
-            margin-top: 0;
-            font-size: 16px;
-        }
-        
-        .design-upload p {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .mockup-download {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .mockup-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .mockup-item a {
-            color: #2196F3;
-            text-decoration: none;
-        }
-        
-        .mockup-item a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Update polaroid styles for correct dimensions */
-        .polaroid-single {
-            width: 88mm;
-            height: 107mm;
-            padding: 4.5mm;
-            box-sizing: border-box;
-        }
-        
-        .polaroid-single img {
-            width: 79mm;
-            height: 79mm;
-        }
-        
-        /* Update strip styles for correct dimensions */
-        .polaroid-strip-3 {
-            width: 50mm;
-            height: 150mm;
-            padding: 2.5mm;
-            box-sizing: border-box;
-        }
-        
-        .polaroid-strip-3 img {
-            width: 45mm;
-            height: 45mm;
-            margin-bottom: 2.5mm;
-        }
-        
-        .polaroid-strip-2 {
-            width: 50mm;
-            height: 100mm;
-            padding: 2.5mm;
-            box-sizing: border-box;
-        }
-        
-        .polaroid-strip-2 img {
-            width: 45mm;
-            height: 40mm;
-            margin-bottom: 2.5mm;
-        }
+      .about-img {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
 
-        /* Result modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 20;
-            justify-content: center;
-            align-items: center;
+      .products {
+        padding: 4rem 0;
+        background-color: var(--light);
+      }
+
+      .product-filter {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .filter-btn {
+        padding: 8px 20px;
+        margin: 5px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .filter-btn.active,
+      .filter-btn:hover {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .product-img {
+        height: 200px;
+        width: 100%;
+        object-fit: contain;
+        background-color: #f9f9f9;
+        padding: 20px;
+      }
+
+      .product-info {
+        padding: 1.5rem;
+        border-top: 1px solid #eee;
+      }
+
+      .price {
+        font-weight: bold;
+        color: var(--secondary);
+        font-size: 1.2rem;
+        margin: 10px 0;
+      }
+
+      .testimonials {
+        padding: 4rem 0;
+        background-color: white;
+      }
+
+      .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .testimonial-card {
+        background: var(--light);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .stars {
+        color: var(--secondary);
+        margin-bottom: 1rem;
+      }
+
+      .contact {
+        padding: 4rem 0;
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+      }
+
+      .map-container {
+        height: 400px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .contact-form input,
+      .contact-form textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 1rem;
+        border: none;
+        border-radius: 5px;
+      }
+
+      .footer {
+        background-color: var(--dark);
+        color: white;
+        padding: 3rem 0 1rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .social-links a {
+        color: white;
+        margin-right: 15px;
+        font-size: 1.5rem;
+      }
+
+      @media (max-width: 768px) {
+        .about-content,
+        .contact-grid {
+          grid-template-columns: 1fr;
         }
-
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 60%;
-            max-height: 90vh;
-            overflow-y: auto;
-            text-align: center;
-        }
-
-        .modal-body {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-        }
-
-        .result-image {
-            max-width: 100%;
-            max-height: 60vh;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .download-options {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .qr-code {
-            width: 150px;
-            height: 150px;
-            background-color: #f0f0f0;
-            margin: 10px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #333;
-        }
-
-        /* Polaroid styles */
-        .polaroid-single {
-            background-color: white;
-            padding: 15px 15px 60px 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 300px;
-            position: relative;
-        }
-
-        .polaroid-single img {
-            width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-        }
-
-        .polaroid-strip {
-            background-color: white;
-            padding: 15px 15px 70px 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 320px;
-            position: relative;
-        }
-
-        .polaroid-strip img {
-            width: 100%;
-            height: auto;
-            display: block;
-            border: 1px solid #ddd;
-        }
-
-        .polaroid-date {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            color: #666;
-            font-family: 'Courier New', monospace;
-        }
-
-        @media (max-width: 600px) {
-            .template-selection {
-                width: 95%;
-                padding: 15px;
-            }
-
-            .template-option {
-                width: 100px;
-                height: 150px;
-            }
-
-            .modal-content {
-                max-width: 95%;
-            }
-
-            button {
-                padding: 8px 15px;
-                font-size: 14px;
-            }
-        }
+      }
     </style>
-</head>
-
-<body>
-    <div class="container">
-        <div class="booth">
-            <video id="video" autoplay></video>
-            <canvas id="canvas"></canvas>
-            <div class="countdown" id="countdown"></div>
-            <div class="flash" id="flash"></div>
-            <div class="status" id="status"></div>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="logo-container">
+          <img src="logo-fajar-accu.png" alt="Fajar Accu" class="logo" />
+          <div>
+            <h1>Fajar Accu</h1>
+            <p class="tagline">
+              Spesialis Aki Mobil & Motor - Cepat, Murah, Bergaransi
+            </p>
+          </div>
         </div>
+      </div>
+    </header>
 
-        <div class="buttons">
-            <button id="start-camera">Mulai Kamera</button>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Layanan Aki Profesional untuk Kendaraan Anda</h2>
+        <p>
+          Dapatkan aki berkualitas dengan harga terbaik dan layanan bergaransi
+        </p>
+        <div class="cta-buttons">
+          <a href="#products" class="btn btn-primary">Cek Katalog Aki</a>
+          <a href="#contact" class="btn btn-secondary">Booking Servis</a>
         </div>
+      </div>
+    </section>
 
-        <!-- Template Selection -->
-        <div class="template-selection" id="template-selection" style="display: none;">
-            <h2>Pilih Template</h2>
-            <div class="template-options">
-                <div class="template-option" data-type="strip-3">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSIxNTAiIHZpZXdCb3g9IjAgMCA1MCAxNTAiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iMi41IiB5PSI1IiB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8cmVjdCB4PSIyLjUiIHk9IjUyLjUiIHdpZHRoPSI0NSIgaGVpZ2h0PSI0NSIgZmlsbD0iI2UwZTBlMCIgc3Ryb2tlPSIjYmRiZGJkIiAvPgogIDxyZWN0IHg9IjIuNSIgeT0iMTAwIiB3aWR0aD0iNDUiIGhlaWdodD0iNDUiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8dGV4dCB4PSIyNSIgeT0iMTQ1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCI+NSB4IDE1IGNtPC90ZXh0Pgo8L3N2Zz4=" alt="3 Photo Strip">
-                    <span>3 Foto Strip (5×15cm)</span>
-                </div>
-                <div class="template-option" data-type="strip-2">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIHZpZXdCb3g9IjAgMCA1MCAxMDAiPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSIxMDAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iMi41IiB5PSI1IiB3aWR0aD0iNDUiIGhlaWdodD0iNDAiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8cmVjdCB4PSIyLjUiIHk9IjUwIiB3aWR0aD0iNDUiIGhlaWdodD0iNDAiIGZpbGw9IiNlMGUwZTAiIHN0cm9rZT0iI2JkYmRiZCIgLz4KICA8dGV4dCB4PSIyNSIgeT0iOTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI4Ij41IHggMTAgY208L3RleHQ+Cjwvc3ZnPg==" alt="2 Photo Strip">
-                    <span>2 Foto Strip (5×10cm)</span>
-                </div>
-                <div class="template-option" data-type="polaroid-1">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4OCIgaGVpZ2h0PSIxMDciIHZpZXdCb3g9IjAgMCA4OCAxMDciPgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4OCIgaGVpZ2h0PSIxMDciIGZpbGw9IndoaXRlIiBzdHJva2U9IiNiZGJkYmQiIC8+CiAgPHJlY3QgeD0iNC41IiB5PSI0LjUiIHdpZHRoPSI3OSIgaGVpZ2h0PSI3OSIgZmlsbD0iI2UwZTBlMCIgc3Ryb2tlPSIjYmRiZGJkIiAvPgogIDx0ZXh0IHg9IjQ0IiB5PSI5OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjgiPjguOCB4IDEwLjcgY208L3RleHQ+Cjwvc3ZnPg==" alt="1 Polaroid">
-                    <span>1 Polaroid (8.8×10.7cm)</span>
-                </div>
+    <!-- Services Section -->
+    <section class="services" id="services">
+      <div class="container">
+        <h2 class="section-title">Layanan Kami</h2>
+        <div class="service-grid">
+          <div class="service-card">
+            <img src="jual-aki.jpg" alt="Jual Aki Baru" class="service-img" />
+            <div class="service-content">
+              <h3>Jual Aki Baru</h3>
+              <p>
+                Berbagai merek aki mobil dan motor dengan kualitas terbaik dan
+                harga kompetitif.
+              </p>
             </div>
-              <!-- Design Upload Input -->
-            <div class="design-upload">
-                <h3>Upload Desain Template (Opsional)</h3>
-                <input type="file" id="template-design" accept="image/*">
-                <p>Upload gambar desain yang akan ditampilkan di atas foto-foto Anda</p>
+          </div>
+          <div class="service-card">
+            <img src="ganti-aki.jpg" alt="Ganti Aki" class="service-img" />
+            <div class="service-content">
+              <h3>Ganti Aki</h3>
+              <p>
+                Layanan ganti aki cepat dengan teknisi berpengalaman dan garansi
+                memuaskan.
+              </p>
             </div>
-            
-            <button id="start-session" disabled>Mulai Sesi Foto</button>
+          </div>
+          <div class="service-card">
+            <img src="cek-aki.jpg" alt="Cek Kondisi Aki" class="service-img" />
+            <div class="service-content">
+              <h3>Cek Kondisi Aki Gratis</h3>
+              <p>
+                Gratis pengecekan kesehatan aki untuk mengetahui kondisi aki
+                kendaraan Anda.
+              </p>
+            </div>
+          </div>
+          <div class="service-card">
+            <img
+              src="jump-start.jpg"
+              alt="Jasa Jump Start"
+              class="service-img"
+            />
+            <div class="service-content">
+              <h3>Jasa Jump Start</h3>
+              <p>
+                Layanan darurat saat aki kendaraan Anda soak di jalan atau
+                tempat parkir.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+      <div class="container">
+        <h2 class="section-title">Tentang Kami</h2>
+        <div class="about-content">
+          <div>
+            <h3>Bengkel Spesialis Aki dengan Pengalaman Lebih dari 10 Tahun</h3>
+            <p>
+              Fajar Accu telah melayani berbagai merek mobil dan motor dengan
+              komitmen memberikan pelayanan terbaik, harga jujur, dan garansi
+              memuaskan.
+            </p>
+
+            <h4>Visi Kami</h4>
+            <p>
+              Menjadi bengkel aki terpercaya dengan pelayanan cepat dan harga
+              kompetitif di wilayah kami.
+            </p>
+
+            <h4>Misi Kami</h4>
+            <ul>
+              <li>Menyediakan produk aki berkualitas dari merek terpercaya</li>
+              <li>
+                Memberikan pelayanan profesional dengan teknisi berpengalaman
+              </li>
+              <li>Menjaga kejujuran dalam diagnosis dan rekomendasi produk</li>
+              <li>Memberikan garansi yang jelas dan transparan</li>
+            </ul>
+          </div>
+          <div>
+            <img
+              src="about-us.jpg"
+              alt="Tentang Fajar Accu"
+              class="about-img"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+      <div class="container">
+        <h2 class="section-title">Katalog Aki</h2>
+
+        <div class="product-filter">
+          <button class="filter-btn active" data-filter="all">Semua</button>
+          <button class="filter-btn" data-filter="mobil">Aki Mobil</button>
+          <button class="filter-btn" data-filter="motor">Aki Motor</button>
+          <button class="filter-btn" data-filter="kering">Aki Kering</button>
+          <button class="filter-btn" data-filter="basah">Aki Basah</button>
         </div>
 
-        <!-- Result Modal -->
-        <div class="modal" id="result-modal">
-            <div class="modal-content">
-                <button class="close-btn" id="close-modal">&times;</button>
-                <h2>Foto Anda Siap!</h2>
-                <div class="modal-body">
-                    <div id="result-image-container"></div>
-                    <div class="download-options">
-                        <div class="qr-code" id="qr-code">
-                            <img id="qr-code-img" src="" alt="QR Code untuk Download">
-                        </div>
-                        <p>Scan QR Code untuk Download</p>
-                        <button style="border: 1px solid #000;" id="download-direct">Download Langsung</button>
-                    </div>
-                </div>
+        <div class="product-grid">
+          <!-- Product 1 -->
+          <div class="product-card" data-category="mobil kering">
+            <img src="aki-gs.jpg" alt="Aki GS Mobil" class="product-img" />
+            <div class="product-info">
+              <h3>GS Battery 55D23L</h3>
+              <p>Aki kering untuk mobil dengan kapasitas 60Ah</p>
+              <div class="price">Rp 1.250.000</div>
+              <a
+                href="https://wa.me/6281234567890?text=Saya%20tertarik%20dengan%20aki%20GS%2055D23L"
+                class="btn btn-primary"
+                >Pesan via WhatsApp</a
+              >
             </div>
-        </div>
-    </div>
+          </div>
 
-    <!-- QR Code Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+          <!-- Product 2 -->
+          <div class="product-card" data-category="mobil basah">
+            <img
+              src="aki-yuasa.jpg"
+              alt="Aki Yuasa Mobil"
+              class="product-img"
+            />
+            <div class="product-info">
+              <h3>Yuasa NS40ZL</h3>
+              <p>Aki basah untuk mobil dengan kapasitas 35Ah</p>
+              <div class="price">Rp 950.000</div>
+              <a
+                href="https://wa.me/6281234567890?text=Saya%20tertarik%20dengan%20aki%20Yuasa%20NS40ZL"
+                class="btn btn-primary"
+                >Pesan via WhatsApp</a
+              >
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="product-card" data-category="motor kering">
+            <img src="aki-motor.jpg" alt="Aki Motor" class="product-img" />
+            <div class="product-info">
+              <h3>GS Battery MFZ3S</h3>
+              <p>Aki kering untuk motor 3Ah</p>
+              <div class="price">Rp 250.000</div>
+              <a
+                href="https://wa.me/6281234567890?text=Saya%20tertarik%20dengan%20aki%20motor%20GS%20MFZ3S"
+                class="btn btn-primary"
+                >Pesan via WhatsApp</a
+              >
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div class="product-card" data-category="mobil kering">
+            <img
+              src="aki-amaron.jpg"
+              alt="Aki Amaron Mobil"
+              class="product-img"
+            />
+            <div class="product-info">
+              <h3>Amaron Go 55D23L</h3>
+              <p>Aki kering premium untuk mobil 60Ah</p>
+              <div class="price">Rp 1.450.000</div>
+              <a
+                href="https://wa.me/6281234567890?text=Saya%20tertarik%20dengan%20aki%20Amaron%20Go%2055D23L"
+                class="btn btn-primary"
+                >Pesan via WhatsApp</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+      <div class="container">
+        <h2 class="section-title">Apa Kata Pelanggan Kami</h2>
+        <div class="testimonial-grid">
+          <div class="testimonial-card">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p>
+              "Pelayanan sangat cepat dan harga bersaing. Aki yang dipasang
+              sudah 2 tahun masih bagus. Recommended!"
+            </p>
+            <div class="customer">
+              <strong>Budi Santoso</strong>
+              <p>Pemilik Toyota Avanza</p>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p>
+              "Teknisinya sangat profesional, menjelaskan kondisi aki saya
+              dengan jelas dan tidak memaksa untuk ganti kalau belum perlu."
+            </p>
+            <div class="customer">
+              <strong>Dewi Lestari</strong>
+              <p>Pemilik Honda Jazz</p>
+            </div>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p>
+              "Layanan panggilannya sangat membantu saat aki soak di mall.
+              Teknisi datang cepat dan masalah teratasi."
+            </p>
+            <div class="customer">
+              <strong>Andi Wijaya</strong>
+              <p>Pemilik Yamaha NMAX</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2 class="section-title">Hubungi Kami</h2>
+        <div class="contact-grid">
+          <div>
+            <h3>Kunjungi Bengkel Kami</h3>
+            <p>Jl. Raya Kebon Jeruk No. 123, Jakarta Barat</p>
+            <p>Buka setiap hari: 08.00 - 17.00 WIB</p>
+
+            <h3>Kontak</h3>
+            <p><i class="fas fa-phone"></i> (021) 1234567</p>
+            <p><i class="fab fa-whatsapp"></i> 0812-3456-7890</p>
+            <p><i class="fas fa-envelope"></i> info@fajaraccu.com</p>
+
+            <div class="social-links">
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-tiktok"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div>
+            <h3>Booking Layanan</h3>
+            <form class="contact-form">
+              <input type="text" placeholder="Nama Anda" required />
+              <input type="tel" placeholder="Nomor HP/WhatsApp" required />
+              <input type="email" placeholder="Email (opsional)" />
+              <select required>
+                <option value="">Pilih Layanan</option>
+                <option>Ganti Aki di Bengkel</option>
+                <option>Layanan Panggilan</option>
+                <option>Cek Kondisi Aki Gratis</option>
+                <option>Konsultasi Produk</option>
+              </select>
+              <textarea placeholder="Pesan Anda" rows="4"></textarea>
+              <button type="submit" class="btn btn-primary">Kirim Pesan</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.85412531529484!3d-6.208741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTInMzEuNSJTIDEwNsKwNTEnMjEuOSJF!5e0!3m2!1sen!2sid!4v1621234567890!5m2!1sen!2sid"
+            width="100%"
+            height="100%"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <img
+              src="logo-fajar-accu-white.png"
+              alt="Fajar Accu"
+              class="logo"
+              style="height: 40px; margin-bottom: 15px"
+            />
+            <p>
+              Spesialis Aki Mobil & Motor dengan pelayanan profesional sejak
+              2010.
+            </p>
+          </div>
+
+          <div>
+            <h4>Menu Cepat</h4>
+            <ul>
+              <li><a href="#">Beranda</a></li>
+              <li><a href="#about">Tentang Kami</a></li>
+              <li><a href="#products">Katalog Aki</a></li>
+              <li><a href="#services">Layanan</a></li>
+              <li><a href="#contact">Kontak</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4>Layanan</h4>
+            <ul>
+              <li>Jual Aki Baru</li>
+              <li>Ganti Aki</li>
+              <li>Cek Aki Gratis</li>
+              <li>Layanan Panggilan</li>
+              <li>Jump Start</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4>Kontak</h4>
+            <p>
+              Jl. Raya Kebon Jeruk No. 123<br />
+              Jakarta Barat 11530
+            </p>
+            <p>0812-3456-7890</p>
+          </div>
+        </div>
+
+        <div
+          style="
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+          "
+        >
+          <p>&copy; 2023 Fajar Accu. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
 
     <script>
-        // Variabel global
-        let videoStream;
-        let currentFilter = 'none';
-        let sessionCount = 0;
-        let currentPhotos = [];
-        let sessionActive = false;
-        let selectedTemplate = null;
-        let photoCount = 4; // Default
-        let templateDesignImage = null;
+      // Simple filter functionality
+      document.querySelectorAll(".filter-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          // Remove active class from all buttons
+          document.querySelectorAll(".filter-btn").forEach((btn) => {
+            btn.classList.remove("active");
+          });
 
-        // Elemen DOM
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const startButton = document.getElementById('start-camera');
-        const sessionButton = document.getElementById('start-session');
-        const templateSelection = document.getElementById('template-selection');
-        const templateOptions = document.querySelectorAll('.template-option');
-        const countdownElement = document.getElementById('countdown');
-        const flashElement = document.getElementById('flash');
-        const statusElement = document.getElementById('status');
-        const resultModal = document.getElementById('result-modal');
-        const closeModalBtn = document.getElementById('close-modal');
-        const resultImageContainer = document.getElementById('result-image-container');
-        const downloadDirectBtn = document.getElementById('download-direct');
-        const qrCodeContainer = document.getElementById('qr-code');
+          // Add active class to clicked button
+          button.classList.add("active");
 
-        // Context canvas
-        const ctx = canvas.getContext('2d');
+          const filterValue = button.getAttribute("data-filter");
+          const productCards = document.querySelectorAll(".product-card");
 
-        // Mulai kamera
-        startButton.addEventListener('click', async () => {
-            try {
-                videoStream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
-                    audio: false
-                });
-                
-                video.srcObject = videoStream;
-                startButton.style.display = 'none';
-                templateSelection.style.display = 'flex';
-
-                // Set ukuran canvas sesuai video stream
-                video.addEventListener('loadedmetadata', () => {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                });
-            } catch (err) {
-                console.error("Error accessing camera: ", err);
-                alert("Tidak dapat mengakses kamera. Pastikan Anda memberikan izin dan perangkat kamera tersedia.");
+          productCards.forEach((card) => {
+            if (
+              filterValue === "all" ||
+              card.getAttribute("data-category").includes(filterValue)
+            ) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
             }
+          });
         });
+      });
 
-        // Event listener untuk template selection
-        templateOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                // Hapus kelas selected dari semua opsi
-                templateOptions.forEach(opt => opt.classList.remove('selected'));
-                
-                // Tambahkan kelas selected ke opsi yang dipilih
-                option.classList.add('selected');
-                
-                // Set template yang dipilih
-                selectedTemplate = option.dataset.type;
-                
-                // Set jumlah foto berdasarkan template
-                if (selectedTemplate === 'strip-4') {
-                    photoCount = 4;
-                } else if (selectedTemplate === 'strip-3') {
-                    photoCount = 3;
-                } else if (selectedTemplate === 'strip-2') {
-                    photoCount = 2;
-                } else if (selectedTemplate === 'polaroid-1') {
-                    photoCount = 1;
-                }
-                
-                // Aktifkan tombol mulai sesi
-                sessionButton.disabled = false;
-            });
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
         });
-
-          // Add event listener for design upload
-        document.getElementById('template-design').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    templateDesignImage = new Image();
-                    templateDesignImage.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // Mulai sesi foto
-        sessionButton.addEventListener('click', () => {
-            if (!sessionActive && selectedTemplate) {
-                sessionActive = true;
-                currentPhotos = [];
-                templateSelection.style.display = 'none';
-                startPhotoSession();
-                statusElement.textContent = "Sesi foto dimulai...";
-                statusElement.style.display = "block";
-            }
-        });
-
-        // Fungsi memulai sesi foto
-        function startPhotoSession() {
-            let photoIndex = 0;
-            const photoInterval = setInterval(() => {
-                if (photoIndex < photoCount) {
-                    startCountdown(() => {
-                        takePhoto();
-                        photoIndex++;
-                        statusElement.textContent = `Foto ${photoIndex}/${photoCount} selesai`;
-                    });
-                } else {
-                    clearInterval(photoInterval);
-                    createPhotoResult();
-                    sessionActive = false;
-                    statusElement.textContent = "";
-                    statusElement.style.display = "none";
-                }
-            }, 5000); // Interval antar foto (5 detik)
-        }
-
-        // Fungsi countdown
-        function startCountdown(callback) {
-            let count = 5;
-            countdownElement.style.display = 'block';
-            countdownElement.textContent = count;
-
-            const interval = setInterval(() => {
-                count--;
-
-                if (count > 0) {
-                    countdownElement.textContent = count;
-                } else {
-                    clearInterval(interval);
-                    countdownElement.style.display = 'none';
-                    callback();
-                }
-            }, 1000);
-        }
-
-        // Fungsi ambil foto
-        function takePhoto() {
-            // Flash effect
-            flashElement.style.opacity = '0.8';
-            setTimeout(() => {
-                flashElement.style.opacity = '0';
-            }, 200);
-
-            // Gambar video ke canvas dengan membalikkan kembali efek mirror
-            ctx.save();
-            ctx.scale(-1, 1); // Flip horizontal untuk mengembalikan gambar ke normal
-            ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
-            ctx.restore();
-
-            // Terapkan filter
-            applyFilter(currentFilter);
-
-            // Konversi canvas ke dataURL
-            const imageDataURL = canvas.toDataURL('image/png');
-
-            // Tambahkan ke array foto sesi sekarang
-            currentPhotos.push(imageDataURL);
-        }
-
-        // Buat hasil foto berdasarkan template
-        function createPhotoResult() {
-            // Buat canvas untuk hasil akhir
-            const resultCanvas = document.createElement('canvas');
-            const resultCtx = resultCanvas.getContext('2d');
-            const currentDate = new Date().toLocaleDateString();
-            
-            // Set dimensions based on template type (in pixels, 1mm ≈ 3.78 pixels at 96 DPI)
-            let pixelRatio = window.devicePixelRatio || 1;
-            
-            if (selectedTemplate === 'polaroid-1') {
-                // 8.8 x 10.7 cm (88mm x 107mm)
-                const width = Math.round(88 * 3.78);
-                const height = Math.round(107 * 3.78);
-                resultCanvas.width = width;
-                resultCanvas.height = height;
-                
-                // Background white polaroid
-                resultCtx.fillStyle = 'white';
-                resultCtx.fillRect(0, 0, width, height);
-                
-                // Photo area (7.9 x 7.9 cm or 79mm x 79mm)
-                const imgX = Math.round(4.5 * 3.78);
-                const imgY = Math.round(4.5 * 3.78);
-                const imgSize = Math.round(79 * 3.78);
-                
-                // Add design overlay if available
-                if (templateDesignImage) {
-                    resultCtx.drawImage(templateDesignImage, 0, 0, width, height);
-                }
-                
-                // Gambar foto
-                const img = new Image();
-                img.onload = function() {
-                    resultCtx.drawImage(img, imgX, imgY, imgSize, imgSize);
-                    
-                    // Tambahkan tanggal
-                    resultCtx.font = '16px Courier New';
-                    resultCtx.fillStyle = '#666';
-                    resultCtx.textAlign = 'center';
-                    resultCtx.fillText(currentDate, width / 2, height - Math.round(9 * 3.78));
-                    
-                    showResultModal(resultCanvas.toDataURL('image/png'));
-                };
-                img.src = currentPhotos[0];
-            } 
-            else if (selectedTemplate === 'strip-3') {
-                // 5 x 15 cm (50mm x 150mm)
-                const width = Math.round(50 * 3.78);
-                const height = Math.round(150 * 3.78);
-                resultCanvas.width = width;
-                resultCanvas.height = height;
-                
-                // Background white
-                resultCtx.fillStyle = 'white';
-                resultCtx.fillRect(0, 0, width, height);
-                
-                // Add design overlay if available
-                if (templateDesignImage) {
-                    resultCtx.drawImage(templateDesignImage, 0, 0, width, height);
-                }
-                
-                // Photo dimensions (4.5 x 4.5 cm or 45mm x 45mm)
-                const imgWidth = Math.round(45 * 3.78);
-                const imgHeight = Math.round(45 * 3.78);
-                const imgX = Math.round(2.5 * 3.78);
-                const spacing = Math.round(2.5 * 3.78);
-                
-                // Gambar setiap foto
-                let loadedCount = 0;
-                currentPhotos.forEach((photoUrl, index) => {
-                    const img = new Image();
-                    img.onload = function() {
-                        const imgY = imgX + (index * (imgHeight + spacing));
-                        resultCtx.drawImage(img, imgX, imgY, imgWidth, imgHeight);
-                        
-                        loadedCount++;
-                        if (loadedCount === 3) {
-                            // Tambahkan tanggal
-                            resultCtx.font = '16px Courier New';
-                            resultCtx.fillStyle = '#666';
-                            resultCtx.textAlign = 'center';
-                            resultCtx.fillText(currentDate, width / 2, height - Math.round(5 * 3.78));
-                            
-                            showResultModal(resultCanvas.toDataURL('image/png'));
-                        }
-                    };
-                    img.src = photoUrl;
-                });
-            }
-            else if (selectedTemplate === 'strip-2') {
-                // 5 x 10 cm (50mm x 100mm)
-                const width = Math.round(50 * 3.78);
-                const height = Math.round(100 * 3.78);
-                resultCanvas.width = width;
-                resultCanvas.height = height;
-                
-                // Background white
-                resultCtx.fillStyle = 'white';
-                resultCtx.fillRect(0, 0, width, height);
-                
-                // Add design overlay if available
-                if (templateDesignImage) {
-                    resultCtx.drawImage(templateDesignImage, 0, 0, width, height);
-                }
-                
-                // Photo dimensions (4.5 x 4 cm or 45mm x 40mm)
-                const imgWidth = Math.round(45 * 3.78);
-                const imgHeight = Math.round(40 * 3.78);
-                const imgX = Math.round(2.5 * 3.78);
-                const spacing = Math.round(5 * 3.78);
-                
-                // Gambar setiap foto
-                let loadedCount = 0;
-                currentPhotos.forEach((photoUrl, index) => {
-                    const img = new Image();
-                    img.onload = function() {
-                        const imgY = imgX + (index * (imgHeight + spacing));
-                        resultCtx.drawImage(img, imgX, imgY, imgWidth, imgHeight);
-                        
-                        loadedCount++;
-                        if (loadedCount === 2) {
-                            // Tambahkan tanggal
-                            resultCtx.font = '16px Courier New';
-                            resultCtx.fillStyle = '#666';
-                            resultCtx.textAlign = 'center';
-                            resultCtx.fillText(currentDate, width / 2, height - Math.round(5 * 3.78));
-                            
-                            showResultModal(resultCanvas.toDataURL('image/png'));
-                        }
-                    };
-                    img.src = photoUrl;
-                });
-            }
-        }
-
-        // Tampilkan modal hasil
-        function showResultModal(imageDataUrl) {
-            // Buat elemen gambar
-            const resultImg = document.createElement('img');
-            resultImg.src = imageDataUrl;
-            resultImg.className = 'result-image';
-            resultImg.id = 'result-image';
-            
-            // Hapus gambar sebelumnya jika ada
-            resultImageContainer.innerHTML = '';
-            resultImageContainer.appendChild(resultImg);
-            
-            // Generate QR code untuk download
-            generateQRCode(imageDataUrl);
-            
-            // Set data URL untuk download langsung
-            downloadDirectBtn.onclick = function() {
-                const link = document.createElement('a');
-                link.download = `photo-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.png`;
-                link.href = imageDataUrl;
-                link.click();
-            };
-            
-            // Tampilkan modal
-            resultModal.style.display = 'flex';
-        }
-
-        // Buat QR code untuk download
-        function generateQRCode(dataUrl) {
-            // Clear previous QR code
-            document.getElementById('qr-code').innerHTML = '';
-            
-            // We'll use a simple trick: create a temporary unique ID that can be exchanged for the actual image
-            // In a real app, you'd upload to a server and generate a proper URL
-            const tempId = 'photo_' + Date.now();
-            localStorage.setItem(tempId, dataUrl);
-            
-            // Generate QR code with the ID (in a real app, this would be a URL to your server)
-            const qrUrl = `${window.location.origin}${window.location.pathname}?download=${tempId}`;
-            
-            // Create QR code
-            new QRCode(document.getElementById('qr-code'), {
-                text: qrUrl,
-                width: 128,
-                height: 128
-            });
-        }
-
-        // Tutup modal
-        closeModalBtn.addEventListener('click', () => {
-            resultModal.style.display = 'none';
-            templateSelection.style.display = 'flex';
-            sessionButton.disabled = true;
-            selectedTemplate = null;
-            templateOptions.forEach(opt => opt.classList.remove('selected'));
-        });
-
-        // Fungsi untuk menerapkan filter ke canvas
-        function applyFilter(filter) {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imageData.data;
-
-            switch (filter) {
-                case 'grayscale':
-                    for (let i = 0; i < data.length; i += 4) {
-                        const avg = (data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114);
-                        data[i] = avg; // R
-                        data[i + 1] = avg; // G
-                        data[i + 2] = avg; // B
-                    }
-                    break;
-
-                case 'sepia':
-                    for (let i = 0; i < data.length; i += 4) {
-                        const r = data[i];
-                        const g = data[i + 1];
-                        const b = data[i + 2];
-                        data[i] = Math.min(255, (r * 0.393) + (g * 0.769) + (b * 0.189));
-                        data[i + 1] = Math.min(255, (r * 0.349) + (g * 0.686) + (b * 0.168));
-                        data[i + 2] = Math.min(255, (r * 0.272) + (g * 0.534) + (b * 0.131));
-                    }
-                    break;
-
-                case 'invert':
-                    for (let i = 0; i < data.length; i += 4) {
-                        data[i] = 255 - data[i]; // R
-                        data[i + 1] = 255 - data[i + 1]; // G
-                        data[i + 2] = 255 - data[i + 2]; // B
-                    }
-                    break;
-
-                case 'bright':
-                    for (let i = 0; i < data.length; i += 4) {
-                        // Tingkatkan brightness
-                        data[i] = Math.min(255, data[i] * 1.3); // R
-                        data[i + 1] = Math.min(255, data[i + 1] * 1.3); // G
-                        data[i + 2] = Math.min(255, data[i + 2] * 1.3); // B
-                    }
-                    break;
-
-                case 'none':
-                default:
-                    // Tidak ada filter yang diterapkan
-                    break;
-            }
-
-            ctx.putImageData(imageData, 0, 0);
-        }
-
-        // Check for download parameter in URL (for QR code functionality)
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const downloadId = urlParams.get('download');
-            
-            if (downloadId) {
-                const imageData = localStorage.getItem(downloadId);
-                if (imageData) {
-                    // Create a download link
-                    const link = document.createElement('a');
-                    link.href = imageData;
-                    link.download = `photo-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.png`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    // Clean up localStorage
-                    localStorage.removeItem(downloadId);
-                    
-                    // Redirect back to main page
-                    setTimeout(() => {
-                        window.location.href = window.location.pathname;
-                    }, 1000);
-                }
-            }
-        });
+      });
     </script>
-</body>
-
+  </body>
 </html>
