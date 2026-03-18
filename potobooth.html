@@ -771,32 +771,20 @@
             }
 
             // Countdown timer
-            function startCountdown() {
-                let count = 3;
-                timer.textContent = count;
-                timer.classList.remove('hidden');
+            function startCountdown(callback) {
+                let count = 5;
+                countdownElement.style.display = 'block';
+                countdownElement.textContent = count;
 
-                timerInterval = setInterval(() => {
+                const interval = setInterval(() => {
                     count--;
-                    timer.textContent = count;
 
-                    if (count === 0) {
-                        clearInterval(timerInterval);
-
-                        // Take photo after countdown
-                        setTimeout(async () => {
-                            const photo = await takePhoto();
-                            photosTaken.push(photo);
-                            photoIndex++;
-
-                            // Check if we need more photos
-                            if (photoIndex < photosNeeded) {
-                                startCountdown();
-                            } else {
-                                // All photos taken, process result
-                                processPhotos();
-                            }
-                        }, 1000);
+                    if (count > 0) {
+                        countdownElement.textContent = count;
+                    } else {
+                        clearInterval(interval);
+                        countdownElement.style.display = 'none';
+                        callback();
                     }
                 }, 1000);
             }
